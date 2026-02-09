@@ -7,7 +7,7 @@ import DayCard from '@/components/DayCard';
 import DayDetail from '@/components/DayDetail';
 
 export default function Home() {
-  const { loading, selectedDay, selectDay, getFilteredDays, fetchDays } = useScheduleStore();
+  const { loading, error, selectedDay, selectDay, getFilteredDays, fetchDays } = useScheduleStore();
 
   useEffect(() => {
     fetchDays();
@@ -33,6 +33,9 @@ export default function Home() {
         ) : filteredDays.length === 0 ? (
           <div className="text-center py-20">
             <p className="text-sm text-zinc-400">데이터를 불러올 수 없습니다</p>
+            {error && (
+              <p className="text-[10px] text-red-400 mt-2 px-4 break-all">{error}</p>
+            )}
             <p className="text-[10px] text-zinc-300 mt-2">
               URL: {process.env.NEXT_PUBLIC_SUPABASE_URL ? 'OK' : 'MISSING'}
             </p>

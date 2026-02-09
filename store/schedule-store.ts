@@ -7,6 +7,7 @@ type RegionFilter = 'all' | 'south' | 'north' | 'travel';
 interface ScheduleState {
   days: DaySchedule[];
   loading: boolean;
+  error: string | null;
 
   selectedDayId: number | null;
   selectedDay: DaySchedule | null;
@@ -32,6 +33,7 @@ interface ScheduleState {
 export const useScheduleStore = create<ScheduleState>((set, get) => ({
   days: [],
   loading: true,
+  error: null,
   selectedDayId: null,
   selectedDay: null,
   regionFilter: 'all',
@@ -39,16 +41,20 @@ export const useScheduleStore = create<ScheduleState>((set, get) => ({
   memosLoading: false,
 
   fetchDays: async () => {
-    set({ loading: true });
-    const { data, error } = await supabase
-      .from('schedules')
-      .select('*')
-      .order('day', { ascending: true });
+    set({ loading: true, error: null });
+    try {
+      const { data, error } = await supabase
+        .from('schedules')
+        .select('*')
+        .order('day', { ascending: true });
 
-    if (!error && data) {
-      set({ days: data as DaySchedule[], loading: false });
-    } else {
-      set({ loading: false });
+      if (error) {
+        set({ loading: false, error: `${error.code}: ${error.message}` });
+      } else {
+        set({ days: data as DaySchedule[], loading: false });
+      }
+    } catch (e) {
+      set({ loading: false, error: `catch: ${e}` });
     }
   },
 
