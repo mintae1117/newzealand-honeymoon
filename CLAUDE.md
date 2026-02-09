@@ -9,26 +9,51 @@
 - **Language**: TypeScript (strict mode)
 - **Styling**: Tailwind CSS 4
 - **State Management**: Zustand
-- **Backend/DB**: Supabase (Auth, Database, Storage)
+- **Backend/DB**: Supabase (Database)
 - **Deployment**: Vercel
 - **Package Manager**: npm
+- **Icons**: lucide-react
 
 ## Project Structure
 
 ```
 app/                  # Next.js App Router 페이지 및 레이아웃
-  layout.tsx          # 루트 레이아웃
-  page.tsx            # 홈 페이지
+  layout.tsx          # 루트 레이아웃 (모바일 viewport, max-w-lg)
+  page.tsx            # 홈 페이지 (리스트 ↔ 디테일 전환)
   globals.css         # 글로벌 스타일
+components/           # UI 컴포넌트
+  Header.tsx          # 상단 헤더 + 지역 필터 (전체/남섬/북섬/이동)
+  DayCard.tsx         # 리스트 카드
+  DayDetail.tsx       # 상세 화면 (타임라인, 팁, 숙소, 링크, 메모)
+  MemoSection.tsx     # 날짜별 메모 CRUD
+store/                # Zustand 스토어
+  schedule-store.ts   # 일정 fetch, 필터, 메모 관리
+lib/                  # 유틸리티
+  supabase.ts         # Supabase 클라이언트
+types/                # 타입 정의
+  schedule.ts         # DaySchedule, Memo 등
+scripts/              # 스크립트
+  seed.ts             # Supabase 데이터 시드
 public/               # 정적 파일
 ```
 
+## Supabase Tables
+
+- **schedules**: 14일 일정 데이터 (activities, tips, accommodation, links는 JSONB)
+- **memos**: 날짜별 메모 (day_id로 schedules 참조)
+
 ## Commands
 
-- `npm run dev` — 개발 서버 실행
+- `npm run dev` — 개발 서버 실행 (port 3002)
 - `npm run build` — 프로덕션 빌드
 - `npm run start` — 프로덕션 서버 실행
 - `npm run lint` — ESLint 실행
+
+## Environment Variables
+
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- `.env.local` 파일에 저장 (절대 커밋하지 않음)
 
 ## Architecture Guidelines
 
@@ -39,7 +64,6 @@ public/               # 정적 파일
 
 ### Path Alias
 - `@/*` 경로 별칭 사용 (tsconfig.json에 설정됨)
-- 예: `import { something } from '@/lib/utils'`
 
 ### Styling
 - Tailwind CSS 유틸리티 클래스 사용
@@ -49,18 +73,14 @@ public/               # 정적 파일
 ### State Management (Zustand)
 - 글로벌 상태는 Zustand store로 관리
 - store 파일은 `store/` 디렉토리에 배치
-- 슬라이스 패턴으로 도메인별 분리
 
 ### Supabase
-- Supabase 클라이언트 설정은 `lib/supabase.ts`에 배치
-- 서버 컴포넌트에서는 서버용 클라이언트, 클라이언트 컴포넌트에서는 브라우저용 클라이언트 사용
-- 환경 변수: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-- `.env.local` 파일에 환경변수 저장 (절대 커밋하지 않음)
+- 클라이언트 설정은 `lib/supabase.ts`
+- RLS 정책 적용됨 (개인 앱이므로 anon 접근 허용)
 
 ### Components
 - 재사용 가능한 UI 컴포넌트는 `components/` 디렉토리에 배치
-- 페이지 전용 컴포넌트는 해당 라우트 디렉토리 내에 배치
-- 컴포넌트 파일명은 PascalCase (예: `TripCard.tsx`)
+- 컴포넌트 파일명은 PascalCase (예: `DayCard.tsx`)
 
 ### Code Style
 - 한국어 주석 사용 가능
