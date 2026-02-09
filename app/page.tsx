@@ -1,20 +1,40 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useScheduleStore } from '@/store/schedule-store';
 import Header from '@/components/Header';
 import DayCard from '@/components/DayCard';
 import DayDetail from '@/components/DayDetail';
 
 export default function Home() {
-  const { loading, selectedDay, selectDay, getFilteredDays, fetchDays } = useScheduleStore();
+  const { loading, selectedDay, selectDay, getFilteredDays, fetchDays, scrollY, setScrollY } =
+    useScheduleStore();
+  const restored = useRef(false);
 
   useEffect(() => {
     fetchDays();
   }, [fetchDays]);
 
+  // 리스트로 돌아왔을 때 스크롤 복원
+  useEffect(() => {
+    if (!selectedDay && !loading && scrollY > 0 && !restored.current) {
+      window.scrollTo(0, scrollY);
+      restored.current = true;
+    }
+  }, [selectedDay, loading, scrollY]);
+
+  const handleSelect = (id: number) => {
+    setScrollY(window.scrollY);
+    restored.current = false;
+    selectDay(id);
+  };
+
+  const handleBack = () => {
+    selectDay(null);
+  };
+
   if (selectedDay) {
-    return <DayDetail day={selectedDay} onBack={() => selectDay(null)} />;
+    return <DayDetail day={selectedDay} onBack={handleBack} />;
   }
 
   const filteredDays = getFilteredDays();
@@ -29,7 +49,7 @@ export default function Home() {
           </div>
         ) : (
           filteredDays.map((day) => (
-            <DayCard key={day.id} day={day} onSelect={selectDay} />
+            <DayCard key={day.id} day={day} onSelect={handleSelect} />
           ))
         )}
       </main>

@@ -17,6 +17,10 @@ interface ScheduleState {
   memos: Memo[];
   memosLoading: boolean;
 
+  // 스크롤
+  scrollY: number;
+  setScrollY: (y: number) => void;
+
   // 액션
   fetchDays: () => Promise<void>;
   selectDay: (id: number | null) => void;
@@ -37,6 +41,9 @@ export const useScheduleStore = create<ScheduleState>((set, get) => ({
   regionFilter: 'all',
   memos: [],
   memosLoading: false,
+  scrollY: 0,
+
+  setScrollY: (y) => set({ scrollY: y }),
 
   fetchDays: async () => {
     set({ loading: true });

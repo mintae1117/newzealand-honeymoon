@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import { ArrowLeft, Car, Lightbulb, MapPin, ExternalLink, BedDouble } from 'lucide-react';
 import { DaySchedule } from '@/types/schedule';
 import MemoSection from '@/components/MemoSection';
@@ -16,6 +17,10 @@ const regionBg: Record<string, string> = {
 };
 
 const DayDetail = ({ day, onBack }: DayDetailProps) => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 pb-8">
       {/* 헤더 */}
