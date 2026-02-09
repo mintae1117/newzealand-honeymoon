@@ -24,8 +24,18 @@ export default function Home() {
       <Header />
       <main className="px-4 py-4 pb-8 space-y-3">
         {loading ? (
-          <div className="flex items-center justify-center py-20">
+          <div className="flex flex-col items-center justify-center py-20 gap-3">
             <div className="w-6 h-6 border-2 border-zinc-300 border-t-zinc-900 rounded-full animate-spin" />
+            <p className="text-[10px] text-zinc-300">
+              {process.env.NEXT_PUBLIC_SUPABASE_URL ? 'DB 연결중...' : 'ENV 없음'}
+            </p>
+          </div>
+        ) : filteredDays.length === 0 ? (
+          <div className="text-center py-20">
+            <p className="text-sm text-zinc-400">데이터를 불러올 수 없습니다</p>
+            <p className="text-[10px] text-zinc-300 mt-2">
+              URL: {process.env.NEXT_PUBLIC_SUPABASE_URL ? 'OK' : 'MISSING'}
+            </p>
           </div>
         ) : (
           filteredDays.map((day) => (
