@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { ChevronRight, Car, Coffee } from 'lucide-react';
 import { DaySchedule } from '@/types/schedule';
 
@@ -17,14 +18,13 @@ const regionLabels: Record<string, string> = {
 
 interface DayCardProps {
   day: DaySchedule;
-  onSelect: (id: number) => void;
 }
 
-const DayCard = ({ day, onSelect }: DayCardProps) => {
+const DayCard = ({ day }: DayCardProps) => {
   return (
-    <button
-      onClick={() => onSelect(day.id)}
-      className="w-full text-left bg-white dark:bg-zinc-900 rounded-2xl p-4 shadow-sm border border-zinc-100 dark:border-zinc-800 active:scale-[0.98] transition-transform"
+    <Link
+      href={`/day/${day.id}`}
+      className="block w-full text-left bg-white dark:bg-zinc-900 rounded-2xl p-4 shadow-sm border border-zinc-100 dark:border-zinc-800 active:scale-[0.98] transition-transform"
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex gap-3 min-w-0 flex-1">
@@ -83,7 +83,7 @@ const DayCard = ({ day, onSelect }: DayCardProps) => {
           </span>
         )}
       </div>
-    </button>
+    </Link>
   );
 };
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { ArrowLeft, Car, Lightbulb, MapPin, ExternalLink, BedDouble, ChevronLeft, ChevronRight, Pencil, Check, X, Plus, Trash2 } from 'lucide-react';
 import { DaySchedule, Activity, Accommodation, LinkInfo } from '@/types/schedule';
 import { useScheduleStore } from '@/store/schedule-store';
@@ -11,7 +11,10 @@ const MapSection = dynamic(() => import('@/components/MapSection'), { ssr: false
 
 interface DayDetailProps {
   day: DaySchedule;
+  prevDay: DaySchedule | null;
+  nextDay: DaySchedule | null;
   onBack: () => void;
+  onNavigate: (id: number) => void;
 }
 
 const regionBg: Record<string, string> = {
@@ -28,18 +31,13 @@ const regionAccent: Record<string, string> = {
 
 const inputClass = 'bg-zinc-50 dark:bg-zinc-800 rounded px-2 py-1 border border-zinc-200 dark:border-zinc-700 focus:outline-none focus:ring-1 focus:ring-zinc-300';
 
-const DayDetail = ({ day, onBack }: DayDetailProps) => {
-  const { getPrevDay, getNextDay, navigateDay, updateSchedule } = useScheduleStore();
+const DayDetail = ({ day, prevDay, nextDay, onBack, onNavigate }: DayDetailProps) => {
+  const { updateSchedule } = useScheduleStore();
   const [isEditing, setIsEditing] = useState(false);
   const [editActivities, setEditActivities] = useState<Activity[]>([]);
   const [editAccommodation, setEditAccommodation] = useState<Accommodation | null>(null);
   const [editLinks, setEditLinks] = useState<LinkInfo[]>([]);
   const [saving, setSaving] = useState(false);
-  const touchStartX = useRef(0);
-  const touchEndX = useRef(0);
-
-  const prevDay = getPrevDay();
-  const nextDay = getNextDay();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -126,37 +124,12 @@ const DayDetail = ({ day, onBack }: DayDetailProps) => {
     );
   };
 
-  // 스와이프 처리
-  const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX;
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    touchEndX.current = e.touches[0].clientX;
-  };
-
-  const handleTouchEnd = () => {
-    if (isEditing) return;
-    const diff = touchStartX.current - touchEndX.current;
-    const threshold = 80;
-    if (diff > threshold && nextDay) {
-      navigateDay('next');
-    } else if (diff < -threshold && prevDay) {
-      navigateDay('prev');
-    }
-  };
-
   const currentActivities = isEditing ? editActivities : day.activities;
   const currentAccommodation = isEditing ? editAccommodation : day.accommodation;
   const currentLinks = isEditing ? editLinks : day.links;
 
   return (
-    <div
-      className="min-h-screen bg-zinc-50 dark:bg-zinc-950 pb-8"
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
-    >
+    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 pb-8">
       {/* 헤더 */}
       <div className={`bg-gradient-to-br ${regionBg[day.region]} px-5 pt-4 pb-6`}>
         <div className="flex items-center justify-between mb-4">
@@ -170,7 +143,7 @@ const DayDetail = ({ day, onBack }: DayDetailProps) => {
           {/* 이전/다음 날 네비게이션 */}
           <div className="flex items-center gap-1">
             <button
-              onClick={() => prevDay && navigateDay('prev')}
+              onClick={() => prevDay && onNavigate(prevDay.id)}
               disabled={!prevDay}
               className="flex items-center gap-0.5 text-white/70 text-xs px-2 py-1 rounded-lg active:opacity-60 disabled:opacity-30 transition-opacity"
             >
@@ -179,7 +152,7 @@ const DayDetail = ({ day, onBack }: DayDetailProps) => {
             </button>
             <div className="w-px h-3 bg-white/30" />
             <button
-              onClick={() => nextDay && navigateDay('next')}
+              onClick={() => nextDay && onNavigate(nextDay.id)}
               disabled={!nextDay}
               className="flex items-center gap-0.5 text-white/70 text-xs px-2 py-1 rounded-lg active:opacity-60 disabled:opacity-30 transition-opacity"
             >
