@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { DaySchedule, Memo } from '@/types/schedule';
+import { DaySchedule, Memo, Activity, Accommodation, LinkInfo } from '@/types/schedule';
 import { supabase } from '@/lib/supabase';
 
 type RegionFilter = 'all' | 'south' | 'north' | 'travel';
@@ -26,6 +26,12 @@ interface ScheduleState {
   selectDay: (id: number | null) => void;
   setRegionFilter: (filter: RegionFilter) => void;
   getFilteredDays: () => DaySchedule[];
+  getPrevDay: () => DaySchedule | null;
+  getNextDay: () => DaySchedule | null;
+  navigateDay: (direction: 'prev' | 'next') => void;
+
+  // 일정 수정
+  updateSchedule: (dayId: number, updates: { activities?: Activity[]; accommodation?: Accommodation | null; links?: LinkInfo[] }) => Promise<void>;
 
   // 메모 액션
   fetchMemos: (dayId: number) => Promise<void>;
@@ -73,6 +79,45 @@ export const useScheduleStore = create<ScheduleState>((set, get) => ({
     const { days, regionFilter } = get();
     if (regionFilter === 'all') return days;
     return days.filter((d) => d.region === regionFilter);
+  },
+
+  getPrevDay: () => {
+    const { days, selectedDay } = get();
+    if (!selectedDay) return null;
+    const idx = days.findIndex((d) => d.id === selectedDay.id);
+    return idx > 0 ? days[idx - 1] : null;
+  },
+
+  getNextDay: () => {
+    const { days, selectedDay } = get();
+    if (!selectedDay) return null;
+    const idx = days.findIndex((d) => d.id === selectedDay.id);
+    return idx < days.length - 1 ? days[idx + 1] : null;
+  },
+
+  navigateDay: (direction) => {
+    const day = direction === 'prev' ? get().getPrevDay() : get().getNextDay();
+    if (day) {
+      set({ selectedDayId: day.id, selectedDay: day, memos: [] });
+      get().fetchMemos(day.id);
+    }
+  },
+
+  updateSchedule: async (dayId, updates) => {
+    const { error } = await supabase
+      .from('schedules')
+      .update(updates)
+      .eq('id', dayId);
+
+    if (!error) {
+      const days = get().days.map((d) =>
+        d.id === dayId ? { ...d, ...updates } : d
+      );
+      const selectedDay = get().selectedDay?.id === dayId
+        ? { ...get().selectedDay!, ...updates }
+        : get().selectedDay;
+      set({ days, selectedDay });
+    }
   },
 
   fetchMemos: async (dayId) => {

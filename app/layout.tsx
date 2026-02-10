@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: '🇳🇿 뉴질랜드 신혼여행',
+  title: '뉴질랜드 신혼여행',
   description: '2026.10.31 ~ 11.13 뉴질랜드 신혼여행 일정',
 };
 
