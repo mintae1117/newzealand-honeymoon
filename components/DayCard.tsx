@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { ChevronRight, Car, Coffee } from 'lucide-react';
 import { DaySchedule } from '@/types/schedule';
+import { useScheduleStore } from '@/store/schedule-store';
 
 const regionColors: Record<string, string> = {
   south: 'bg-emerald-50 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-400',
@@ -21,9 +22,12 @@ interface DayCardProps {
 }
 
 const DayCard = ({ day }: DayCardProps) => {
+  const { setScrollY } = useScheduleStore();
+
   return (
     <Link
       href={`/day/${day.id}`}
+      onClick={() => setScrollY(window.scrollY)}
       className="block w-full text-left bg-white dark:bg-zinc-900 rounded-2xl p-4 shadow-sm border border-zinc-100 dark:border-zinc-800 active:scale-[0.98] transition-transform"
     >
       <div className="flex items-start justify-between gap-3">

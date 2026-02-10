@@ -11,8 +11,8 @@ export default function DayPage() {
   const { days, loading, fetchDays } = useScheduleStore();
 
   useEffect(() => {
-    if (days.length === 0) fetchDays();
-  }, [days.length, fetchDays]);
+    fetchDays();
+  }, [fetchDays]);
 
   const dayId = Number(params.id);
   const day = days.find((d) => d.id === dayId);
@@ -39,7 +39,7 @@ export default function DayPage() {
       day={day}
       prevDay={prevDay}
       nextDay={nextDay}
-      onBack={() => router.back()}
+      onBack={() => router.push('/')}
       onNavigate={(id) => router.push(`/day/${id}`)}
     />
   );

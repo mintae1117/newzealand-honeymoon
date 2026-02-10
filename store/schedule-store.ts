@@ -10,6 +10,10 @@ interface ScheduleState {
 
   regionFilter: RegionFilter;
 
+  // 스크롤
+  scrollY: number;
+  setScrollY: (y: number) => void;
+
   // 메모
   memos: Memo[];
   memosLoading: boolean;
@@ -32,10 +36,16 @@ export const useScheduleStore = create<ScheduleState>((set, get) => ({
   days: [],
   loading: true,
   regionFilter: 'all',
+  scrollY: 0,
+  setScrollY: (y) => set({ scrollY: y }),
   memos: [],
   memosLoading: false,
 
   fetchDays: async () => {
+    if (get().days.length > 0) {
+      set({ loading: false });
+      return;
+    }
     set({ loading: true });
     const { data, error } = await supabase
       .from('schedules')

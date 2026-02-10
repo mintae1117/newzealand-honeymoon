@@ -1,16 +1,28 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useScheduleStore } from '@/store/schedule-store';
 import Header from '@/components/Header';
 import DayCard from '@/components/DayCard';
 
 export default function Home() {
-  const { loading, getFilteredDays, fetchDays } = useScheduleStore();
+  const { loading, getFilteredDays, fetchDays, scrollY } = useScheduleStore();
+  const restored = useRef(false);
 
   useEffect(() => {
     fetchDays();
+    restored.current = false;
   }, [fetchDays]);
+
+  // 스크롤 복원
+  useEffect(() => {
+    if (!loading && scrollY > 0 && !restored.current) {
+      requestAnimationFrame(() => {
+        window.scrollTo(0, scrollY);
+      });
+      restored.current = true;
+    }
+  }, [loading, scrollY]);
 
   const filteredDays = getFilteredDays();
 
