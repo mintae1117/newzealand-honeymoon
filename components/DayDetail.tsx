@@ -5,6 +5,9 @@ import { ArrowLeft, Car, Lightbulb, MapPin, ExternalLink, BedDouble, ChevronLeft
 import { DaySchedule, Activity, Accommodation, LinkInfo } from '@/types/schedule';
 import { useScheduleStore } from '@/store/schedule-store';
 import MemoSection from '@/components/MemoSection';
+import dynamic from 'next/dynamic';
+
+const MapSection = dynamic(() => import('@/components/MapSection'), { ssr: false });
 
 interface DayDetailProps {
   day: DaySchedule;
@@ -506,6 +509,9 @@ const DayDetail = ({ day, onBack }: DayDetailProps) => {
             )}
           </section>
         )}
+
+        {/* 지도 */}
+        <MapSection dayNumber={day.day} />
 
         {/* 메모 */}
         <MemoSection dayId={day.id} />
