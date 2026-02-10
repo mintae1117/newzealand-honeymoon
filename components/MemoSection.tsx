@@ -3,23 +3,52 @@
 import { useState } from 'react';
 import { MessageSquarePlus, Trash2, StickyNote } from 'lucide-react';
 import { useScheduleStore } from '@/store/schedule-store';
+import PasswordModal from '@/components/PasswordModal';
 
 interface MemoSectionProps {
   dayId: number;
+  isAuthenticated: boolean;
+  login: (password: string) => Promise<boolean>;
 }
 
-const MemoSection = ({ dayId }: MemoSectionProps) => {
+const MemoSection = ({ dayId, isAuthenticated, login }: MemoSectionProps) => {
   const { memos, memosLoading, addMemo, deleteMemo } = useScheduleStore();
   const [input, setInput] = useState('');
   const [sending, setSending] = useState(false);
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [pendingAction, setPendingAction] = useState<(() => void) | null>(null);
 
-  const handleSubmit = async () => {
+  const requireAuth = (action: () => void) => {
+    if (isAuthenticated) {
+      action();
+    } else {
+      setPendingAction(() => action);
+      setShowPasswordModal(true);
+    }
+  };
+
+  const handleAuthSuccess = () => {
+    setShowPasswordModal(false);
+    pendingAction?.();
+    setPendingAction(null);
+  };
+
+  const doSubmit = async () => {
     const trimmed = input.trim();
     if (!trimmed || sending) return;
     setSending(true);
     await addMemo(dayId, trimmed);
     setInput('');
     setSending(false);
+  };
+
+  const handleSubmit = () => {
+    if (!input.trim()) return;
+    requireAuth(doSubmit);
+  };
+
+  const handleDelete = (memoId: string) => {
+    requireAuth(() => deleteMemo(memoId));
   };
 
   return (
@@ -76,7 +105,7 @@ const MemoSection = ({ dayId }: MemoSectionProps) => {
                 </p>
               </div>
               <button
-                onClick={() => deleteMemo(memo.id)}
+                onClick={() => handleDelete(memo.id)}
                 className="shrink-0 p-1.5 text-zinc-300 dark:text-zinc-600 active:text-red-500 transition-colors"
               >
                 <Trash2 size={14} />
@@ -85,6 +114,16 @@ const MemoSection = ({ dayId }: MemoSectionProps) => {
           ))}
         </div>
       )}
+      {/* 비밀번호 모달 */}
+      <PasswordModal
+        isOpen={showPasswordModal}
+        onSuccess={handleAuthSuccess}
+        onClose={() => {
+          setShowPasswordModal(false);
+          setPendingAction(null);
+        }}
+        login={login}
+      />
     </section>
   );
 };

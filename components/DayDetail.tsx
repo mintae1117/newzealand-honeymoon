@@ -4,7 +4,9 @@ import { useEffect, useState } from 'react';
 import { ArrowLeft, Car, Lightbulb, MapPin, ExternalLink, BedDouble, ChevronLeft, ChevronRight, Pencil, Check, X, Plus, Trash2 } from 'lucide-react';
 import { DaySchedule, Activity, Accommodation, LinkInfo } from '@/types/schedule';
 import { useScheduleStore } from '@/store/schedule-store';
+import { useAuth } from '@/hooks/useAuth';
 import MemoSection from '@/components/MemoSection';
+import PasswordModal from '@/components/PasswordModal';
 import dynamic from 'next/dynamic';
 
 const MapSection = dynamic(() => import('@/components/MapSection'), { ssr: false });
@@ -33,11 +35,13 @@ const inputClass = 'bg-zinc-50 dark:bg-zinc-800 rounded px-2 py-1 border border-
 
 const DayDetail = ({ day, prevDay, nextDay, onBack, onNavigate }: DayDetailProps) => {
   const { updateSchedule } = useScheduleStore();
+  const { isAuthenticated, login } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [editActivities, setEditActivities] = useState<Activity[]>([]);
   const [editAccommodation, setEditAccommodation] = useState<Accommodation | null>(null);
   const [editLinks, setEditLinks] = useState<LinkInfo[]>([]);
   const [saving, setSaving] = useState(false);
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -45,11 +49,24 @@ const DayDetail = ({ day, prevDay, nextDay, onBack, onNavigate }: DayDetailProps
   }, [day.id]);
 
   // 편집 모드 시작
-  const startEditing = () => {
+  const enterEditMode = () => {
     setEditActivities(day.activities.map((a) => ({ ...a })));
     setEditAccommodation(day.accommodation ? { ...day.accommodation, options: [...day.accommodation.options] } : null);
     setEditLinks(day.links.map((l) => ({ ...l })));
     setIsEditing(true);
+  };
+
+  const startEditing = () => {
+    if (isAuthenticated) {
+      enterEditMode();
+    } else {
+      setShowPasswordModal(true);
+    }
+  };
+
+  const handleAuthSuccess = () => {
+    setShowPasswordModal(false);
+    enterEditMode();
   };
 
   // 편집 취소
@@ -487,8 +504,16 @@ const DayDetail = ({ day, prevDay, nextDay, onBack, onNavigate }: DayDetailProps
         <MapSection dayNumber={day.day} />
 
         {/* 메모 */}
-        <MemoSection dayId={day.id} />
+        <MemoSection dayId={day.id} isAuthenticated={isAuthenticated} login={login} />
       </div>
+
+      {/* 비밀번호 모달 */}
+      <PasswordModal
+        isOpen={showPasswordModal}
+        onSuccess={handleAuthSuccess}
+        onClose={() => setShowPasswordModal(false)}
+        login={login}
+      />
     </div>
   );
 };

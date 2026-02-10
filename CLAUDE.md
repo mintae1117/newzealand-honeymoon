@@ -21,11 +21,17 @@ app/                  # Next.js App Router 페이지 및 레이아웃
   layout.tsx          # 루트 레이아웃 (모바일 viewport, max-w-lg)
   page.tsx            # 홈 페이지 (리스트 ↔ 디테일 전환)
   globals.css         # 글로벌 스타일
+  api/auth/           # 비밀번호 인증 API
+    route.ts          # POST (로그인) / DELETE (로그아웃)
+    check/route.ts    # GET (인증 상태 확인)
 components/           # UI 컴포넌트
   Header.tsx          # 상단 헤더 + 지역 필터 (전체/남섬/북섬/이동)
   DayCard.tsx         # 리스트 카드
   DayDetail.tsx       # 상세 화면 (타임라인, 팁, 숙소, 링크, 메모)
   MemoSection.tsx     # 날짜별 메모 CRUD
+  PasswordModal.tsx   # 비밀번호 입력 모달
+hooks/                # 커스텀 훅
+  useAuth.ts          # 인증 상태 관리 훅
 store/                # Zustand 스토어
   schedule-store.ts   # 일정 fetch, 필터, 메모 관리
 lib/                  # 유틸리티
@@ -53,6 +59,7 @@ public/               # 정적 파일
 
 - `NEXT_PUBLIC_SUPABASE_URL`
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- `EDIT_PASSWORD` — 수정/삭제 보호용 비밀번호 (서버 전용, NEXT_PUBLIC_ 없음)
 - `.env.local` 파일에 저장 (절대 커밋하지 않음)
 
 ## Architecture Guidelines
