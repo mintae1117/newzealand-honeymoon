@@ -1,6 +1,7 @@
 "use client";
 
-import Link from "next/link";
+import { KeyboardEvent } from "react";
+import { useRouter } from "next/navigation";
 import { ChevronRight, Car, Coffee } from "lucide-react";
 import { DaySchedule } from "@/types/schedule";
 import { useScheduleStore } from "@/store/schedule-store";
@@ -23,12 +24,27 @@ interface DayCardProps {
 }
 
 const DayCard = ({ day }: DayCardProps) => {
+  const router = useRouter();
   const { setScrollY } = useScheduleStore();
 
+  const goToDetail = () => {
+    setScrollY(window.scrollY);
+    router.push(`/day/${day.id}`);
+  };
+
+  const handleCardKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      goToDetail();
+    }
+  };
+
   return (
-    <Link
-      href={`/day/${day.id}`}
-      onClick={() => setScrollY(window.scrollY)}
+    <div
+      role="link"
+      tabIndex={0}
+      onClick={goToDetail}
+      onKeyDown={handleCardKeyDown}
       className="block w-full text-left bg-white dark:bg-zinc-900 rounded-2xl p-4 shadow-sm border border-zinc-100 dark:border-zinc-800 active:scale-[0.98] transition-transform"
     >
       <div className="flex items-start justify-between gap-3">
@@ -83,23 +99,20 @@ const DayCard = ({ day }: DayCardProps) => {
       </div>
 
       {/* 활동 미리보기 */}
-      <div className="flex flex-wrap gap-1.5 mt-3 pl-[5.5rem]">
-        {day.activities.slice(0, 4).map((a, i) => (
-          <span
-            key={i}
-            className="text-xs bg-zinc-50 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 px-2 py-0.5 rounded-md"
-          >
-            {a.emoji}{" "}
-            {a.title.length > 10 ? a.title.slice(0, 10) + "…" : a.title}
-          </span>
-        ))}
-        {day.activities.length > 4 && (
-          <span className="text-xs text-zinc-300 dark:text-zinc-600 px-1 py-0.5">
-            +{day.activities.length - 4}
-          </span>
-        )}
+      <div className="mt-3 pl-[5.5rem]">
+        <div className="flex flex-wrap items-center gap-1.5">
+          {day.activities.map((a, i) => (
+            <span
+              key={`${day.id}-${i}-${a.title}`}
+              className="text-xs bg-zinc-50 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 px-2 py-0.5 rounded-md"
+            >
+              {a.emoji}{" "}
+              {a.title.length > 10 ? a.title.slice(0, 10) + "…" : a.title}
+            </span>
+          ))}
+        </div>
       </div>
-    </Link>
+    </div>
   );
 };
 
