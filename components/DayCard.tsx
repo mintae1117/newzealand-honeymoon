@@ -75,13 +75,13 @@ const DayCard = ({ day }: DayCardProps) => {
               )}
             </div>
             <p className="text-[11px] font-semibold text-zinc-500 dark:text-zinc-400">
-              {`DAY ${day.day} · ${day.date}`}
+              {`DAY ${day.day} · ${day.date} (${day.day_of_week})`}
             </p>
             <h3 className="text-sm font-semibold text-zinc-900 dark:text-white truncate">
               {day.title}
             </h3>
             <p className="text-xs text-zinc-400 mt-0.5">
-              {`${day.day_of_week}${day.subtitle ? ` · ${day.subtitle}` : ""}`}
+              {day.subtitle || ""}
             </p>
             {day.drive_info && (
               <div className="flex items-center gap-1 mt-1.5 text-[11px] text-zinc-400">
@@ -99,7 +99,7 @@ const DayCard = ({ day }: DayCardProps) => {
       </div>
 
       {/* 활동 미리보기 */}
-      <div className="mt-3 pl-[5.5rem]">
+      <div className="mt-3 pl-2">
         <div className="flex flex-wrap items-center gap-1.5">
           {day.activities.map((a, i) => (
             <span
