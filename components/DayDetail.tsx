@@ -41,6 +41,7 @@ const DayDetail = ({ day, prevDay, nextDay, onBack, onNavigate }: DayDetailProps
   const [editAccommodation, setEditAccommodation] = useState<Accommodation | null>(null);
   const [editLinks, setEditLinks] = useState<LinkInfo[]>([]);
   const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
 
   useEffect(() => {
@@ -50,6 +51,7 @@ const DayDetail = ({ day, prevDay, nextDay, onBack, onNavigate }: DayDetailProps
 
   // 편집 모드 시작
   const enterEditMode = () => {
+    setSaveError(null);
     setEditActivities(day.activities.map((a) => ({ ...a })));
     setEditAccommodation(day.accommodation ? { ...day.accommodation, options: [...day.accommodation.options] } : null);
     setEditLinks(day.links.map((l) => ({ ...l })));
@@ -71,19 +73,27 @@ const DayDetail = ({ day, prevDay, nextDay, onBack, onNavigate }: DayDetailProps
 
   // 편집 취소
   const cancelEditing = () => {
+    setSaveError(null);
     setIsEditing(false);
   };
 
   // 편집 저장
   const saveEditing = async () => {
+    setSaveError(null);
     setSaving(true);
-    await updateSchedule(day.id, {
-      activities: editActivities,
-      accommodation: editAccommodation,
-      links: editLinks,
-    });
-    setSaving(false);
-    setIsEditing(false);
+
+    try {
+      await updateSchedule(day.id, {
+        activities: editActivities,
+        accommodation: editAccommodation,
+        links: editLinks,
+      });
+      setIsEditing(false);
+    } catch (error) {
+      setSaveError(error instanceof Error ? error.message : '저장 중 오류가 발생했어요.');
+    } finally {
+      setSaving(false);
+    }
   };
 
   // --- 활동 ---
@@ -237,6 +247,11 @@ const DayDetail = ({ day, prevDay, nextDay, onBack, onNavigate }: DayDetailProps
               </div>
             )}
           </div>
+          {saveError && (
+            <p className="mb-3 rounded-xl bg-red-50 px-3 py-2 text-xs text-red-600 dark:bg-red-950/40 dark:text-red-300">
+              {saveError}
+            </p>
+          )}
           <div>
             {currentActivities.map((activity, i) => (
               <div key={i} className="flex gap-3 relative">

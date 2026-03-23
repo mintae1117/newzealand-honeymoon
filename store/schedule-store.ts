@@ -70,17 +70,22 @@ export const useScheduleStore = create<ScheduleState>((set, get) => ({
   },
 
   updateSchedule: async (dayId, updates) => {
-    const { error } = await supabase
-      .from('schedules')
-      .update(updates)
-      .eq('id', dayId);
+    const response = await fetch(`/api/schedules/${dayId}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updates),
+    });
 
-    if (!error) {
-      const days = get().days.map((d) =>
-        d.id === dayId ? { ...d, ...updates } : d
-      );
-      set({ days });
+    if (!response.ok) {
+      const data = await response.json().catch(() => null);
+      throw new Error(data?.error || '일정 저장에 실패했습니다.');
     }
+
+    const { schedule } = await response.json();
+    const days = get().days.map((d) =>
+      d.id === dayId ? (schedule as DaySchedule) : d
+    );
+    set({ days });
   },
 
   fetchMemos: async (dayId) => {
