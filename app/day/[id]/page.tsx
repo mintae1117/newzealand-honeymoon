@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
-import { useParams, useRouter } from 'next/navigation';
-import { useScheduleStore } from '@/store/schedule-store';
-import DayDetail from '@/components/DayDetail';
+import { useEffect } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { useScheduleStore } from "@/store/schedule-store";
+import DayDetail from "@/components/DayDetail";
 
 export default function DayPage() {
   const params = useParams();
@@ -26,7 +26,7 @@ export default function DayPage() {
   }
 
   if (!day) {
-    router.replace('/');
+    router.replace("/");
     return null;
   }
 
@@ -39,7 +39,7 @@ export default function DayPage() {
       day={day}
       prevDay={prevDay}
       nextDay={nextDay}
-      onBack={() => router.push('/')}
+      onBack={() => router.push("/")}
       onNavigate={(id) => router.push(`/day/${id}`)}
     />
   );

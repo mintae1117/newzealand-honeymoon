@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from "react";
 
 export function useAuth() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -8,7 +8,7 @@ export function useAuth() {
 
   const checkAuth = useCallback(async () => {
     try {
-      const res = await fetch('/api/auth/check');
+      const res = await fetch("/api/auth/check");
       const data = await res.json();
       setIsAuthenticated(data.authenticated);
     } catch {
@@ -24,9 +24,9 @@ export function useAuth() {
 
   const login = async (password: string): Promise<boolean> => {
     try {
-      const res = await fetch('/api/auth', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("/api/auth", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ password }),
       });
       const data = await res.json();
@@ -42,7 +42,7 @@ export function useAuth() {
 
   const logout = async () => {
     try {
-      await fetch('/api/auth', { method: 'DELETE' });
+      await fetch("/api/auth", { method: "DELETE" });
     } finally {
       setIsAuthenticated(false);
     }

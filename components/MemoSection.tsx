@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { MessageSquarePlus, Trash2, StickyNote } from 'lucide-react';
-import { useScheduleStore } from '@/store/schedule-store';
-import PasswordModal from '@/components/PasswordModal';
+import { useState } from "react";
+import { MessageSquarePlus, Trash2, StickyNote } from "lucide-react";
+import { useScheduleStore } from "@/store/schedule-store";
+import PasswordModal from "@/components/PasswordModal";
 
 interface MemoSectionProps {
   dayId: number;
@@ -13,7 +13,7 @@ interface MemoSectionProps {
 
 const MemoSection = ({ dayId, isAuthenticated, login }: MemoSectionProps) => {
   const { memos, memosLoading, addMemo, deleteMemo } = useScheduleStore();
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
   const [sending, setSending] = useState(false);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [pendingAction, setPendingAction] = useState<(() => void) | null>(null);
@@ -38,7 +38,7 @@ const MemoSection = ({ dayId, isAuthenticated, login }: MemoSectionProps) => {
     if (!trimmed || sending) return;
     setSending(true);
     await addMemo(dayId, trimmed);
-    setInput('');
+    setInput("");
     setSending(false);
   };
 
@@ -64,7 +64,7 @@ const MemoSection = ({ dayId, isAuthenticated, login }: MemoSectionProps) => {
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
+          onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
           placeholder="메모를 남겨보세요..."
           className="flex-1 min-w-0 px-3 py-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-800 text-sm text-zinc-900 dark:text-white placeholder-zinc-400 border border-zinc-200 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-zinc-300 dark:focus:ring-zinc-600"
         />
@@ -92,15 +92,15 @@ const MemoSection = ({ dayId, isAuthenticated, login }: MemoSectionProps) => {
               className="flex items-start justify-between gap-2 px-3 py-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-800"
             >
               <div className="min-w-0 flex-1">
-                <p className="text-sm text-zinc-700 dark:text-zinc-300 whitespace-pre-wrap break-words">
+                <p className="text-sm text-zinc-700 dark:text-zinc-300 whitespace-pre-wrap wrap-break-word">
                   {memo.content}
                 </p>
                 <p className="text-[10px] text-zinc-300 dark:text-zinc-600 mt-1">
-                  {new Date(memo.created_at).toLocaleString('ko-KR', {
-                    month: 'short',
-                    day: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit',
+                  {new Date(memo.created_at).toLocaleString("ko-KR", {
+                    month: "short",
+                    day: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
                   })}
                 </p>
               </div>

@@ -158,7 +158,7 @@ const DayDetail = ({ day, prevDay, nextDay, onBack, onNavigate }: DayDetailProps
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 pb-8">
       {/* 헤더 */}
-      <div className={`bg-gradient-to-br ${regionBg[day.region]} px-5 pt-4 pb-6`}>
+      <div className={`bg-linear-to-br ${regionBg[day.region]} px-5 pt-4 pb-6`}>
         <div className="flex items-center justify-between mb-4">
           <button
             onClick={onBack}

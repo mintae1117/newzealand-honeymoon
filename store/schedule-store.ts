@@ -1,8 +1,14 @@
-import { create } from 'zustand';
-import { DaySchedule, Memo, Activity, Accommodation, LinkInfo } from '@/types/schedule';
-import { supabase } from '@/lib/supabase';
+import { create } from "zustand";
+import {
+  DaySchedule,
+  Memo,
+  Activity,
+  Accommodation,
+  LinkInfo,
+} from "@/types/schedule";
+import { supabase } from "@/lib/supabase";
 
-type RegionFilter = 'all' | 'south' | 'north' | 'travel';
+type RegionFilter = "all" | "south" | "north" | "travel";
 
 interface ScheduleState {
   days: DaySchedule[];
@@ -24,7 +30,14 @@ interface ScheduleState {
   getFilteredDays: () => DaySchedule[];
 
   // 일정 수정
-  updateSchedule: (dayId: number, updates: { activities?: Activity[]; accommodation?: Accommodation | null; links?: LinkInfo[] }) => Promise<void>;
+  updateSchedule: (
+    dayId: number,
+    updates: {
+      activities?: Activity[];
+      accommodation?: Accommodation | null;
+      links?: LinkInfo[];
+    },
+  ) => Promise<void>;
 
   // 메모 액션
   fetchMemos: (dayId: number) => Promise<void>;
@@ -35,7 +48,7 @@ interface ScheduleState {
 export const useScheduleStore = create<ScheduleState>((set, get) => ({
   days: [],
   loading: true,
-  regionFilter: 'all',
+  regionFilter: "all",
   scrollY: 0,
   setScrollY: (y) => set({ scrollY: y }),
   memos: [],
@@ -48,9 +61,9 @@ export const useScheduleStore = create<ScheduleState>((set, get) => ({
     }
     set({ loading: true });
     const { data, error } = await supabase
-      .from('schedules')
-      .select('*')
-      .order('day', { ascending: true });
+      .from("schedules")
+      .select("*")
+      .order("day", { ascending: true });
 
     if (!error && data) {
       set({ days: data as DaySchedule[], loading: false });
@@ -65,25 +78,25 @@ export const useScheduleStore = create<ScheduleState>((set, get) => ({
 
   getFilteredDays: () => {
     const { days, regionFilter } = get();
-    if (regionFilter === 'all') return days;
+    if (regionFilter === "all") return days;
     return days.filter((d) => d.region === regionFilter);
   },
 
   updateSchedule: async (dayId, updates) => {
     const response = await fetch(`/api/schedules/${dayId}`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updates),
     });
 
     if (!response.ok) {
       const data = await response.json().catch(() => null);
-      throw new Error(data?.error || '일정 저장에 실패했습니다.');
+      throw new Error(data?.error || "일정 저장에 실패했습니다.");
     }
 
     const { schedule } = await response.json();
     const days = get().days.map((d) =>
-      d.id === dayId ? (schedule as DaySchedule) : d
+      d.id === dayId ? (schedule as DaySchedule) : d,
     );
     set({ days });
   },
@@ -91,10 +104,10 @@ export const useScheduleStore = create<ScheduleState>((set, get) => ({
   fetchMemos: async (dayId) => {
     set({ memosLoading: true });
     const { data, error } = await supabase
-      .from('memos')
-      .select('*')
-      .eq('day_id', dayId)
-      .order('created_at', { ascending: false });
+      .from("memos")
+      .select("*")
+      .eq("day_id", dayId)
+      .order("created_at", { ascending: false });
 
     if (!error && data) {
       set({ memos: data as Memo[], memosLoading: false });
@@ -105,7 +118,7 @@ export const useScheduleStore = create<ScheduleState>((set, get) => ({
 
   addMemo: async (dayId, content) => {
     const { data, error } = await supabase
-      .from('memos')
+      .from("memos")
       .insert({ day_id: dayId, content })
       .select()
       .single();
@@ -116,10 +129,7 @@ export const useScheduleStore = create<ScheduleState>((set, get) => ({
   },
 
   deleteMemo: async (memoId) => {
-    const { error } = await supabase
-      .from('memos')
-      .delete()
-      .eq('id', memoId);
+    const { error } = await supabase.from("memos").delete().eq("id", memoId);
 
     if (!error) {
       set({ memos: get().memos.filter((m) => m.id !== memoId) });

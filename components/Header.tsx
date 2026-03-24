@@ -1,29 +1,31 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { Plane, Sun, Moon } from 'lucide-react';
-import { useScheduleStore } from '@/store/schedule-store';
+import { useState } from "react";
+import { Plane, Sun, Moon } from "lucide-react";
+import { useScheduleStore } from "@/store/schedule-store";
 
 const filters = [
-  { key: 'all' as const, label: '전체' },
-  { key: 'south' as const, label: '남섬' },
-  { key: 'north' as const, label: '북섬' },
-  { key: 'travel' as const, label: '이동' },
+  { key: "all" as const, label: "전체" },
+  { key: "south" as const, label: "남섬" },
+  { key: "north" as const, label: "북섬" },
+  { key: "travel" as const, label: "이동" },
 ];
 
 const Header = () => {
   const { regionFilter, setRegionFilter } = useScheduleStore();
-  const [isDark, setIsDark] = useState(false);
+  const [isDark, setIsDark] = useState(() => {
+    if (typeof document === "undefined") {
+      return false;
+    }
 
-  useEffect(() => {
-    setIsDark(document.documentElement.classList.contains('dark'));
-  }, []);
+    return document.documentElement.classList.contains("dark");
+  });
 
   const toggleTheme = () => {
     const next = !isDark;
     setIsDark(next);
-    document.documentElement.classList.toggle('dark', next);
-    localStorage.setItem('theme', next ? 'dark' : 'light');
+    document.documentElement.classList.toggle("dark", next);
+    localStorage.setItem("theme", next ? "dark" : "light");
   };
 
   return (
@@ -52,8 +54,8 @@ const Header = () => {
             onClick={() => setRegionFilter(f.key)}
             className={`shrink-0 px-3.5 py-1.5 rounded-full text-xs font-medium transition-all ${
               regionFilter === f.key
-                ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-900'
-                : 'bg-zinc-100 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400'
+                ? "bg-zinc-900 text-white dark:bg-white dark:text-zinc-900"
+                : "bg-zinc-100 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400"
             }`}
           >
             {f.label}

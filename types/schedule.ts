@@ -27,7 +27,7 @@ export interface DaySchedule {
   day_of_week: string;
   title: string;
   subtitle?: string | null;
-  region: 'south' | 'north' | 'travel';
+  region: "south" | "north" | "travel";
   drive_info?: string | null;
   is_rest_day: boolean;
   activities: Activity[];

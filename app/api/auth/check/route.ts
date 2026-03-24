@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { verifyToken } from '../route';
+import { NextRequest, NextResponse } from "next/server";
+import { verifyToken } from "../route";
 
-const COOKIE_NAME = 'edit_token';
+const COOKIE_NAME = "edit_token";
 
 // GET /api/auth/check — 현재 인증 상태 확인
 export async function GET(request: NextRequest) {

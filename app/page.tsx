@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useEffect, useRef } from 'react';
-import { useScheduleStore } from '@/store/schedule-store';
-import Header from '@/components/Header';
-import DayCard from '@/components/DayCard';
+import { useEffect, useRef } from "react";
+import { useScheduleStore } from "@/store/schedule-store";
+import Header from "@/components/Header";
+import DayCard from "@/components/DayCard";
 
 export default function Home() {
   const { loading, getFilteredDays, fetchDays, scrollY } = useScheduleStore();
@@ -35,9 +35,7 @@ export default function Home() {
             <div className="w-6 h-6 border-2 border-zinc-300 border-t-zinc-900 rounded-full animate-spin" />
           </div>
         ) : (
-          filteredDays.map((day) => (
-            <DayCard key={day.id} day={day} />
-          ))
+          filteredDays.map((day) => <DayCard key={day.id} day={day} />)
         )}
       </main>
     </div>
