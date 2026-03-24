@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useSyncExternalStore } from "react";
 import { Plane, Sun, Moon } from "lucide-react";
 import { useScheduleStore } from "@/store/schedule-store";
 
@@ -11,21 +11,82 @@ const filters = [
   { key: "travel" as const, label: "이동" },
 ];
 
-const Header = () => {
-  const { regionFilter, setRegionFilter } = useScheduleStore();
-  const [isDark, setIsDark] = useState(() => {
-    if (typeof document === "undefined") {
-      return false;
+const THEME_EVENT = "theme-change";
+
+const getPreferredTheme = () => {
+  if (typeof window === "undefined") {
+    return false;
+  }
+
+  const storedTheme = window.localStorage.getItem("theme");
+
+  if (storedTheme === "dark") {
+    return true;
+  }
+
+  if (storedTheme === "light") {
+    return false;
+  }
+
+  return window.matchMedia("(prefers-color-scheme: dark)").matches;
+};
+
+const getThemeSnapshot = () => {
+  if (typeof document === "undefined") {
+    return false;
+  }
+
+  return document.documentElement.classList.contains("dark");
+};
+
+const subscribeTheme = (onStoreChange: () => void) => {
+  if (typeof window === "undefined") {
+    return () => {};
+  }
+
+  const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+  const handleThemeChange = () => {
+    if (window.localStorage.getItem("theme")) {
+      onStoreChange();
+      return;
     }
 
-    return document.documentElement.classList.contains("dark");
-  });
+    const prefersDark = mediaQuery.matches;
+    document.documentElement.classList.toggle("dark", prefersDark);
+    onStoreChange();
+  };
+
+  const handleStorage = (event: StorageEvent) => {
+    if (event.key !== "theme") return;
+
+    document.documentElement.classList.toggle("dark", getPreferredTheme());
+    onStoreChange();
+  };
+
+  window.addEventListener(THEME_EVENT, handleThemeChange);
+  window.addEventListener("storage", handleStorage);
+  mediaQuery.addEventListener("change", handleThemeChange);
+
+  return () => {
+    window.removeEventListener(THEME_EVENT, handleThemeChange);
+    window.removeEventListener("storage", handleStorage);
+    mediaQuery.removeEventListener("change", handleThemeChange);
+  };
+};
+
+const Header = () => {
+  const { regionFilter, setRegionFilter } = useScheduleStore();
+  const isDark = useSyncExternalStore(
+    subscribeTheme,
+    getThemeSnapshot,
+    () => false,
+  );
 
   const toggleTheme = () => {
     const next = !isDark;
-    setIsDark(next);
     document.documentElement.classList.toggle("dark", next);
     localStorage.setItem("theme", next ? "dark" : "light");
+    window.dispatchEvent(new Event(THEME_EVENT));
   };
 
   return (
