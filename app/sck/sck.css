@@ -154,3 +154,134 @@
   width: 6px;
   height: 6px;
 }
+
+/* Kafka / Flink 노드용 pulse */
+@keyframes sck-pulse-orange {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(251, 146, 60, 0.4);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 12px rgba(251, 146, 60, 0);
+  }
+}
+@keyframes sck-pulse-red {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(248, 113, 113, 0.4);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 12px rgba(248, 113, 113, 0);
+  }
+}
+.sck-pulse-orange {
+  animation: sck-pulse-orange 2s ease-in-out infinite 0.3s;
+}
+.sck-pulse-red {
+  animation: sck-pulse-red 2s ease-in-out infinite 0.9s;
+}
+
+/* 짧은 커넥터용 flow (5-노드 다이어그램) */
+@keyframes sck-flow-short {
+  0% {
+    transform: translate(-50%, -4px);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, 48px);
+    opacity: 0;
+  }
+}
+.sck-packet-short {
+  animation: sck-flow-short 1.6s linear infinite;
+}
+.sck-packet-short-d04 {
+  animation: sck-flow-short 1.6s linear infinite 0.4s;
+}
+.sck-packet-short-d08 {
+  animation: sck-flow-short 1.6s linear infinite 0.8s;
+}
+.sck-packet-short-d12 {
+  animation: sck-flow-short 1.6s linear infinite 1.2s;
+}
+
+/* 분기 표시용 */
+.sck-branch-label {
+  font-size: 9px;
+  font-family: monospace;
+  padding: 1px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+/* ── Pipeline Stepper ── */
+@keyframes sck-step-enter {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes sck-step-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.5); }
+  50% { box-shadow: 0 0 0 8px rgba(251, 191, 36, 0); }
+}
+
+@keyframes sck-data-flow {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@keyframes sck-typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+.sck-step-enter {
+  animation: sck-step-enter 0.4s ease-out;
+}
+
+.sck-step-active-dot {
+  animation: sck-step-pulse 2s ease-in-out infinite;
+}
+
+.sck-progress-bar {
+  transition: width 0.3s ease;
+}
+
+.sck-data-flow-bg {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(251, 191, 36, 0.15) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: sck-data-flow 3s linear infinite;
+}
+
+/* 바이너리 시각 효과 */
+.sck-binary-stream {
+  background: linear-gradient(
+    90deg,
+    rgba(56, 189, 248, 0.05) 0%,
+    rgba(56, 189, 248, 0.12) 50%,
+    rgba(56, 189, 248, 0.05) 100%
+  );
+  background-size: 200% 100%;
+  animation: sck-data-flow 2s linear infinite;
+}

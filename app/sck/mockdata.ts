@@ -41,12 +41,16 @@ export const repos: Repo[] = [
     ],
     highlights: [
       { title: "NIO.2 WatchService", desc: "폴링 아닌 sub-second 파일 감지" },
-      { title: "JAR 핫패치", desc: "daemon이 원자 swap + 30초 rule 롤백" },
+      {
+        title: "STDF 실시간 파싱",
+        desc: "direct-parsing 모드: Worker가 직접 STDF 파싱 → Kafka stdf.record.{id} 발행",
+      },
       {
         title: "투명 압축 FTP",
         desc: "클라이언트 요청 확장자에 맞춰 on-the-fly 압축",
       },
       { title: "Kafka 버퍼링", desc: "장애 시 SQLite에 버퍼링 후 재전송" },
+      { title: "JAR 핫패치", desc: "daemon이 원자 swap + 30초 rule 롤백" },
     ],
   },
   {
@@ -72,7 +76,7 @@ export const repos: Repo[] = [
       },
       {
         title: "실시간 파이프라인",
-        desc: "Redis → Session → Aggregator → SSE (4 워커, 500ms)",
+        desc: "Redis → Session → Aggregator → SSE (비동기 배치, 200ms flush)",
       },
       {
         title: "알람 전략 패턴",
@@ -85,25 +89,42 @@ export const repos: Repo[] = [
     ],
   },
   {
-    id: "flink-job",
-    name: "flink-job",
-    role: "Streaming (서브모듈)",
+    id: "sck-flink",
+    name: "sck-flink",
+    role: "Streaming (독립 프로젝트)",
     icon: "⚡",
     color: "from-orange-500 to-red-500",
     stack: [
-      { label: "Engine", value: "Apache Flink 1.20" },
+      { label: "Engine", value: "Apache Flink 2.0" },
       { label: "Language", value: "Java 17" },
-      { label: "Connector", value: "flink-connector-kafka 4.0.0-2.0" },
+      { label: "Kafka", value: "flink-connector-kafka 4.0.0-2.0" },
+      { label: "DB", value: "PostgreSQL (HikariCP + commons-dbutils)" },
+      { label: "Redis", value: "Lettuce 6.3 (커스텀 PubSub Sink)" },
+      { label: "FTP", value: "Commons Net 3.8 (직접 다운로드)" },
+      { label: "STDF", value: "stdf-parser-core 서브모듈" },
       { label: "Build", value: "Shadow JAR (fat jar)" },
-      { label: "Checkpoint", value: "10초 간격" },
     ],
     highlights: [
-      { title: "FileIngestJob", desc: "Kafka → HTTP API 브릿지 (단일 Job)" },
       {
-        title: "Fault Tolerance",
-        desc: "체크포인트로 file-ready 이벤트 소실 방지",
+        title: "2개 Job",
+        desc: "FileIngestJob(FTP+파싱) + RecordWriterJob(DB 저장)",
       },
-      { title: "설정 우선순위", desc: "CLI → env → OS 기반 defaults" },
+      {
+        title: "FTP 청크 다운로드",
+        desc: "1MB 단위 스트리밍 + 이어받기(Resume) 지원",
+      },
+      {
+        title: "STDF 파싱",
+        desc: "PipedStream 기반 스트리밍 파싱 + Pre-injection 복구",
+      },
+      {
+        title: "DLQ",
+        desc: "3회 실패 시 Dead Letter Queue → DB 저장",
+      },
+      {
+        title: "6개 Kafka 토픽",
+        desc: "file-ready/completion/status, parsing-result, realtime-record, DLQ",
+      },
     ],
   },
   {
@@ -127,7 +148,7 @@ export const repos: Repo[] = [
         title: "Frame 라우팅",
         desc: "programId 기반 Frame.tsx 매핑 (~30개 화면)",
       },
-      { title: "SSE 4종", desc: "Dashboard / Management / Alarm / EventLog" },
+      { title: "SSE 6종", desc: "Dashboard / Equipment / Management / Alarm / EventLog / Controller" },
       {
         title: "Zustand 16+ stores",
         desc: "도메인별 분리, sessionStorage persist",
@@ -150,42 +171,42 @@ export const dataFlow: DataFlowStep[] = [
     from: "Worker",
     to: "SQLite + Kafka",
     protocol: "NIO.2 WatchService",
-    desc: '파일 감지 → tb_sd_file insert → Kafka "file-ready" 발행',
+    desc: "파일 감지 → DB insert → STDF 실시간 파싱 → Kafka stdf.record.{id} 발행",
   },
   {
     step: 3,
-    from: "Flink Job",
-    to: "Spring API",
-    protocol: "Kafka → HTTP POST",
-    desc: "POST /api/manager/ftp/stream/{equipmentId}",
+    from: "sck-flink FileIngestJob",
+    to: "Sender (FTP)",
+    protocol: "Kafka file-ready → FTP 청크 다운로드",
+    desc: "file-ready 소비 → 장비서버 FTP에서 1MB 청크 단위 다운로드 + STDF 파싱",
   },
   {
     step: 4,
-    from: "Spring Backend",
-    to: "Sender (FTP)",
-    protocol: "FTP (투명 압축)",
-    desc: "stdf4j 스트리밍 파서가 PipedStream으로 파싱",
+    from: "sck-flink",
+    to: "Kafka + Redis",
+    protocol: "Side Output",
+    desc: "파싱 결과 → Kafka parsing-result 발행 + Redis realtime-record PRR 실시간 발행",
   },
   {
     step: 5,
-    from: "파서 레코드",
-    to: "PostgreSQL + Redis",
-    protocol: "JDBC / Pub-Sub",
-    desc: 'MIR/PRR/MRR 저장 + Redis "realtime-record" publish',
+    from: "sck-flink RecordWriterJob",
+    to: "PostgreSQL",
+    protocol: "HikariCP + JDBC",
+    desc: "parsing-result 소비 → Lot/Wafer/Part/Bin 등 DB 저장 + DLQ 처리",
   },
   {
     step: 6,
-    from: "MetricsAggregator",
-    to: "SSE",
-    protocol: "EventStream",
-    desc: "4 워커, 500ms 배치 → Dashboard/Equipment/Alarm SSE",
+    from: "Redis Pub/Sub",
+    to: "Spring 실시간 파이프라인",
+    protocol: "realtime-record 채널",
+    desc: "RedisSubscriber → SessionState → MetricsAggregator → RuleAlarmEvaluator",
   },
   {
     step: 7,
-    from: "Frontend",
-    to: "React Query Cache",
-    protocol: "EventSource",
-    desc: "SSE 수신 → 캐시 업데이트 → WaferMap/차트 리렌더",
+    from: "Spring SSE Publisher",
+    to: "Frontend",
+    protocol: "EventSource (SSE)",
+    desc: "6종 SSE 엔드포인트 → React Query 캐시 → WaferMap/차트/알람 리렌더",
   },
 ];
 
@@ -321,32 +342,32 @@ export const reliability = [
 
 export const designDecisions = [
   {
-    title: "하이브리드 메시징",
-    desc: "Flink는 체크포인트가 필요한 file-ready 처리, Redis Pub/Sub은 저지연 메트릭 전파. 서로 다른 보증 수준을 상황별로 활용.",
+    title: "STDF 파싱 삼중 경로",
+    desc: "Worker(장비 근처 즉시 파싱), Flink(FTP+파싱+DB), Spring(Flink 호출로 FTP 파싱). 상황별 유연한 배치.",
+  },
+  {
+    title: "Flink 2-Job 분리",
+    desc: "FileIngestJob(파싱)과 RecordWriterJob(DB 저장) 독립 스케일링. DLQ로 Poison 메시지 격리.",
   },
   {
     title: "장비서버 경량화",
-    desc: "Worker/Sender는 순수 Java (Spring 없음), Controller만 Spring Boot. 낡은 장비 리소스 고려한 설계.",
+    desc: "Worker/Sender는 순수 Java (Spring 없음), Controller만 Spring Boot. 낡은 장비 리소스 고려.",
   },
   {
-    title: "STDF 파싱 이중화",
-    desc: "Worker에서 옵션으로 파싱하거나, 관리서버에서 FTP 받아 파싱. 유연한 배치 전략.",
+    title: "관리서버 Kafka 제거",
+    desc: "Spring에서 Kafka 완전 제거. Redis Pub/Sub만으로 실시간 전파. Flink가 HTTP API로 직접 호출.",
   },
   {
-    title: "SSE 선택",
-    desc: "WebSocket 아닌 SSE 사용. 단방향 방송에 적합, HTTP 인프라 재활용, 브라우저 자동 재연결.",
+    title: "SSE 6종",
+    desc: "WebSocket 아닌 SSE. 단방향 방송에 적합, HTTP 인프라 재활용, 브라우저 자동 재연결.",
   },
   {
     title: "전략 패턴 알람",
-    desc: "8+ 규칙 타입을 RuleStrategyCatalog 팩토리로 관리. 새 규칙 추가가 플러그인처럼 쉬움.",
+    desc: "10개 규칙 타입을 RuleStrategyCatalog 팩토리로 관리. 새 규칙 추가가 플러그인처럼 쉬움.",
   },
   {
-    title: "3개 DataSource",
-    desc: "reader (replica) / writer (primary) / analysis (Trino) 분리로 읽기/쓰기/분석 워크로드 격리.",
-  },
-  {
-    title: "DB 2개 운영",
-    desc: "sckte(운영) / sckpe_dev(Trino 분석) 분리. 운영 트랜잭션과 분석 쿼리 워크로드를 DB 단에서 격리.",
+    title: "3개 DataSource + DB 2개",
+    desc: "reader/writer/analysis(Trino) 분리. sckte(운영) vs sckpe_dev(분석) DB 물리적 격리.",
   },
 ];
 
@@ -355,10 +376,10 @@ export const metrics = {
   frames: "30+ 화면",
   apis: "40+ Query/Mutation",
   stores: "16+ Zustand store",
-  strategies: "8+ 알람 전략",
+  strategies: "10개 알람 전략",
   datasources: "3개 DataSource",
-  sse: "4종 SSE Hook",
-  modules: "5개 서브모듈 (장비서버)",
+  sse: "6종 SSE Hook",
+  flinkJobs: "2개 Flink Job",
 };
 
 // ─────────────────────────────────────────────
@@ -421,8 +442,8 @@ export const equipCoreTech: { title: string; desc: string }[] = [
     desc: "WatchService 오버플로우 시 10분 주기 disk↔DB 전체 동기화",
   },
   {
-    title: "STDF 파싱 (옵션)",
-    desc: "PRR/PTR/TSR 스트리밍 파싱 후 Kafka stdf.record.{equipmentId} 발행",
+    title: "STDF 실시간 파싱 (direct-parsing)",
+    desc: "StdfFileProcessor가 FAR/MIR/PRR/MRR/SDR 등을 스트리밍 파싱 → Kafka stdf.record.{equipmentId} + file-status 발행",
   },
   {
     title: "FTP 투명 압축",
@@ -503,23 +524,33 @@ export const springPackages: { name: string; desc: string; indent?: number }[] =
 export const sseHooks = [
   {
     hook: "useDashboardSSE",
-    endpoint: "/api/manager/equipment/real-time/sse",
-    desc: "실시간 yield/상태 — exponential backoff (1s → 30s)",
+    endpoint: "/manager/equipment/real-time/sse",
+    desc: "YIELD_UPDATE, CONNECTION_STATUS, FILE_METADATA, ALARM — backoff 1s→30s",
+  },
+  {
+    hook: "useEquipmentSSE",
+    endpoint: "/manager/equipment/{eqptPk}/sse",
+    desc: "PART_STATS, METRICS, YIELD_INFO — 장비별 상세 실시간",
   },
   {
     hook: "useManagementSSE",
-    endpoint: "/api/manager/equipment/management/sse",
-    desc: "패치/관리 업데이트",
+    endpoint: "/manager/equipment/management/sse",
+    desc: "MODULE_STATUS, EQUIPMENT_CONTROL, EVENT_LOG_ALERT",
   },
   {
     hook: "useAlarmSSE",
-    endpoint: "/api/alarms/unconfirmed/sse",
-    desc: "알람 + 토스트",
+    endpoint: "/alarms/unconfirmed/sse",
+    desc: "ALARM_FIRED / CONFIRMED / DELETED + 토스트",
   },
   {
     hook: "useEventLogSSE",
-    endpoint: "/api/manager/equipment/{sno}/event-logs/sse",
-    desc: "이벤트 로그 — infinite scroll prepend, evtSno dedup",
+    endpoint: "/manager/equipment/{sno}/event-logs/sse",
+    desc: "EVENT_LOG — infinite scroll prepend, evtSno dedup",
+  },
+  {
+    hook: "useControllerSSE",
+    endpoint: "/manager/equipment/management/sse",
+    desc: "MODULE_STATUS (mdulSno=4 필터) — FileExplorer 전용",
   },
 ];
 
