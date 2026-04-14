@@ -5,7 +5,6 @@ import ArchitectureDiagram from "./ArchitectureDiagram";
 import "./sck.css";
 import {
   repos,
-  dataFlow,
   realtimePipeline,
   alarmStrategies,
   frames,
@@ -45,8 +44,8 @@ export default function SckAnalysisPage() {
             반도체 테스트 데이터(STDF) 실시간 수집·파싱·분석 플랫폼.
             <br />
             <span className="text-zinc-300">
-              장비(STDF) → Worker(파싱) → Kafka → Flink(FTP+파싱+DB) →
-              Redis → Spring(SSE) → React
+              장비(STDF) → Worker(파싱) → Kafka → Flink(FTP+파싱+DB) → Redis →
+              Spring(SSE) → React
             </span>
           </p>
 
@@ -574,7 +573,6 @@ export default function SckAnalysisPage() {
           </div>
         </div>
       </section>
-
     </div>
   );
 }
@@ -755,8 +753,8 @@ const STEPS = [
           <span className="text-amber-300">stdf4j</span>
           <span className="text-zinc-500">
             {" "}
-            — StdfChunkRealtimeBuffer (4MB 누적) → PipedOutputStream →
-            별도 스레드에서 STDFReader가 RecordVisitor 콜백
+            — StdfChunkRealtimeBuffer (4MB 누적) → PipedOutputStream → 별도
+            스레드에서 STDFReader가 RecordVisitor 콜백
           </span>
         </div>
       </div>
@@ -877,9 +875,7 @@ const STEPS = [
             className="flex flex-col items-center rounded-lg border border-purple-400/20 bg-purple-950/20 px-2 py-2"
           >
             <span className="text-lg">{w.icon}</span>
-            <span className="mt-0.5 text-[8px] text-purple-200">
-              {w.name}
-            </span>
+            <span className="mt-0.5 text-[8px] text-purple-200">{w.name}</span>
           </div>
         ))}
       </div>
@@ -894,10 +890,7 @@ function PipelineStepper() {
   const [playing, setPlaying] = useState(true);
   const [speed, setSpeed] = useState(1);
 
-  const next = useCallback(
-    () => setCurrent((s) => (s + 1) % STEPS.length),
-    [],
-  );
+  const next = useCallback(() => setCurrent((s) => (s + 1) % STEPS.length), []);
   const prev = useCallback(
     () => setCurrent((s) => (s - 1 + STEPS.length) % STEPS.length),
     [],
