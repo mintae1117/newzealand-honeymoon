@@ -34,7 +34,7 @@ const regionAccent: Record<string, string> = {
 const inputClass = 'bg-zinc-50 dark:bg-zinc-800 rounded px-2 py-1 border border-zinc-200 dark:border-zinc-700 focus:outline-none focus:ring-1 focus:ring-zinc-300';
 
 const DayDetail = ({ day, prevDay, nextDay, onBack, onNavigate }: DayDetailProps) => {
-  const { updateSchedule } = useScheduleStore();
+  const { updateSchedule, isFallback } = useScheduleStore();
   const { isAuthenticated, login } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [editActivities, setEditActivities] = useState<Activity[]>([]);
@@ -220,13 +220,15 @@ const DayDetail = ({ day, prevDay, nextDay, onBack, onNavigate }: DayDetailProps
               일정
             </h2>
             {!isEditing ? (
-              <button
-                onClick={startEditing}
-                className="flex items-center gap-1 text-xs text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 active:opacity-60 transition-colors px-2 py-1 rounded-lg"
-              >
-                <Pencil size={12} />
-                <span>수정하기</span>
-              </button>
+              !isFallback && (
+                <button
+                  onClick={startEditing}
+                  className="flex items-center gap-1 text-xs text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 active:opacity-60 transition-colors px-2 py-1 rounded-lg"
+                >
+                  <Pencil size={12} />
+                  <span>수정하기</span>
+                </button>
+              )
             ) : (
               <div className="flex items-center gap-2">
                 <button

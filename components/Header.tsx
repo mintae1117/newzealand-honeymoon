@@ -1,7 +1,7 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
-import { Plane, Sun, Moon } from "lucide-react";
+import { Plane, Sun, Moon, Database, DatabaseZap } from "lucide-react";
 import { useScheduleStore } from "@/store/schedule-store";
 
 const filters = [
@@ -75,7 +75,8 @@ const subscribeTheme = (onStoreChange: () => void) => {
 };
 
 const Header = () => {
-  const { regionFilter, setRegionFilter } = useScheduleStore();
+  const { regionFilter, setRegionFilter, dataSource, setDataSource } =
+    useScheduleStore();
   const isDark = useSyncExternalStore(
     subscribeTheme,
     getThemeSnapshot,
@@ -108,20 +109,40 @@ const Header = () => {
           {isDark ? <Sun size={18} /> : <Moon size={18} />}
         </button>
       </div>
-      <div className="flex gap-2 px-5 pb-3 overflow-x-auto scrollbar-hide">
-        {filters.map((f) => (
-          <button
-            key={f.key}
-            onClick={() => setRegionFilter(f.key)}
-            className={`shrink-0 px-3.5 py-1.5 rounded-full text-xs font-medium transition-all ${
-              regionFilter === f.key
-                ? "bg-zinc-900 text-white dark:bg-white dark:text-zinc-900"
-                : "bg-zinc-100 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400"
-            }`}
-          >
-            {f.label}
-          </button>
-        ))}
+      <div className="flex items-center gap-2 px-5 pb-3">
+        <div className="flex flex-1 gap-2 overflow-x-auto scrollbar-hide">
+          {filters.map((f) => (
+            <button
+              key={f.key}
+              onClick={() => setRegionFilter(f.key)}
+              className={`shrink-0 px-3.5 py-1.5 rounded-full text-xs font-medium transition-all ${
+                regionFilter === f.key
+                  ? "bg-zinc-900 text-white dark:bg-white dark:text-zinc-900"
+                  : "bg-zinc-100 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400"
+              }`}
+            >
+              {f.label}
+            </button>
+          ))}
+        </div>
+        {/* 데이터 소스 토글 (실데이터 ↔ 목데이터) */}
+        <button
+          onClick={() =>
+            setDataSource(dataSource === "live" ? "mock" : "live")
+          }
+          className={`shrink-0 flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium border transition-all active:scale-95 ${
+            dataSource === "live"
+              ? "bg-emerald-50 border-emerald-200 text-emerald-600 dark:bg-emerald-950/40 dark:border-emerald-900 dark:text-emerald-400"
+              : "bg-amber-50 border-amber-200 text-amber-600 dark:bg-amber-950/40 dark:border-amber-900 dark:text-amber-400"
+          }`}
+        >
+          {dataSource === "live" ? (
+            <DatabaseZap size={12} />
+          ) : (
+            <Database size={12} />
+          )}
+          {dataSource === "live" ? "실데이터" : "목데이터"}
+        </button>
       </div>
     </header>
   );
