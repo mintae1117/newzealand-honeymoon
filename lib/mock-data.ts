@@ -83,6 +83,12 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
     "tips": [
       {
         "text": "시차 적응 - 무리하지 않기!"
+      },
+      {
+        "text": "국제운전면허증 + 한국 면허증 둘 다 지참 (렌트카 필수)"
+      },
+      {
+        "text": "좌측통행! 첫 운전은 천천히"
       }
     ],
     "accommodation": {
@@ -159,7 +165,7 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
     "title": "밀포드사운드 당일투어",
     "subtitle": null,
     "region": "south",
-    "drive_info": "왕복 ~10시간 (투어)",
+    "drive_info": "왕복 ~12시간 (투어)",
     "is_rest_day": false,
     "activities": [
       {
@@ -189,6 +195,12 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
     "tips": [
       {
         "text": "숙소 그대로! 짐 안 옮겨도 됨"
+      },
+      {
+        "text": "투어 사전 예약 필수"
+      },
+      {
+        "text": "멀미약 챙기기 (버스 구간 구불구불)"
       }
     ],
     "accommodation": {
@@ -240,7 +252,11 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
         "title": "Botswana Butchery (예약)"
       }
     ],
-    "tips": [],
+    "tips": [
+      {
+        "text": "오네센 온천은 미리 예약 필수 (조기 매진 주의)"
+      }
+    ],
     "accommodation": {
       "name": "퀸즈타운 (4/4박)",
       "note": null,
@@ -389,6 +405,12 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
         "title": "트와이젤 or 오마라마 카페"
       },
       {
+        "time": "이동 중",
+        "emoji": "📸",
+        "title": "레이크 푸카키 뷰포인트",
+        "description": "밀키블루 호수 너머 마운트쿡 조망, 경로상이라 잠깐 세우면 됨"
+      },
+      {
         "time": "오후",
         "emoji": "⛪",
         "title": "선한목자교회",
@@ -443,6 +465,12 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
         "title": "늦잠, 여유로운 아침"
       },
       {
+        "time": "오전~오후",
+        "emoji": "🏔️",
+        "title": "마운트쿡 후커밸리 트랙 (선택)",
+        "description": "차로 편도 1시간, 왕복 3시간 평탄한 트레킹. 뉴질랜드 대표 절경!"
+      },
+      {
         "time": "",
         "emoji": "📸",
         "title": "호수 산책, 포토타임"
@@ -469,7 +497,11 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
         "description": "세계 최고의 밤하늘!"
       }
     ],
-    "tips": [],
+    "tips": [
+      {
+        "text": "Dark Sky Project는 사전 예약 필수"
+      }
+    ],
     "accommodation": {
       "name": "테카포 (2/2박)",
       "note": null,
@@ -479,6 +511,10 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
       {
         "url": "https://darkskyproject.co.nz",
         "label": "Dark Sky Project"
+      },
+      {
+        "url": "https://www.doc.govt.nz/parks-and-recreation/places-to-go/canterbury/places/aoraki-mount-cook-national-park/things-to-do/tracks/hooker-valley-track/",
+        "label": "후커밸리 트랙"
       }
     ]
   },
@@ -665,6 +701,9 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
     "tips": [
       {
         "text": "숙소 그대로! 짐 안 옮김"
+      },
+      {
+        "text": "호빗마을·와이토모 투어 예약 필수 (매진 잦음)"
       }
     ],
     "accommodation": {
@@ -728,7 +767,7 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
     ],
     "accommodation": {
       "name": "오클랜드 공항 근처 (1박)",
-      "note": "새벽 비행 대비!",
+      "note": "다음 날 오전 11:45 비행, 공항 이동 편하게!",
       "options": [
         "Novotel Auckland Airport",
         "Sudima Auckland Airport"
@@ -764,6 +803,9 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
       }
     ],
     "tips": [
+      {
+        "text": "국제선 3시간 전 공항 도착 권장"
+      },
       {
         "text": "행복한 추억 가득 안고 귀국!"
       }
