@@ -296,6 +296,12 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
         "description": "절경 산길, 포토스팟 많음"
       },
       {
+        "time": "낮",
+        "emoji": "🧩",
+        "title": "퍼즐링 월드 (선택)",
+        "description": "와나카 초입, 착시 미술관 + 대형 미로. 1시간 코스"
+      },
+      {
         "time": "점심",
         "emoji": "☕",
         "title": "와나카 도착 후 카페"
@@ -330,6 +336,10 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
       {
         "url": "https://lakewanaka.co.nz",
         "label": "와나카 관광"
+      },
+      {
+        "url": "https://www.puzzlingworld.co.nz",
+        "label": "퍼즐링 월드"
       }
     ]
   },
@@ -403,6 +413,12 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
         "time": "점심",
         "emoji": "☕",
         "title": "트와이젤 or 오마라마 카페"
+      },
+      {
+        "time": "이동 중",
+        "emoji": "🏜️",
+        "title": "클레이 클리프 (선택)",
+        "description": "오마라마에서 20분 우회, 침식 절벽 협곡. 차량당 입장료 $5"
       },
       {
         "time": "이동 중",
@@ -493,8 +509,8 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
       {
         "time": "밤",
         "emoji": "🌌",
-        "title": "Dark Sky Project 별 관측",
-        "description": "세계 최고의 밤하늘!"
+        "title": "Dark Sky Project 별 관측 (선택)",
+        "description": "세계 최고의 밤하늘! 11월엔 투어가 밤 10~11시 시작"
       }
     ],
     "tips": [
