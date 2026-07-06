@@ -25,7 +25,7 @@ app/                  # Next.js App Router 페이지 및 레이아웃
     route.ts          # POST (로그인) / DELETE (로그아웃)
     check/route.ts    # GET (인증 상태 확인)
 components/           # UI 컴포넌트
-  Header.tsx          # 상단 헤더 + 지역 필터 (전체/남섬/북섬/이동)
+  Header.tsx          # 상단 헤더 + 지역 필터 (전체/남섬/북섬/이동) + 데이터 소스 토글
   DayCard.tsx         # 리스트 카드
   DayDetail.tsx       # 상세 화면 (타임라인, 팁, 숙소, 링크, 메모)
   MemoSection.tsx     # 날짜별 메모 CRUD
@@ -33,9 +33,10 @@ components/           # UI 컴포넌트
 hooks/                # 커스텀 훅
   useAuth.ts          # 인증 상태 관리 훅
 store/                # Zustand 스토어
-  schedule-store.ts   # 일정 fetch, 필터, 메모 관리
+  schedule-store.ts   # 일정 fetch, 필터, 메모, 데이터 소스(실데이터/목데이터) 및 폴백 관리
 lib/                  # 유틸리티
   supabase.ts         # Supabase 클라이언트
+  mock-data.ts        # DB 스냅샷 목데이터 (폴백/목데이터 모드용)
 types/                # 타입 정의
   schedule.ts         # DaySchedule, Memo 등
 scripts/              # 스크립트
@@ -84,6 +85,12 @@ public/               # 정적 파일
 ### Supabase
 - 클라이언트 설정은 `lib/supabase.ts`
 - RLS 정책 적용됨 (개인 앱이므로 anon 접근 허용)
+
+### Mock Data Fallback (목데이터 폴백)
+- 조회가 5초 타임아웃되거나 실패하면 `lib/mock-data.ts` 스냅샷으로 자동 폴백 (`isFallback: true`)
+- 폴백/목데이터 모드에서는 일정 수정·메모 작성/삭제가 모두 차단됨
+- 헤더 우측 토글로 실데이터 ↔ 목데이터 수동 전환 가능, 선택은 localStorage(`honeymoon-data-source`)에 유지됨
+- **중요**: DB의 schedules/memos 데이터를 변경하면 `lib/mock-data.ts`도 DB 조회 결과로 재생성해서 항상 동일하게 유지할 것
 
 ### Components
 - 재사용 가능한 UI 컴포넌트는 `components/` 디렉토리에 배치
