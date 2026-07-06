@@ -81,7 +81,7 @@ const DayCard = ({ day }: DayCardProps) => {
               {day.title}
             </h3>
             <p className="text-xs text-zinc-400 mt-0.5">
-              {day.subtitle || ""}
+              {day.accommodation?.name || day.subtitle || ""}
             </p>
             {day.drive_info && (
               <div className="flex items-center gap-1 mt-1.5 text-[11px] text-zinc-400">
