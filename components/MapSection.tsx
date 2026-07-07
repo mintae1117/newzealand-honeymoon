@@ -1,16 +1,20 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { MapPin, Navigation, Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { MapPin, Navigation, Loader2, ChevronLeft, Maximize2 } from "lucide-react";
 import { LocationPin, dayCoordinates } from "@/lib/day-coordinates";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
 interface MapSectionProps {
   dayNumber: number;
+  // true면 전체화면 지도 (/day/[id]/map 페이지에서 사용)
+  fullscreen?: boolean;
 }
 
-const MapSection = ({ dayNumber }: MapSectionProps) => {
+const MapSection = ({ dayNumber, fullscreen = false }: MapSectionProps) => {
+  const router = useRouter();
   const mapRef = useRef<L.Map | null>(null);
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const userMarkerRef = useRef<L.Marker | null>(null);
@@ -153,58 +157,101 @@ const MapSection = ({ dayNumber }: MapSectionProps) => {
 
   if (pins.length === 0) return null;
 
+  // GPS 컨트롤 (카드/전체화면 공용)
+  const gpsControl = (
+    <>
+      {gpsStatus === "idle" && (
+        <button
+          onClick={startGps}
+          className="flex items-center gap-1 text-xs text-zinc-400 hover:text-blue-500 active:opacity-60 transition-colors px-2 py-1 rounded-lg"
+        >
+          <Navigation size={12} />
+          <span>내 위치</span>
+        </button>
+      )}
+      {gpsStatus === "loading" && (
+        <span className="flex items-center gap-1 text-xs text-zinc-400 px-2 py-1">
+          <Loader2 size={12} className="animate-spin" />
+          <span>위치 확인 중...</span>
+        </span>
+      )}
+      {gpsStatus === "active" && (
+        <button
+          onClick={goToMyLocation}
+          className="flex items-center gap-1 text-xs text-blue-500 active:opacity-60 transition-colors px-2 py-1 rounded-lg"
+        >
+          <Navigation size={12} />
+          <span>내 위치로</span>
+        </button>
+      )}
+      {gpsStatus === "error" && (
+        <span className="text-xs text-red-400 px-2 py-1">{gpsError}</span>
+      )}
+    </>
+  );
+
+  // 장소 태그 (카드/전체화면 공용)
+  const placeTags = (
+    <div className="flex flex-wrap gap-1.5 mt-2">
+      {pins.map((pin, i) => (
+        <button
+          key={i}
+          onClick={() => {
+            if (mapRef.current) {
+              mapRef.current.setView([pin.lat, pin.lng], 14);
+            }
+          }}
+          className="text-[11px] bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 px-2 py-0.5 rounded-md active:opacity-60 transition-opacity"
+        >
+          {pin.label}
+        </button>
+      ))}
+    </div>
+  );
+
+  if (fullscreen) {
+    return (
+      <div className="fixed inset-0 z-50 bg-white dark:bg-zinc-950 flex flex-col">
+        <div className="p-4 pb-2 shrink-0">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-1">
+              <button
+                onClick={() => router.push(`/day/${dayNumber}`)}
+                aria-label="상세로 돌아가기"
+                className="p-1.5 -ml-1.5 text-zinc-500 dark:text-zinc-400 active:opacity-60 transition-opacity rounded-lg"
+              >
+                <ChevronLeft size={20} />
+              </button>
+              <h1 className="text-sm font-semibold text-zinc-900 dark:text-white flex items-center gap-2">
+                <MapPin size={16} />
+                DAY {dayNumber} 위치
+              </h1>
+            </div>
+            {gpsControl}
+          </div>
+          {placeTags}
+        </div>
+        <div ref={mapContainerRef} className="w-full flex-1 z-0" />
+      </div>
+    );
+  }
+
   return (
     <section className="bg-white dark:bg-zinc-900 rounded-2xl shadow-sm border border-zinc-100 dark:border-zinc-800 overflow-hidden">
       <div className="p-4 pb-2">
         <div className="flex items-center justify-between">
-          <h2 className="text-sm font-semibold text-zinc-900 dark:text-white flex items-center gap-2">
+          {/* 제목 탭 → 해당 날짜의 전체화면 지도 */}
+          <button
+            onClick={() => router.push(`/day/${dayNumber}/map`)}
+            className="text-sm font-semibold text-zinc-900 dark:text-white flex items-center gap-2 active:opacity-60 transition-opacity"
+          >
             <MapPin size={16} />
-            위치
-          </h2>
-          {gpsStatus === "idle" && (
-            <button
-              onClick={startGps}
-              className="flex items-center gap-1 text-xs text-zinc-400 hover:text-blue-500 active:opacity-60 transition-colors px-2 py-1 rounded-lg"
-            >
-              <Navigation size={12} />
-              <span>내 위치</span>
-            </button>
-          )}
-          {gpsStatus === "loading" && (
-            <span className="flex items-center gap-1 text-xs text-zinc-400 px-2 py-1">
-              <Loader2 size={12} className="animate-spin" />
-              <span>위치 확인 중...</span>
-            </span>
-          )}
-          {gpsStatus === "active" && (
-            <button
-              onClick={goToMyLocation}
-              className="flex items-center gap-1 text-xs text-blue-500 active:opacity-60 transition-colors px-2 py-1 rounded-lg"
-            >
-              <Navigation size={12} />
-              <span>내 위치로</span>
-            </button>
-          )}
-          {gpsStatus === "error" && (
-            <span className="text-xs text-red-400 px-2 py-1">{gpsError}</span>
-          )}
+            <span>위치</span>
+            <Maximize2 size={11} className="text-zinc-300 dark:text-zinc-600" />
+          </button>
+          {gpsControl}
         </div>
-        {/* 장소 태그 */}
-        <div className="flex flex-wrap gap-1.5 mt-2">
-          {pins.map((pin, i) => (
-            <button
-              key={i}
-              onClick={() => {
-                if (mapRef.current) {
-                  mapRef.current.setView([pin.lat, pin.lng], 14);
-                }
-              }}
-              className="text-[11px] bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 px-2 py-0.5 rounded-md active:opacity-60 transition-opacity"
-            >
-              {pin.label}
-            </button>
-          ))}
-        </div>
+        {placeTags}
       </div>
       <div ref={mapContainerRef} className="w-full h-52 z-0" />
     </section>
