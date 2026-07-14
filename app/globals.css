@@ -1,26 +1,75 @@
 @import "tailwindcss";
 
-@custom-variant dark (&:where(.dark, .dark *));
-
+/* ─── 여행 수첩 디자인 토큰 ───
+   종이(수첩) 바탕 + 잉크 글자, 지역색은 뉴질랜드 자연에서:
+   남섬 고사리(fern) / 북섬 호수(lake) / 이동 로드트립(road) */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+  --paper: #f7f4ec;
+  --card: #fffdf8;
+  --ink: #26221b;
+  --line: rgba(38, 34, 27, 0.14);
+  --line-soft: rgba(38, 34, 27, 0.08);
 
-.dark {
-  --background: #0a0a0a;
-  --foreground: #ededed;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --fern: #2e7550;
+  --fern-deep: #1f5238;
+  --fern-tint: #e4eee6;
+  --lake: #3c6da6;
+  --lake-deep: #2a4e79;
+  --lake-tint: #e4eaf4;
+  --road: #c2751f;
+  --road-deep: #8f5416;
+  --road-tint: #f5ebd9;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  font-family:
+    "Pretendard Variable", Pretendard, var(--font-geist-sans), system-ui,
+    "Apple SD Gothic Neo", sans-serif;
+}
+
+/* 실제 사람 손글씨(온글잎 박다현체) — 노트에 쓴 느낌 + 또박또박 읽기 편함 */
+@font-face {
+  font-family: "Ownglyph_ParkDaHyun";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/2411-3@1.0/Ownglyph_ParkDaHyun.woff2")
+    format("woff2");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* 제목·메모 모두 손글씨 — 수첩에 직접 쓴 느낌으로 통일 */
+.font-disp,
+.font-hand {
+  font-family: "Ownglyph_ParkDaHyun", "Gaegu", cursive;
+}
+
+/* 상세 헤더의 등고선(지형도) 패턴 — 지역색 위에 흰 선으로 겹친다 */
+.contour {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260' viewBox='0 0 260 260' fill='none' stroke='%23ffffff' stroke-opacity='0.14' stroke-width='1.5'%3E%3Cpath d='M20 200 C 60 150, 60 110, 110 100 S 200 60, 240 90'/%3E%3Cpath d='M0 230 C 60 180, 80 140, 130 128 S 220 90, 262 118'/%3E%3Cpath d='M40 172 C 76 138, 90 112, 128 102'/%3E%3Cpath d='M-10 130 C 30 110, 50 70, 90 60 S 160 20, 210 40'/%3E%3Cpath d='M60 260 C 110 220, 130 180, 180 168 S 250 140, 270 160'/%3E%3C/svg%3E");
+  background-size: 260px 260px;
+}
+
+/* 여권 입국 도장풍 DAY 뱃지 */
+.stamp {
+  border: 2px dashed rgba(255, 255, 255, 0.75);
+  border-radius: 9999px;
+  transform: rotate(-6deg);
+}
+
+/* 스크롤바 숨김(필터 가로 스크롤) */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
 }

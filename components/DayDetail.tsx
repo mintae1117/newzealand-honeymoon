@@ -1,10 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, CSSProperties } from 'react';
 import { ArrowLeft, Car, Lightbulb, MapPin, ExternalLink, BedDouble, ChevronLeft, ChevronRight, Pencil, Check, X, Plus, Trash2 } from 'lucide-react';
 import { DaySchedule, Activity, Accommodation, LinkInfo } from '@/types/schedule';
 import { useScheduleStore } from '@/store/schedule-store';
 import { useAuth } from '@/hooks/useAuth';
+import { regionTheme } from '@/lib/region-theme';
 import MemoSection from '@/components/MemoSection';
 import PasswordModal from '@/components/PasswordModal';
 import dynamic from 'next/dynamic';
@@ -19,19 +20,12 @@ interface DayDetailProps {
   onNavigate: (id: number) => void;
 }
 
-const regionBg: Record<string, string> = {
-  south: 'from-emerald-500 to-emerald-600',
-  north: 'from-blue-500 to-blue-600',
-  travel: 'from-amber-500 to-amber-600',
-};
+const inputClass =
+  'bg-[var(--paper)] rounded-lg px-2 py-1 border border-[var(--line)] focus:outline-none focus:border-[var(--ink)]/40';
 
-const regionAccent: Record<string, string> = {
-  south: 'bg-emerald-500 text-white',
-  north: 'bg-blue-500 text-white',
-  travel: 'bg-amber-500 text-white',
-};
-
-const inputClass = 'bg-zinc-50 dark:bg-zinc-800 rounded px-2 py-1 border border-zinc-200 dark:border-zinc-700 focus:outline-none focus:ring-1 focus:ring-zinc-300';
+// 섹션 카드 공통(수첩 종이 카드)
+const cardClass =
+  'bg-[var(--card)] rounded-2xl p-4 border border-[var(--line-soft)] shadow-[0_1px_2px_rgba(38,34,27,0.06)]';
 
 const DayDetail = ({ day, prevDay, nextDay, onBack, onNavigate }: DayDetailProps) => {
   const { updateSchedule, isFallback } = useScheduleStore();
@@ -43,6 +37,8 @@ const DayDetail = ({ day, prevDay, nextDay, onBack, onNavigate }: DayDetailProps
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
+
+  const theme = regionTheme[day.region];
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -155,14 +151,25 @@ const DayDetail = ({ day, prevDay, nextDay, onBack, onNavigate }: DayDetailProps
   const currentAccommodation = isEditing ? editAccommodation : day.accommodation;
   const currentLinks = isEditing ? editLinks : day.links;
 
+  // 섹션 제목 공통(세리프 + 지역색 아이콘)
+  const sectionTitle = (icon: React.ReactNode, text: string) => (
+    <h2 className="font-disp text-[18px] font-black text-[var(--ink)] flex items-center gap-2">
+      <span style={{ color: theme.main }}>{icon}</span>
+      {text}
+    </h2>
+  );
+
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 pb-8">
-      {/* 헤더 */}
-      <div className={`bg-linear-to-br ${regionBg[day.region]} px-5 pt-4 pb-6`}>
-        <div className="flex items-center justify-between mb-4">
+    <div className="min-h-screen pb-10">
+      {/* 헤더 — 지역색 지형도(등고선) 패널 + 입국 도장풍 DAY 뱃지 */}
+      <div
+        className="contour px-5 pt-4 pb-7"
+        style={{ background: theme.deep }}
+      >
+        <div className="flex items-center justify-between mb-5">
           <button
             onClick={onBack}
-            className="flex items-center gap-1 text-white/80 text-sm active:opacity-60 -ml-1"
+            className="flex items-center gap-1 text-white/85 text-sm active:opacity-60 -ml-1"
           >
             <ArrowLeft size={18} />
             <span>돌아가기</span>
@@ -172,7 +179,7 @@ const DayDetail = ({ day, prevDay, nextDay, onBack, onNavigate }: DayDetailProps
             <button
               onClick={() => prevDay && onNavigate(prevDay.id)}
               disabled={!prevDay}
-              className="flex items-center gap-0.5 text-white/70 text-xs px-2 py-1 rounded-lg active:opacity-60 disabled:opacity-30 transition-opacity"
+              className="flex items-center gap-0.5 text-white/75 text-xs px-2 py-1 rounded-lg active:opacity-60 disabled:opacity-30 transition-opacity"
             >
               <ChevronLeft size={14} />
               <span>{prevDay ? `DAY ${prevDay.day}` : ''}</span>
@@ -181,49 +188,62 @@ const DayDetail = ({ day, prevDay, nextDay, onBack, onNavigate }: DayDetailProps
             <button
               onClick={() => nextDay && onNavigate(nextDay.id)}
               disabled={!nextDay}
-              className="flex items-center gap-0.5 text-white/70 text-xs px-2 py-1 rounded-lg active:opacity-60 disabled:opacity-30 transition-opacity"
+              className="flex items-center gap-0.5 text-white/75 text-xs px-2 py-1 rounded-lg active:opacity-60 disabled:opacity-30 transition-opacity"
             >
               <span>{nextDay ? `DAY ${nextDay.day}` : ''}</span>
               <ChevronRight size={14} />
             </button>
           </div>
         </div>
-        <div className="flex items-center gap-2 mb-1">
-          <span className="bg-white/20 text-white text-xs font-bold px-2.5 py-0.5 rounded-md">
-            DAY {day.day}
-          </span>
-          {day.is_rest_day && (
-            <span className="bg-white/20 text-white text-xs font-bold px-2.5 py-0.5 rounded-md">
-              자유일
+
+        <div className="flex items-start gap-4">
+          {/* 입국 도장 뱃지 */}
+          <div className="stamp shrink-0 w-16 h-16 flex flex-col items-center justify-center text-white mt-1">
+            <span className="text-[8px] font-bold tracking-[0.18em] opacity-80">
+              DAY
             </span>
-          )}
-        </div>
-        <h1 className="text-2xl font-bold text-white mt-2">{day.title}</h1>
-        <p className="text-white/70 text-sm mt-1">
-          {day.date} ({day.day_of_week})
-          {day.subtitle && ` · ${day.subtitle}`}
-        </p>
-        {day.drive_info && (
-          <div className="flex items-center gap-1.5 mt-3 text-white/70 text-xs">
-            <Car size={14} />
-            <span>{day.drive_info}</span>
+            <span className="font-disp text-2xl font-black leading-none">
+              {day.day}
+            </span>
           </div>
-        )}
+          <div className="min-w-0">
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <span className="bg-white/15 border border-white/25 text-white text-[10px] font-bold px-2 py-0.5 rounded-md">
+                {theme.label}
+              </span>
+              {day.is_rest_day && (
+                <span className="bg-white/15 border border-white/25 text-white text-[10px] font-bold px-2 py-0.5 rounded-md">
+                  자유일
+                </span>
+              )}
+            </div>
+            <h1 className="font-disp text-[26px] font-black text-white mt-1.5 leading-tight">
+              {day.title}
+            </h1>
+            <p className="text-white/70 text-[13px] mt-1">
+              {day.date} ({day.day_of_week})
+              {day.subtitle && ` · ${day.subtitle}`}
+            </p>
+            {day.drive_info && (
+              <div className="inline-flex items-center gap-1.5 mt-2.5 text-white/85 text-xs bg-white/12 border border-white/20 rounded-full px-2.5 py-1">
+                <Car size={13} />
+                <span>{day.drive_info}</span>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
 
-      <div className="px-5 -mt-3 space-y-4">
+      <div className="px-4 -mt-3 space-y-4">
         {/* 활동 타임라인 */}
-        <section className="bg-white dark:bg-zinc-900 rounded-2xl p-4 shadow-sm border border-zinc-100 dark:border-zinc-800">
+        <section className={cardClass}>
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-sm font-semibold text-zinc-900 dark:text-white flex items-center gap-2">
-              <MapPin size={16} />
-              일정
-            </h2>
+            {sectionTitle(<MapPin size={16} />, '일정')}
             {!isEditing ? (
               !isFallback && (
                 <button
                   onClick={startEditing}
-                  className="flex items-center gap-1 text-xs text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 active:opacity-60 transition-colors px-2 py-1 rounded-lg"
+                  className="flex items-center gap-1 text-xs text-[var(--ink)]/40 hover:text-[var(--ink)]/70 active:opacity-60 transition-colors px-2 py-1 rounded-lg"
                 >
                   <Pencil size={12} />
                   <span>수정하기</span>
@@ -233,7 +253,7 @@ const DayDetail = ({ day, prevDay, nextDay, onBack, onNavigate }: DayDetailProps
               <div className="flex items-center gap-2">
                 <button
                   onClick={cancelEditing}
-                  className="flex items-center gap-1 text-xs text-zinc-400 hover:text-red-500 active:opacity-60 transition-colors px-2 py-1 rounded-lg"
+                  className="flex items-center gap-1 text-xs text-[var(--ink)]/40 hover:text-red-500 active:opacity-60 transition-colors px-2 py-1 rounded-lg"
                 >
                   <X size={12} />
                   <span>취소</span>
@@ -241,7 +261,8 @@ const DayDetail = ({ day, prevDay, nextDay, onBack, onNavigate }: DayDetailProps
                 <button
                   onClick={saveEditing}
                   disabled={saving}
-                  className={`flex items-center gap-1 text-xs text-white ${regionAccent[day.region]} active:opacity-60 transition-colors px-3 py-1.5 rounded-lg disabled:opacity-50`}
+                  className="flex items-center gap-1 text-xs text-white active:opacity-60 transition-colors px-3 py-1.5 rounded-lg disabled:opacity-50"
+                  style={{ background: theme.main }}
                 >
                   <Check size={12} />
                   <span>{saving ? '저장 중...' : '저장'}</span>
@@ -250,7 +271,7 @@ const DayDetail = ({ day, prevDay, nextDay, onBack, onNavigate }: DayDetailProps
             )}
           </div>
           {saveError && (
-            <p className="mb-3 rounded-xl bg-red-50 px-3 py-2 text-xs text-red-600 dark:bg-red-950/40 dark:text-red-300">
+            <p className="mb-3 rounded-xl bg-red-50 px-3 py-2 text-xs text-red-600">
               {saveError}
             </p>
           )}
@@ -259,9 +280,12 @@ const DayDetail = ({ day, prevDay, nextDay, onBack, onNavigate }: DayDetailProps
               <div key={i} className="flex gap-3 relative">
                 {/* 타임라인 라인 */}
                 <div className="flex flex-col items-center">
-                  <div className="w-2.5 h-2.5 rounded-full bg-zinc-300 dark:bg-zinc-600 shrink-0 mt-1.5" />
+                  <div
+                    className="w-2.5 h-2.5 rounded-full shrink-0 mt-1.5"
+                    style={{ background: theme.main } as CSSProperties}
+                  />
                   {i < currentActivities.length - 1 && (
-                    <div className="w-px flex-1 bg-zinc-200 dark:bg-zinc-700 my-1" />
+                    <div className="w-0 flex-1 border-l border-dashed border-[var(--line)] my-1" />
                   )}
                 </div>
                 {/* 내용 */}
@@ -274,11 +298,11 @@ const DayDetail = ({ day, prevDay, nextDay, onBack, onNavigate }: DayDetailProps
                           value={activity.time || ''}
                           onChange={(e) => updateActivity(i, 'time', e.target.value)}
                           placeholder="시간 (예: 오전, 점심)"
-                          className={`text-[10px] font-semibold text-zinc-400 uppercase tracking-wider flex-1 ${inputClass}`}
+                          className={`text-[10px] font-semibold text-[var(--ink)]/45 uppercase tracking-wider flex-1 ${inputClass}`}
                         />
                         <button
                           onClick={() => removeActivity(i)}
-                          className="ml-2 p-1.5 text-zinc-300 hover:text-red-500 dark:text-zinc-600 dark:hover:text-red-400 active:opacity-60 transition-colors rounded-lg shrink-0"
+                          className="ml-2 p-1.5 text-[var(--ink)]/25 hover:text-red-500 active:opacity-60 transition-colors rounded-lg shrink-0"
                         >
                           <Trash2 size={14} />
                         </button>
@@ -296,7 +320,7 @@ const DayDetail = ({ day, prevDay, nextDay, onBack, onNavigate }: DayDetailProps
                           value={activity.title}
                           onChange={(e) => updateActivity(i, 'title', e.target.value)}
                           placeholder="활동 제목"
-                          className={`text-sm font-medium text-zinc-900 dark:text-white flex-1 ${inputClass}`}
+                          className={`text-sm font-medium text-[var(--ink)] flex-1 ${inputClass}`}
                         />
                       </div>
                       <input
@@ -304,21 +328,24 @@ const DayDetail = ({ day, prevDay, nextDay, onBack, onNavigate }: DayDetailProps
                         value={activity.description || ''}
                         onChange={(e) => updateActivity(i, 'description', e.target.value)}
                         placeholder="설명 (선택사항)"
-                        className={`text-xs text-zinc-400 w-full ${inputClass}`}
+                        className={`text-xs text-[var(--ink)]/45 w-full ${inputClass}`}
                       />
                     </div>
                   ) : (
                     <>
                       {activity.time && (
-                        <span className="text-[10px] font-semibold text-zinc-400 uppercase tracking-wider">
+                        <span
+                          className="text-[10px] font-bold uppercase tracking-wider"
+                          style={{ color: theme.main }}
+                        >
                           {activity.time}
                         </span>
                       )}
-                      <p className="text-sm font-medium text-zinc-900 dark:text-white">
+                      <p className="text-sm font-semibold text-[var(--ink)]">
                         {activity.emoji} {activity.title}
                       </p>
                       {activity.description && (
-                        <p className="text-xs text-zinc-400 mt-0.5 leading-relaxed">
+                        <p className="text-xs text-[var(--ink)]/45 mt-0.5 leading-relaxed">
                           {activity.description}
                         </p>
                       )}
@@ -331,10 +358,10 @@ const DayDetail = ({ day, prevDay, nextDay, onBack, onNavigate }: DayDetailProps
             {isEditing && (
               <button
                 onClick={addActivity}
-                className="flex items-center gap-2 w-full py-2 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 active:opacity-60 transition-colors"
+                className="flex items-center gap-2 w-full py-2 text-[var(--ink)]/40 hover:text-[var(--ink)]/70 active:opacity-60 transition-colors"
               >
                 <div className="flex flex-col items-center">
-                  <div className="w-2.5 h-2.5 rounded-full border-2 border-dashed border-zinc-300 dark:border-zinc-600 shrink-0" />
+                  <div className="w-2.5 h-2.5 rounded-full border-2 border-dashed border-[var(--line)] shrink-0" />
                 </div>
                 <div className="flex items-center gap-1.5">
                   <Plus size={14} />
@@ -345,16 +372,20 @@ const DayDetail = ({ day, prevDay, nextDay, onBack, onNavigate }: DayDetailProps
           </div>
         </section>
 
-        {/* 팁 */}
+        {/* 팁 — 수첩에 붙인 메모지 느낌 */}
         {day.tips.length > 0 && (
-          <section className="bg-amber-50 dark:bg-amber-950/30 rounded-2xl p-4 border border-amber-100 dark:border-amber-900/50">
-            <h2 className="text-sm font-semibold text-amber-700 dark:text-amber-400 mb-2 flex items-center gap-2">
+          <section className="rounded-2xl p-4 bg-[var(--road-tint)] border border-[var(--road)]/25">
+            <h2 className="font-disp text-[18px] font-black text-[var(--road-deep)] mb-2 flex items-center gap-2">
               <Lightbulb size={16} />
-              팁
+              여행 팁
             </h2>
             <ul className="space-y-1.5">
               {day.tips.map((tip, i) => (
-                <li key={i} className="text-xs text-amber-600 dark:text-amber-400/80 leading-relaxed">
+                <li
+                  key={i}
+                  className="text-xs text-[var(--road-deep)]/85 leading-relaxed flex gap-1.5"
+                >
+                  <span className="shrink-0">·</span>
                   {tip.text}
                 </li>
               ))}
@@ -364,11 +395,8 @@ const DayDetail = ({ day, prevDay, nextDay, onBack, onNavigate }: DayDetailProps
 
         {/* 숙소 */}
         {(currentAccommodation || isEditing) && (
-          <section className="bg-white dark:bg-zinc-900 rounded-2xl p-4 shadow-sm border border-zinc-100 dark:border-zinc-800">
-            <h2 className="text-sm font-semibold text-zinc-900 dark:text-white mb-2 flex items-center gap-2">
-              <BedDouble size={16} />
-              숙소
-            </h2>
+          <section className={cardClass}>
+            <div className="mb-2">{sectionTitle(<BedDouble size={16} />, '숙소')}</div>
             {currentAccommodation ? (
               isEditing ? (
                 <div className="space-y-2">
@@ -378,28 +406,28 @@ const DayDetail = ({ day, prevDay, nextDay, onBack, onNavigate }: DayDetailProps
                       value={editAccommodation?.name || ''}
                       onChange={(e) => updateAccommodationField('name', e.target.value)}
                       placeholder="숙소명 (예: 퀸즈타운 1/4박)"
-                      className={`text-sm font-medium text-zinc-700 dark:text-zinc-300 flex-1 ${inputClass}`}
+                      className={`text-sm font-medium text-[var(--ink)] flex-1 ${inputClass}`}
                     />
                     <button
                       onClick={removeAccommodation}
-                      className="p-1.5 text-zinc-300 hover:text-red-500 dark:text-zinc-600 dark:hover:text-red-400 active:opacity-60 transition-colors rounded-lg shrink-0"
+                      className="p-1.5 text-[var(--ink)]/25 hover:text-red-500 active:opacity-60 transition-colors rounded-lg shrink-0"
                     >
                       <Trash2 size={14} />
                     </button>
                   </div>
                   {editAccommodation?.options.map((opt, i) => (
                     <div key={i} className="flex items-center gap-2">
-                      <span className="text-xs text-zinc-400">·</span>
+                      <span className="text-xs text-[var(--ink)]/40">·</span>
                       <input
                         type="text"
                         value={opt}
                         onChange={(e) => updateAccommodationOption(i, e.target.value)}
                         placeholder="옵션 (예: 호텔명)"
-                        className={`text-xs text-zinc-400 flex-1 ${inputClass}`}
+                        className={`text-xs text-[var(--ink)]/60 flex-1 ${inputClass}`}
                       />
                       <button
                         onClick={() => removeAccommodationOption(i)}
-                        className="p-1 text-zinc-300 hover:text-red-500 dark:text-zinc-600 dark:hover:text-red-400 active:opacity-60 transition-colors rounded shrink-0"
+                        className="p-1 text-[var(--ink)]/25 hover:text-red-500 active:opacity-60 transition-colors rounded shrink-0"
                       >
                         <Trash2 size={12} />
                       </button>
@@ -407,7 +435,7 @@ const DayDetail = ({ day, prevDay, nextDay, onBack, onNavigate }: DayDetailProps
                   ))}
                   <button
                     onClick={addAccommodationOption}
-                    className="flex items-center gap-1.5 text-xs text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 active:opacity-60 transition-colors py-1"
+                    className="flex items-center gap-1.5 text-xs text-[var(--ink)]/40 hover:text-[var(--ink)]/70 active:opacity-60 transition-colors py-1"
                   >
                     <Plus size={12} />
                     <span>옵션 추가</span>
@@ -417,25 +445,29 @@ const DayDetail = ({ day, prevDay, nextDay, onBack, onNavigate }: DayDetailProps
                     value={editAccommodation?.note || ''}
                     onChange={(e) => updateAccommodationField('note', e.target.value)}
                     placeholder="참고사항 (선택)"
-                    className={`text-xs text-violet-500 w-full ${inputClass}`}
+                    className={`text-xs w-full ${inputClass}`}
+                    style={{ color: theme.main }}
                   />
                 </div>
               ) : (
                 <>
-                  <p className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                  <p className="text-sm font-semibold text-[var(--ink)]">
                     {currentAccommodation.name}
                   </p>
                   {currentAccommodation.options.length > 0 && (
                     <ul className="mt-2 space-y-1">
                       {currentAccommodation.options.map((opt, i) => (
-                        <li key={i} className="text-xs text-zinc-400">
+                        <li key={i} className="text-xs text-[var(--ink)]/50">
                           · {opt}
                         </li>
                       ))}
                     </ul>
                   )}
                   {currentAccommodation.note && (
-                    <p className="text-xs text-violet-500 mt-2 font-medium">
+                    <p
+                      className="text-xs mt-2 font-semibold"
+                      style={{ color: theme.main }}
+                    >
                       {currentAccommodation.note}
                     </p>
                   )}
@@ -445,7 +477,7 @@ const DayDetail = ({ day, prevDay, nextDay, onBack, onNavigate }: DayDetailProps
               isEditing && (
                 <button
                   onClick={addAccommodation}
-                  className="flex items-center gap-1.5 text-xs text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 active:opacity-60 transition-colors py-1"
+                  className="flex items-center gap-1.5 text-xs text-[var(--ink)]/40 hover:text-[var(--ink)]/70 active:opacity-60 transition-colors py-1"
                 >
                   <Plus size={14} />
                   <span>숙소 추가</span>
@@ -457,11 +489,10 @@ const DayDetail = ({ day, prevDay, nextDay, onBack, onNavigate }: DayDetailProps
 
         {/* 링크 */}
         {(currentLinks.length > 0 || isEditing) && (
-          <section className="bg-white dark:bg-zinc-900 rounded-2xl p-4 shadow-sm border border-zinc-100 dark:border-zinc-800">
-            <h2 className="text-sm font-semibold text-zinc-900 dark:text-white mb-3 flex items-center gap-2">
-              <ExternalLink size={16} />
-              관련 링크
-            </h2>
+          <section className={cardClass}>
+            <div className="mb-3">
+              {sectionTitle(<ExternalLink size={16} />, '관련 링크')}
+            </div>
             {isEditing ? (
               <div className="space-y-2">
                 {editLinks.map((link, i) => (
@@ -472,19 +503,19 @@ const DayDetail = ({ day, prevDay, nextDay, onBack, onNavigate }: DayDetailProps
                         value={link.label}
                         onChange={(e) => updateLink(i, 'label', e.target.value)}
                         placeholder="링크 이름"
-                        className={`text-sm text-zinc-700 dark:text-zinc-300 w-full ${inputClass}`}
+                        className={`text-sm text-[var(--ink)] w-full ${inputClass}`}
                       />
                       <input
                         type="text"
                         value={link.url}
                         onChange={(e) => updateLink(i, 'url', e.target.value)}
                         placeholder="https://..."
-                        className={`text-xs text-zinc-400 w-full ${inputClass}`}
+                        className={`text-xs text-[var(--ink)]/45 w-full ${inputClass}`}
                       />
                     </div>
                     <button
                       onClick={() => removeLink(i)}
-                      className="p-1.5 mt-1 text-zinc-300 hover:text-red-500 dark:text-zinc-600 dark:hover:text-red-400 active:opacity-60 transition-colors rounded-lg shrink-0"
+                      className="p-1.5 mt-1 text-[var(--ink)]/25 hover:text-red-500 active:opacity-60 transition-colors rounded-lg shrink-0"
                     >
                       <Trash2 size={14} />
                     </button>
@@ -492,7 +523,7 @@ const DayDetail = ({ day, prevDay, nextDay, onBack, onNavigate }: DayDetailProps
                 ))}
                 <button
                   onClick={addLink}
-                  className="flex items-center gap-1.5 text-xs text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 active:opacity-60 transition-colors py-1"
+                  className="flex items-center gap-1.5 text-xs text-[var(--ink)]/40 hover:text-[var(--ink)]/70 active:opacity-60 transition-colors py-1"
                 >
                   <Plus size={14} />
                   <span>링크 추가</span>
@@ -506,10 +537,12 @@ const DayDetail = ({ day, prevDay, nextDay, onBack, onNavigate }: DayDetailProps
                     href={link.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-between px-3 py-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-800 active:bg-zinc-100 dark:active:bg-zinc-700 transition-colors"
+                    className="flex items-center justify-between px-3 py-2.5 rounded-xl bg-[var(--paper)] border border-[var(--line-soft)] active:opacity-70 transition-opacity"
                   >
-                    <span className="text-sm text-zinc-700 dark:text-zinc-300">{link.label}</span>
-                    <ExternalLink size={14} className="text-zinc-400" />
+                    <span className="text-sm font-medium text-[var(--ink)]/80">
+                      {link.label}
+                    </span>
+                    <ExternalLink size={14} style={{ color: theme.main }} />
                   </a>
                 ))}
               </div>

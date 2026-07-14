@@ -56,21 +56,21 @@ const PasswordModalContent = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center px-6">
-      <div className="absolute inset-0 bg-black/50" onClick={onClose} />
+      <div className="absolute inset-0 bg-black/45" onClick={onClose} />
 
-      <div className="relative w-full max-w-xs bg-white dark:bg-zinc-900 rounded-2xl p-5 shadow-xl border border-zinc-200 dark:border-zinc-800">
+      <div className="relative w-full max-w-xs bg-[var(--card)] rounded-2xl p-5 shadow-xl border border-[var(--line)]">
         <button
           onClick={onClose}
-          className="absolute top-3 right-3 p-1.5 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 active:opacity-60 transition-colors"
+          className="absolute top-3 right-3 p-1.5 text-[var(--ink)]/40 hover:text-[var(--ink)]/70 active:opacity-60 transition-colors"
         >
           <X size={16} />
         </button>
 
         <div className="flex items-center gap-2 mb-4">
-          <div className="w-8 h-8 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
-            <Lock size={14} className="text-zinc-500" />
+          <div className="w-8 h-8 rounded-full bg-[var(--fern-tint)] flex items-center justify-center">
+            <Lock size={14} className="text-[var(--fern-deep)]" />
           </div>
-          <h3 className="text-sm font-semibold text-zinc-900 dark:text-white">
+          <h3 className="font-disp text-sm font-black text-[var(--ink)]">
             비밀번호 입력
           </h3>
         </div>
@@ -86,12 +86,12 @@ const PasswordModalContent = ({
             }}
             onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
             placeholder="비밀번호를 입력하세요"
-            className="w-full px-3 py-2.5 pr-10 rounded-xl bg-zinc-50 dark:bg-zinc-800 text-sm text-zinc-900 dark:text-white placeholder-zinc-400 border border-zinc-200 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-zinc-300 dark:focus:ring-zinc-600"
+            className="w-full px-3 py-2.5 pr-10 rounded-xl bg-[var(--paper)] text-sm text-[var(--ink)] placeholder-[var(--ink)]/35 border border-[var(--line)] focus:outline-none focus:border-[var(--ink)]/40"
           />
           <button
             type="button"
             onClick={() => setShowPassword((prev) => !prev)}
-            className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 active:opacity-60 transition-colors"
+            className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-[var(--ink)]/40 hover:text-[var(--ink)]/70 active:opacity-60 transition-colors"
           >
             {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
           </button>
@@ -102,7 +102,7 @@ const PasswordModalContent = ({
         <button
           onClick={handleSubmit}
           disabled={!password.trim() || loading}
-          className="w-full mt-3 py-2.5 rounded-xl bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 text-sm font-medium disabled:opacity-30 active:scale-[0.98] transition-all"
+          className="w-full mt-3 py-2.5 rounded-xl bg-[var(--ink)] text-[var(--paper)] text-sm font-semibold disabled:opacity-30 active:scale-[0.98] transition-all"
         >
           {loading ? "확인 중..." : "확인"}
         </button>

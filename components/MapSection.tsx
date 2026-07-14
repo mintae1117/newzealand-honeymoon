@@ -53,7 +53,7 @@ const MapSection = ({ dayNumber, fullscreen = false }: MapSectionProps) => {
     // 장소 마커
     const locationIcon = L.divIcon({
       className: "",
-      html: `<div style="width:28px;height:28px;background:#10b981;border:3px solid white;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:center">
+      html: `<div style="width:28px;height:28px;background:#2e7550;border:3px solid white;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:center">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
       </div>`,
       iconSize: [28, 28],
@@ -163,14 +163,14 @@ const MapSection = ({ dayNumber, fullscreen = false }: MapSectionProps) => {
       {gpsStatus === "idle" && (
         <button
           onClick={startGps}
-          className="flex items-center gap-1 text-xs text-zinc-400 hover:text-blue-500 active:opacity-60 transition-colors px-2 py-1 rounded-lg"
+          className="flex items-center gap-1 text-xs text-[var(--ink)]/45 hover:text-[var(--lake)] active:opacity-60 transition-colors px-2 py-1 rounded-lg"
         >
           <Navigation size={12} />
           <span>내 위치</span>
         </button>
       )}
       {gpsStatus === "loading" && (
-        <span className="flex items-center gap-1 text-xs text-zinc-400 px-2 py-1">
+        <span className="flex items-center gap-1 text-xs text-[var(--ink)]/45 px-2 py-1">
           <Loader2 size={12} className="animate-spin" />
           <span>위치 확인 중...</span>
         </span>
@@ -178,7 +178,7 @@ const MapSection = ({ dayNumber, fullscreen = false }: MapSectionProps) => {
       {gpsStatus === "active" && (
         <button
           onClick={goToMyLocation}
-          className="flex items-center gap-1 text-xs text-blue-500 active:opacity-60 transition-colors px-2 py-1 rounded-lg"
+          className="flex items-center gap-1 text-xs text-[var(--lake)] active:opacity-60 transition-colors px-2 py-1 rounded-lg"
         >
           <Navigation size={12} />
           <span>내 위치로</span>
@@ -201,7 +201,7 @@ const MapSection = ({ dayNumber, fullscreen = false }: MapSectionProps) => {
               mapRef.current.setView([pin.lat, pin.lng], 14);
             }
           }}
-          className="text-[11px] bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 px-2 py-0.5 rounded-md active:opacity-60 transition-opacity"
+          className="text-[11px] bg-[var(--fern-tint)] text-[var(--fern-deep)] px-2 py-0.5 rounded-md active:opacity-60 transition-opacity"
         >
           {pin.label}
         </button>
@@ -211,20 +211,20 @@ const MapSection = ({ dayNumber, fullscreen = false }: MapSectionProps) => {
 
   if (fullscreen) {
     return (
-      <div className="fixed inset-0 z-50 bg-white dark:bg-zinc-950 flex flex-col">
+      <div className="fixed inset-0 z-50 bg-[var(--paper)] flex flex-col">
         <div className="p-4 pb-2 shrink-0">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-1">
               <button
                 onClick={() => router.push(`/day/${dayNumber}`)}
                 aria-label="상세로 돌아가기"
-                className="p-1.5 -ml-1.5 text-zinc-500 dark:text-zinc-400 active:opacity-60 transition-opacity rounded-lg"
+                className="p-1.5 -ml-1.5 text-[var(--ink)]/55 active:opacity-60 transition-opacity rounded-lg"
               >
                 <ChevronLeft size={20} />
               </button>
-              <h1 className="text-sm font-semibold text-zinc-900 dark:text-white flex items-center gap-2">
-                <MapPin size={16} />
-                DAY {dayNumber} 위치
+              <h1 className="font-disp text-sm font-black text-[var(--ink)] flex items-center gap-2">
+                <MapPin size={16} className="text-[var(--fern)]" />
+                DAY {dayNumber} 지도
               </h1>
             </div>
             {gpsControl}
@@ -237,17 +237,17 @@ const MapSection = ({ dayNumber, fullscreen = false }: MapSectionProps) => {
   }
 
   return (
-    <section className="bg-white dark:bg-zinc-900 rounded-2xl shadow-sm border border-zinc-100 dark:border-zinc-800 overflow-hidden">
+    <section className="bg-[var(--card)] rounded-2xl border border-[var(--line-soft)] shadow-[0_1px_2px_rgba(38,34,27,0.06)] overflow-hidden">
       <div className="p-4 pb-2">
         <div className="flex items-center justify-between">
           {/* 제목 탭 → 해당 날짜의 전체화면 지도 */}
           <button
             onClick={() => router.push(`/day/${dayNumber}/map`)}
-            className="text-sm font-semibold text-zinc-900 dark:text-white flex items-center gap-2 active:opacity-60 transition-opacity"
+            className="font-disp text-[18px] font-black text-[var(--ink)] flex items-center gap-2 active:opacity-60 transition-opacity"
           >
-            <MapPin size={16} />
-            <span>위치</span>
-            <Maximize2 size={11} className="text-zinc-300 dark:text-zinc-600" />
+            <MapPin size={16} className="text-[var(--fern)]" />
+            <span>지도</span>
+            <Maximize2 size={11} className="text-[var(--ink)]/30" />
           </button>
           {gpsControl}
         </div>

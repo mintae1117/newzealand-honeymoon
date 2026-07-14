@@ -64,18 +64,18 @@ const MemoSection = ({ dayId, isAuthenticated, login }: MemoSectionProps) => {
   };
 
   return (
-    <section className="bg-white dark:bg-zinc-900 rounded-2xl p-4 shadow-sm border border-zinc-100 dark:border-zinc-800">
-      <h2 className="text-sm font-semibold text-zinc-900 dark:text-white mb-3 flex items-center gap-2">
-        <StickyNote size={16} />
-        메모
+    <section className="bg-[var(--card)] rounded-2xl p-4 border border-[var(--line-soft)] shadow-[0_1px_2px_rgba(38,34,27,0.06)]">
+      <h2 className="font-disp text-[18px] font-black text-[var(--ink)] mb-3 flex items-center gap-2">
+        <StickyNote size={16} className="text-[var(--fern)]" />
+        여행 기록
       </h2>
 
       {/* 입력 (폴백 모드에서는 수정 불가) */}
       {isFallback ? (
-        <p className="text-xs text-amber-600 dark:text-amber-400 mb-3">
+        <p className="text-xs text-[var(--road-deep)] mb-3">
           {dataSource === "mock"
-            ? "목데이터 모드에서는 메모를 작성할 수 없어요."
-            : "서버 연결이 원활하지 않아 메모 작성이 잠시 불가능해요."}
+            ? "목데이터 모드에서는 기록을 남길 수 없어요."
+            : "서버 연결이 원활하지 않아 기록 작성이 잠시 불가능해요."}
         </p>
       ) : (
         <div className="flex gap-2 mb-3">
@@ -84,38 +84,40 @@ const MemoSection = ({ dayId, isAuthenticated, login }: MemoSectionProps) => {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
-            placeholder="메모를 남겨보세요..."
-            className="flex-1 min-w-0 px-3 py-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-800 text-sm text-zinc-900 dark:text-white placeholder-zinc-400 border border-zinc-200 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-zinc-300 dark:focus:ring-zinc-600"
+            placeholder="오늘의 한 줄을 남겨보세요..."
+            className="flex-1 min-w-0 px-3 py-2.5 rounded-xl bg-[var(--paper)] text-sm text-[var(--ink)] placeholder-[var(--ink)]/35 border border-[var(--line)] focus:outline-none focus:border-[var(--ink)]/40"
           />
           <button
             onClick={handleSubmit}
             disabled={!input.trim() || sending}
-            className="shrink-0 w-10 h-10 flex items-center justify-center rounded-xl bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 disabled:opacity-30 active:scale-95 transition-all"
+            className="shrink-0 w-10 h-10 flex items-center justify-center rounded-xl bg-[var(--ink)] text-[var(--paper)] disabled:opacity-30 active:scale-95 transition-all"
           >
             <MessageSquarePlus size={18} />
           </button>
         </div>
       )}
 
-      {/* 메모 리스트 */}
+      {/* 메모 리스트 — 손글씨 일기 */}
       {memosLoading ? (
-        <p className="text-xs text-zinc-400 text-center py-4">불러오는 중...</p>
+        <p className="text-xs text-[var(--ink)]/40 text-center py-4">
+          불러오는 중...
+        </p>
       ) : memos.length === 0 ? (
-        <p className="text-xs text-zinc-300 dark:text-zinc-600 text-center py-4">
-          아직 메모가 없어요
+        <p className="font-hand text-lg text-[var(--ink)]/35 text-center py-4">
+          아직 기록이 없어요. 첫 줄을 남겨보세요 ✏️
         </p>
       ) : (
         <div className="space-y-2">
           {memos.map((memo) => (
             <div
               key={memo.id}
-              className="flex items-start justify-between gap-2 px-3 py-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-800"
+              className="flex items-start justify-between gap-2 px-3.5 py-2.5 rounded-xl bg-[var(--paper)] border border-[var(--line-soft)]"
             >
               <div className="min-w-0 flex-1">
-                <p className="text-sm text-zinc-700 dark:text-zinc-300 whitespace-pre-wrap wrap-break-word">
+                <p className="font-hand text-[19px] leading-snug text-[var(--ink)]/85 whitespace-pre-wrap wrap-break-word">
                   {memo.content}
                 </p>
-                <p className="text-[10px] text-zinc-300 dark:text-zinc-600 mt-1">
+                <p className="text-[10px] text-[var(--ink)]/30 mt-1">
                   {new Date(memo.created_at).toLocaleString("ko-KR", {
                     month: "short",
                     day: "numeric",
@@ -127,7 +129,7 @@ const MemoSection = ({ dayId, isAuthenticated, login }: MemoSectionProps) => {
               {!isFallback && (
                 <button
                   onClick={() => handleDelete(memo.id)}
-                  className="shrink-0 p-1.5 text-zinc-300 dark:text-zinc-600 active:text-red-500 transition-colors"
+                  className="shrink-0 p-1.5 text-[var(--ink)]/25 active:text-red-500 transition-colors"
                 >
                   <Trash2 size={14} />
                 </button>
