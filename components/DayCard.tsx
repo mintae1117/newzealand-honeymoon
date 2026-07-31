@@ -6,6 +6,7 @@ import { Car, Coffee, BedDouble } from "lucide-react";
 import { DaySchedule } from "@/types/schedule";
 import { useScheduleStore } from "@/store/schedule-store";
 import { regionTheme, isTodayTripDay } from "@/lib/region-theme";
+import DateLeaf from "@/components/DateLeaf";
 
 interface DayCardProps {
   day: DaySchedule;
@@ -68,38 +69,49 @@ const DayCard = ({ day, isLast = false }: DayCardProps) => {
         onKeyDown={handleCardKeyDown}
         className="min-w-0 flex-1 mb-4 bg-[var(--card)] rounded-2xl p-4 border border-[var(--line-soft)] shadow-[0_1px_2px_rgba(38,34,27,0.06)] active:scale-[0.98] transition-transform cursor-pointer focus-visible:outline-2 focus-visible:outline-[var(--ink)]"
       >
-        <div className="flex items-center gap-1.5 flex-wrap">
-          <span
-            className="inline-flex px-2 py-0.5 rounded-md text-[10px] font-bold"
-            style={{ background: theme.tint, color: theme.deep }}
-          >
-            {theme.label}
-          </span>
-          {day.is_rest_day && (
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold bg-[var(--paper)] border border-[var(--line)] text-[var(--ink)]/55">
-              <Coffee size={10} />
-              자유일
-            </span>
-          )}
-          {isToday && (
-            <span
-              className="inline-flex px-2 py-0.5 rounded-md text-[10px] font-bold text-white"
-              style={{ background: theme.main }}
-            >
-              오늘
-            </span>
-          )}
-          <span className="ml-auto text-[11px] text-[var(--ink)]/40 font-medium">
-            {day.date} ({day.day_of_week})
-          </span>
-        </div>
+        {/* 본문 왼쪽 + 달력 낱장(실제 날짜) 오른쪽 — DAY 순번(왼쪽 도장)과 형태로 구분한다. */}
+        <div className="flex gap-3">
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <span
+                className="inline-flex px-2 py-0.5 rounded-md text-[10px] font-bold"
+                style={{ background: theme.tint, color: theme.deep }}
+              >
+                {theme.label}
+              </span>
+              {day.is_rest_day && (
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold bg-[var(--paper)] border border-[var(--line)] text-[var(--ink)]/55">
+                  <Coffee size={10} />
+                  자유일
+                </span>
+              )}
+              {isToday && (
+                <span
+                  className="inline-flex px-2 py-0.5 rounded-md text-[10px] font-bold text-white"
+                  style={{ background: theme.main }}
+                >
+                  오늘
+                </span>
+              )}
+            </div>
 
-        <h3 className="font-disp text-[20px] font-black text-[var(--ink)] mt-1.5 leading-snug">
-          {day.title}
-        </h3>
-        {day.subtitle && (
-          <p className="text-xs text-[var(--ink)]/45 mt-0.5">{day.subtitle}</p>
-        )}
+            <h3 className="font-disp text-[20px] font-black text-[var(--ink)] mt-1.5 leading-snug">
+              {day.title}
+            </h3>
+            {day.subtitle && (
+              <p className="text-xs text-[var(--ink)]/45 mt-0.5">
+                {day.subtitle}
+              </p>
+            )}
+          </div>
+
+          <DateLeaf
+            date={day.date}
+            dayOfWeek={day.day_of_week}
+            accent={theme.main}
+            size="sm"
+          />
+        </div>
 
         {(day.accommodation?.name || day.drive_info) && (
           <div className="flex flex-wrap gap-x-3 gap-y-1 mt-2">

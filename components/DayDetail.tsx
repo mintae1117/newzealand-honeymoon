@@ -6,6 +6,7 @@ import { DaySchedule, Activity, Accommodation, LinkInfo } from '@/types/schedule
 import { useScheduleStore } from '@/store/schedule-store';
 import { useAuth } from '@/hooks/useAuth';
 import { regionTheme } from '@/lib/region-theme';
+import DateLeaf from '@/components/DateLeaf';
 import MemoSection from '@/components/MemoSection';
 import PasswordModal from '@/components/PasswordModal';
 import dynamic from 'next/dynamic';
@@ -206,7 +207,7 @@ const DayDetail = ({ day, prevDay, nextDay, onBack, onNavigate }: DayDetailProps
               {day.day}
             </span>
           </div>
-          <div className="min-w-0">
+          <div className="min-w-0 flex-1">
             <div className="flex items-center gap-1.5 flex-wrap">
               <span className="bg-white/15 border border-white/25 text-white text-[10px] font-bold px-2 py-0.5 rounded-md">
                 {theme.label}
@@ -220,10 +221,9 @@ const DayDetail = ({ day, prevDay, nextDay, onBack, onNavigate }: DayDetailProps
             <h1 className="font-disp text-[26px] font-black text-white mt-1.5 leading-tight">
               {day.title}
             </h1>
-            <p className="text-white/70 text-[13px] mt-1">
-              {day.date} ({day.day_of_week})
-              {day.subtitle && ` · ${day.subtitle}`}
-            </p>
+            {day.subtitle && (
+              <p className="text-white/70 text-[13px] mt-1">{day.subtitle}</p>
+            )}
             {day.drive_info && (
               <div className="inline-flex items-center gap-1.5 mt-2.5 text-white/85 text-xs bg-white/12 border border-white/20 rounded-full px-2.5 py-1">
                 <Car size={13} />
@@ -231,6 +231,13 @@ const DayDetail = ({ day, prevDay, nextDay, onBack, onNavigate }: DayDetailProps
               </div>
             )}
           </div>
+          {/* 달력 낱장(실제 날짜) — DAY 도장과 형태로 구분되는 날짜 앵커 */}
+          <DateLeaf
+            date={day.date}
+            dayOfWeek={day.day_of_week}
+            accent={theme.main}
+            size="md"
+          />
         </div>
       </div>
 
