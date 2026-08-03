@@ -40,13 +40,14 @@ const dayDiff = (a: Date, b: Date) => {
   return Math.round(ms / 86_400_000);
 };
 
-/** 오늘 기준 여행 상태: 출발 전 D-day / 여행 중 N일차 / 다녀온 후 */
+/** 오늘 기준 여행 상태: 출발 전 D-day / 여행 중 DAY N / 다녀온 후 */
 export const getTripStatus = (today = new Date()) => {
   const diff = dayDiff(TRIP_START, today); // 출발까지 남은 일수
   if (diff > 0) return { phase: "before" as const, text: `출발까지 D-${diff}` };
-  const dayNo = 1 - diff;
-  if (dayNo <= TRIP_DAYS)
-    return { phase: "during" as const, text: `여행 ${dayNo}일차`, dayNo };
+  // DAY 번호는 0부터 시작 (DAY 0 = 10/31 출발일, DAY N = 11월 N일)
+  const dayNo = -diff;
+  if (dayNo < TRIP_DAYS)
+    return { phase: "during" as const, text: `여행 중 · DAY ${dayNo}`, dayNo };
   return { phase: "after" as const, text: "여행을 다녀왔어요" };
 };
 

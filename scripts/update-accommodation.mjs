@@ -1,3 +1,5 @@
+// ⚠️ 재실행 금지: 1-based day id(2026-08-03 renumber 이전) 기준의 일회성 스크립트.
+//    지금 DB는 0-based라 그대로 실행하면 엉뚱한 날짜에 반영됨. 참고용으로만 보관.
 // 확정 숙소 정보를 Supabase에 반영하고 lib/mock-data.ts를 DB 스냅샷으로 재생성하는 스크립트.
 // 실행: node scripts/update-accommodation.mjs
 import { createClient } from "@supabase/supabase-js";

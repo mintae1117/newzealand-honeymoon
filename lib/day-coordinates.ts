@@ -16,36 +16,36 @@ const STAYS: Record<string, LocationPin> = {
   auckland: { label: "Imagine Beach Road", lat: -36.846341, lng: 174.772333, type: "stay" },
 };
 
-// day number → 좌표 매핑 (활동 순서대로, 마지막은 그날 묵는 숙소)
+// day number → 좌표 매핑 (DAY 0 = 출발일, 활동 순서대로, 마지막은 그날 묵는 숙소)
 export const dayCoordinates: Record<number, LocationPin[]> = {
   // 출발: 인천 → 브리즈번 경유 → 퀸즈타운
-  1: [
+  0: [
     { label: "인천공항", lat: 37.4635, lng: 126.4417 },
     { label: "브리즈번 공항", lat: -27.3876, lng: 153.1216 },
     { label: "퀸즈타운 공항", lat: -45.0193, lng: 168.7434 },
   ],
-  // 퀸즈타운 도착: 공항 렌트카 픽업 → 시내
-  2: [
+  // 퀸즈타운 도착: 공항 → 시내
+  1: [
     { label: "퀸즈타운 공항", lat: -45.0193, lng: 168.7434 },
     { label: "워터프론트", lat: -45.0333, lng: 168.6578 },
     STAYS.queenstown,
   ],
-  // 곤돌라 & 애로우타운
+  // 밀포드사운드 당일투어 (밀포드로드 포토스팟 포함)
+  2: [
+    { label: "미러레이크", lat: -45.0284, lng: 168.011 },
+    { label: "호머터널", lat: -44.7642, lng: 167.981 },
+    { label: "밀포드사운드", lat: -44.619, lng: 167.8688 },
+    STAYS.queenstown,
+  ],
+  // 곤돌라 & 애로우타운 (오후 렌트카 픽업)
   3: [
     { label: "스카이라인 곤돌라", lat: -45.028, lng: 168.6469 },
     { label: "퍼그버거", lat: -45.0317, lng: 168.6595 },
     { label: "애로우타운", lat: -44.9406, lng: 168.8351 },
     STAYS.queenstown,
   ],
-  // 밀포드사운드 당일투어 (밀포드로드 포토스팟 포함)
-  4: [
-    { label: "미러레이크", lat: -45.0284, lng: 168.011 },
-    { label: "호머터널", lat: -44.7642, lng: 167.981 },
-    { label: "밀포드사운드", lat: -44.619, lng: 167.8688 },
-    STAYS.queenstown,
-  ],
   // 퀸즈타운 자유일: 글레노키 / 온천 / 와이너리 / 디너
-  5: [
+  4: [
     { label: "글레노키", lat: -44.8497, lng: 168.3852 },
     { label: "오네센 온천", lat: -44.981, lng: 168.6854 },
     { label: "깁스턴 밸리 와이너리", lat: -45.0123, lng: 168.9152 },
@@ -53,7 +53,7 @@ export const dayCoordinates: Record<number, LocationPin[]> = {
     STAYS.queenstown,
   ],
   // 와나카로 이동: 크라운레인지 → 퍼즐링월드 → 와나카
-  6: [
+  5: [
     { label: "크라운 레인지", lat: -44.9925, lng: 168.9386 },
     { label: "퍼즐링 월드", lat: -44.6975, lng: 169.1616 },
     { label: "와나카 트리", lat: -44.6984, lng: 169.1176 },
@@ -61,13 +61,13 @@ export const dayCoordinates: Record<number, LocationPin[]> = {
     STAYS.wanaka,
   ],
   // 와나카 자유일
-  7: [
+  6: [
     { label: "와나카 시내", lat: -44.6942, lng: 169.1365 },
     { label: "와나카 트리", lat: -44.6984, lng: 169.1176 },
     STAYS.wanaka,
   ],
   // 테카포로 이동: 린디스패스 → 클레이클리프 → 푸카키 → 테카포
-  8: [
+  7: [
     { label: "린디스 패스", lat: -44.5883, lng: 169.6431 },
     { label: "클레이 클리프", lat: -44.4914, lng: 169.973 },
     { label: "푸카키 뷰포인트", lat: -44.089, lng: 170.1359 },
@@ -76,14 +76,14 @@ export const dayCoordinates: Record<number, LocationPin[]> = {
     STAYS.tekapo,
   ],
   // 테카포 자유일: 후커밸리(선택) / 별 관측
-  9: [
+  8: [
     { label: "후커밸리 트랙 입구", lat: -43.7182, lng: 170.0929 },
     { label: "테카포 호수", lat: -44.0045, lng: 170.4777 },
     { label: "Dark Sky Project", lat: -44.0034, lng: 170.4775 },
     STAYS.tekapo,
   ],
   // 크라이스트처치로 이동: 페얼리 파이 → 시내
-  10: [
+  9: [
     { label: "페얼리 베이크하우스", lat: -44.0986, lng: 170.8295 },
     { label: "리버사이드 마켓", lat: -43.5339, lng: 172.634 },
     { label: "보타닉 가든", lat: -43.5303, lng: 172.6206 },
@@ -91,27 +91,27 @@ export const dayCoordinates: Record<number, LocationPin[]> = {
     STAYS.christchurch,
   ],
   // 오클랜드 이동: 렌트카 반납 → 국내선 → 시내
-  11: [
+  10: [
     { label: "크라이스트처치 공항", lat: -43.4852, lng: 172.5355 },
     { label: "스카이타워", lat: -36.8485, lng: 174.7622 },
     { label: "비아덕트 하버", lat: -36.8432, lng: 174.7607 },
     STAYS.auckland,
   ],
   // 호빗마을 & 와이토모 당일치기
-  12: [
+  11: [
     { label: "호빗마을 (마타마타)", lat: -37.8579, lng: 175.6809 },
     { label: "와이토모 동굴", lat: -38.2609, lng: 175.1035 },
     STAYS.auckland,
   ],
   // 오클랜드 마지막 날: 렌트카 반납(공항 근처) → 쇼핑 → 시내 숙소
-  13: [
+  12: [
     { label: "오클랜드 공항", lat: -37.0066, lng: 174.7903 },
     { label: "퀸스트리트", lat: -36.8509, lng: 174.7642 },
     { label: "폰손비", lat: -36.8502, lng: 174.7421 },
     STAYS.auckland,
   ],
   // 귀국: 오클랜드 → 인천 직항
-  14: [
+  13: [
     { label: "오클랜드 공항", lat: -37.0066, lng: 174.7903 },
     { label: "인천공항", lat: 37.4635, lng: 126.4417 },
   ],

@@ -4,8 +4,8 @@ import { DaySchedule, Memo } from "@/types/schedule";
 // 네트워크 오류/지연 시 폴백으로만 사용. 이 데이터를 보는 동안에는 수정 불가.
 export const MOCK_SCHEDULES: DaySchedule[] = [
   {
-    "id": 1,
-    "day": 1,
+    "id": 0,
+    "day": 0,
     "date": "10월 31일",
     "day_of_week": "토",
     "title": "출발",
@@ -44,8 +44,8 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
     "links": []
   },
   {
-    "id": 2,
-    "day": 2,
+    "id": 1,
+    "day": 1,
     "date": "11월 1일",
     "day_of_week": "일",
     "title": "퀸즈타운 도착",
@@ -61,8 +61,9 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
       },
       {
         "time": "",
-        "emoji": "🚗",
-        "title": "렌트카 픽업 (공항에서)"
+        "emoji": "🚕",
+        "title": "택시/버스로 숙소 이동",
+        "description": "공항에서 숙소까지 차로 10분 (렌트카는 DAY 3 오후 픽업)"
       },
       {
         "time": "오후",
@@ -85,10 +86,7 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
         "text": "시차 적응 - 무리하지 않기!"
       },
       {
-        "text": "국제운전면허증 + 한국 면허증 둘 다 지참 (렌트카 필수)"
-      },
-      {
-        "text": "좌측통행! 첫 운전은 천천히"
+        "text": "다음 날 새벽 밀포드 투어 출발 - 일찍 자기!"
       }
     ],
     "accommodation": {
@@ -108,65 +106,10 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
     ]
   },
   {
-    "id": 3,
-    "day": 3,
+    "id": 2,
+    "day": 2,
     "date": "11월 2일",
     "day_of_week": "월",
-    "title": "곤돌라 & 애로우타운",
-    "subtitle": "퀸즈타운",
-    "region": "south",
-    "drive_info": "애로우타운 20분",
-    "is_rest_day": false,
-    "activities": [
-      {
-        "time": "오전",
-        "emoji": "🎿",
-        "title": "스카이라인 곤돌라 + 루지",
-        "description": "퀸즈타운 전경, 재미있는 루지"
-      },
-      {
-        "time": "점심",
-        "emoji": "🍔",
-        "title": "퍼그버거 (유명 버거집)"
-      },
-      {
-        "time": "오후",
-        "emoji": "🏘️",
-        "title": "애로우타운 드라이브",
-        "description": "금광 마을, 예쁜 거리 산책, 카페에서 여유"
-      },
-      {
-        "time": "저녁",
-        "emoji": "🌙",
-        "title": "시내에서 자유롭게"
-      }
-    ],
-    "tips": [],
-    "accommodation": {
-      "url": "https://www.booking.com/hotel/nz/alexis-motor-lodge.ko.html?checkin=2026-11-01&checkout=2026-11-05&group_adults=2&no_rooms=1&group_children=0",
-      "name": "퀸즈타운 (2/4박)",
-      "note": null,
-      "options": [
-        "알렉시스 모텔 & 아파트먼트",
-        "69 Frankton Road, Queenstown"
-      ]
-    },
-    "links": [
-      {
-        "url": "https://skyline.co.nz/queenstown",
-        "label": "스카이라인"
-      },
-      {
-        "url": "https://arrowtown.com",
-        "label": "애로우타운"
-      }
-    ]
-  },
-  {
-    "id": 4,
-    "day": 4,
-    "date": "11월 3일",
-    "day_of_week": "화",
     "title": "밀포드사운드 당일투어",
     "subtitle": null,
     "region": "south",
@@ -202,7 +145,7 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
         "text": "숙소 그대로! 짐 안 옮겨도 됨"
       },
       {
-        "text": "투어 사전 예약 필수"
+        "text": "투어 사전 예약 필수 - 숙소 픽업 가능한 투어 추천 (아직 차 없음)"
       },
       {
         "text": "멀미약 챙기기 (버스 구간 구불구불)"
@@ -210,7 +153,7 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
     ],
     "accommodation": {
       "url": "https://www.booking.com/hotel/nz/alexis-motor-lodge.ko.html?checkin=2026-11-01&checkout=2026-11-05&group_adults=2&no_rooms=1&group_children=0",
-      "name": "퀸즈타운 (3/4박)",
+      "name": "퀸즈타운 (2/4박)",
       "note": null,
       "options": [
         "알렉시스 모텔 & 아파트먼트",
@@ -229,8 +172,76 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
     ]
   },
   {
-    "id": 5,
-    "day": 5,
+    "id": 3,
+    "day": 3,
+    "date": "11월 3일",
+    "day_of_week": "화",
+    "title": "곤돌라 & 애로우타운",
+    "subtitle": "퀸즈타운",
+    "region": "south",
+    "drive_info": "애로우타운 20분",
+    "is_rest_day": false,
+    "activities": [
+      {
+        "time": "오전",
+        "emoji": "🎿",
+        "title": "스카이라인 곤돌라 + 루지",
+        "description": "퀸즈타운 전경, 재미있는 루지"
+      },
+      {
+        "time": "점심",
+        "emoji": "🍔",
+        "title": "퍼그버거 (유명 버거집)"
+      },
+      {
+        "time": "오후",
+        "emoji": "🚗",
+        "title": "렌트카 픽업",
+        "description": "여기부터 남섬 드라이브 시작!"
+      },
+      {
+        "time": "",
+        "emoji": "🏘️",
+        "title": "애로우타운 드라이브",
+        "description": "금광 마을, 예쁜 거리 산책, 카페에서 여유"
+      },
+      {
+        "time": "저녁",
+        "emoji": "🌙",
+        "title": "시내에서 자유롭게"
+      }
+    ],
+    "tips": [
+      {
+        "text": "국제운전면허증 + 한국 면허증 둘 다 지참 (렌트카 필수)"
+      },
+      {
+        "text": "좌측통행! 첫 운전은 천천히"
+      }
+    ],
+    "accommodation": {
+      "url": "https://www.booking.com/hotel/nz/alexis-motor-lodge.ko.html?checkin=2026-11-01&checkout=2026-11-05&group_adults=2&no_rooms=1&group_children=0",
+      "name": "퀸즈타운 (3/4박)",
+      "note": null,
+      "options": [
+        "알렉시스 모텔 & 아파트먼트",
+        "69 Frankton Road, Queenstown"
+      ]
+    },
+    "links": [
+      {
+        "url": "https://skyline.co.nz/queenstown",
+        "label": "스카이라인"
+      },
+      {
+        "url": "https://arrowtown.com",
+        "label": "애로우타운"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "day": 4,
     "date": "11월 4일",
     "day_of_week": "수",
     "title": "퀸즈타운 자유일",
@@ -287,8 +298,8 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
     ]
   },
   {
-    "id": 6,
-    "day": 6,
+    "id": 5,
+    "day": 5,
     "date": "11월 5일",
     "day_of_week": "목",
     "title": "와나카로 이동",
@@ -358,8 +369,8 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
     ]
   },
   {
-    "id": 7,
-    "day": 7,
+    "id": 6,
+    "day": 6,
     "date": "11월 6일",
     "day_of_week": "금",
     "title": "와나카 자유일",
@@ -411,8 +422,8 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
     "links": []
   },
   {
-    "id": 8,
-    "day": 8,
+    "id": 7,
+    "day": 7,
     "date": "11월 7일",
     "day_of_week": "토",
     "title": "테카포로 이동",
@@ -484,8 +495,8 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
     ]
   },
   {
-    "id": 9,
-    "day": 9,
+    "id": 8,
+    "day": 8,
     "date": "11월 8일",
     "day_of_week": "일",
     "title": "테카포 자유일 & 별 관측",
@@ -558,8 +569,8 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
     ]
   },
   {
-    "id": 10,
-    "day": 10,
+    "id": 9,
+    "day": 9,
     "date": "11월 9일",
     "day_of_week": "월",
     "title": "크라이스트처치로 이동",
@@ -627,8 +638,8 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
     ]
   },
   {
-    "id": 11,
-    "day": 11,
+    "id": 10,
+    "day": 10,
     "date": "11월 10일",
     "day_of_week": "화",
     "title": "오클랜드 이동",
@@ -695,8 +706,8 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
     ]
   },
   {
-    "id": 12,
-    "day": 12,
+    "id": 11,
+    "day": 11,
     "date": "11월 11일",
     "day_of_week": "수",
     "title": "호빗마을 & 와이토모",
@@ -767,8 +778,8 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
     ]
   },
   {
-    "id": 13,
-    "day": 13,
+    "id": 12,
+    "day": 12,
     "date": "11월 12일",
     "day_of_week": "목",
     "title": "오클랜드 마지막 날",
@@ -826,8 +837,8 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
     ]
   },
   {
-    "id": 14,
-    "day": 14,
+    "id": 13,
+    "day": 13,
     "date": "11월 13일",
     "day_of_week": "금",
     "title": "귀국",
@@ -863,7 +874,7 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
 export const MOCK_MEMOS: Memo[] = [
   {
     "id": "e3dbab0f-d402-46d8-b6cf-3a2f87792447",
-    "day_id": 1,
+    "day_id": 0,
     "content": "두근두근",
     "created_at": "2026-03-23T00:35:09.673989+00:00",
     "updated_at": "2026-03-23T00:35:09.673989+00:00"
