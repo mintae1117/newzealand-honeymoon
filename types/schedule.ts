@@ -13,6 +13,8 @@ export interface Accommodation {
   name: string;
   options: string[];
   note?: string | null;
+  // 예약 페이지 바로가기 (예: Booking.com 링크)
+  url?: string | null;
 }
 
 export interface LinkInfo {

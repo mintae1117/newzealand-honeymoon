@@ -1,6 +1,6 @@
 import { DaySchedule, Memo } from "@/types/schedule";
 
-// Supabase DB 스냅샷 (2026-07-06 기준)
+// Supabase DB 스냅샷 (2026-08-03 기준)
 // 네트워크 오류/지연 시 폴백으로만 사용. 이 데이터를 보는 동안에는 수정 불가.
 export const MOCK_SCHEDULES: DaySchedule[] = [
   {
@@ -92,11 +92,12 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
       }
     ],
     "accommodation": {
+      "url": "https://www.booking.com/hotel/nz/alexis-motor-lodge.ko.html?checkin=2026-11-01&checkout=2026-11-05&group_adults=2&no_rooms=1&group_children=0",
       "name": "퀸즈타운 (1/4박)",
-      "note": "호수뷰 추천",
+      "note": "예약 완료 · 10/29까지 무료취소 가능",
       "options": [
-        "Sofitel / QT Queenstown",
-        "Novotel Queenstown"
+        "알렉시스 모텔 & 아파트먼트",
+        "69 Frankton Road, Queenstown"
       ]
     },
     "links": [
@@ -142,9 +143,13 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
     ],
     "tips": [],
     "accommodation": {
+      "url": "https://www.booking.com/hotel/nz/alexis-motor-lodge.ko.html?checkin=2026-11-01&checkout=2026-11-05&group_adults=2&no_rooms=1&group_children=0",
       "name": "퀸즈타운 (2/4박)",
       "note": null,
-      "options": []
+      "options": [
+        "알렉시스 모텔 & 아파트먼트",
+        "69 Frankton Road, Queenstown"
+      ]
     },
     "links": [
       {
@@ -204,9 +209,13 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
       }
     ],
     "accommodation": {
+      "url": "https://www.booking.com/hotel/nz/alexis-motor-lodge.ko.html?checkin=2026-11-01&checkout=2026-11-05&group_adults=2&no_rooms=1&group_children=0",
       "name": "퀸즈타운 (3/4박)",
       "note": null,
-      "options": []
+      "options": [
+        "알렉시스 모텔 & 아파트먼트",
+        "69 Frankton Road, Queenstown"
+      ]
     },
     "links": [
       {
@@ -258,9 +267,13 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
       }
     ],
     "accommodation": {
+      "url": "https://www.booking.com/hotel/nz/alexis-motor-lodge.ko.html?checkin=2026-11-01&checkout=2026-11-05&group_adults=2&no_rooms=1&group_children=0",
       "name": "퀸즈타운 (4/4박)",
       "note": null,
-      "options": []
+      "options": [
+        "알렉시스 모텔 & 아파트먼트",
+        "69 Frankton Road, Queenstown"
+      ]
     },
     "links": [
       {
@@ -325,11 +338,12 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
     ],
     "tips": [],
     "accommodation": {
+      "url": "https://www.booking.com/hotel/nz/aspiringlofts-wanaka.ko.html?checkin=2026-11-05&checkout=2026-11-07&group_adults=2&no_rooms=1&group_children=0",
       "name": "와나카 (1/2박)",
-      "note": null,
+      "note": "예약 완료 · 조식 포함 · 11/1 전까지 무료취소 가능",
       "options": [
-        "Edgewater Hotel (호숫가)",
-        "Wanaka Hotel (중심부)"
+        "Aspiringlofts",
+        "42 Manuka Crescent, Wanaka"
       ]
     },
     "links": [
@@ -386,9 +400,13 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
       }
     ],
     "accommodation": {
+      "url": "https://www.booking.com/hotel/nz/aspiringlofts-wanaka.ko.html?checkin=2026-11-05&checkout=2026-11-07&group_adults=2&no_rooms=1&group_children=0",
       "name": "와나카 (2/2박)",
       "note": null,
-      "options": []
+      "options": [
+        "Aspiringlofts",
+        "42 Manuka Crescent, Wanaka"
+      ]
     },
     "links": []
   },
@@ -450,11 +468,12 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
     ],
     "tips": [],
     "accommodation": {
+      "url": "https://www.booking.com/hotel/nz/shepherd-39-s-view.ko.html?checkin=2026-11-07&checkout=2026-11-09&group_adults=2&no_rooms=1&group_children=0",
       "name": "테카포 (1/2박)",
-      "note": "호수뷰 필수!",
+      "note": "예약 완료 · 10/22까지 무료취소 가능",
       "options": [
-        "Peppers Bluewater (호수뷰)",
-        "Lake Tekapo Lodge"
+        "Shepherd's View - Lake Tekapo",
+        "1 Bill Apes Lane, Lake Tekapo"
       ]
     },
     "links": [
@@ -519,9 +538,13 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
       }
     ],
     "accommodation": {
+      "url": "https://www.booking.com/hotel/nz/shepherd-39-s-view.ko.html?checkin=2026-11-07&checkout=2026-11-09&group_adults=2&no_rooms=1&group_children=0",
       "name": "테카포 (2/2박)",
       "note": null,
-      "options": []
+      "options": [
+        "Shepherd's View - Lake Tekapo",
+        "1 Bill Apes Lane, Lake Tekapo"
+      ]
     },
     "links": [
       {
@@ -584,11 +607,12 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
     ],
     "tips": [],
     "accommodation": {
+      "url": "https://www.booking.com/hotel/nz/urban-retreat-christchurch-central-city.ko.html?checkin=2026-11-09&checkout=2026-11-10&group_adults=2&no_rooms=1&group_children=0",
       "name": "크라이스트처치 (1박)",
-      "note": null,
+      "note": "예약 완료 · 11/3까지 무료취소 가능",
       "options": [
-        "The George",
-        "Distinction Christchurch"
+        "Urban Retreat in Central City Christchurch",
+        "g10/20 Bath Street, Christchurch"
       ]
     },
     "links": [
@@ -651,12 +675,12 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
     ],
     "tips": [],
     "accommodation": {
+      "url": "https://www.booking.com/hotel/nz/imagine-beach-road.ko.html?checkin=2026-11-10&checkout=2026-11-13&group_adults=2&no_rooms=1&group_children=0",
       "name": "오클랜드 (1/3박)",
-      "note": null,
+      "note": "예약 완료 · 무료취소 불가",
       "options": [
-        "M Social Auckland",
-        "Hotel DeBrett",
-        "SkyCity Hotel"
+        "Imagine Beach Road",
+        "31 Beach Road, Auckland"
       ]
     },
     "links": [
@@ -723,9 +747,13 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
       }
     ],
     "accommodation": {
+      "url": "https://www.booking.com/hotel/nz/imagine-beach-road.ko.html?checkin=2026-11-10&checkout=2026-11-13&group_adults=2&no_rooms=1&group_children=0",
       "name": "오클랜드 (2/3박)",
       "note": null,
-      "options": []
+      "options": [
+        "Imagine Beach Road",
+        "31 Beach Road, Auckland"
+      ]
     },
     "links": [
       {
@@ -782,11 +810,12 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
       }
     ],
     "accommodation": {
-      "name": "오클랜드 공항 근처 (1박)",
-      "note": "다음 날 오전 11:45 비행, 공항 이동 편하게!",
+      "url": "https://www.booking.com/hotel/nz/imagine-beach-road.ko.html?checkin=2026-11-10&checkout=2026-11-13&group_adults=2&no_rooms=1&group_children=0",
+      "name": "오클랜드 (3/3박)",
+      "note": "다음 날 오전 11:45 비행, 공항까지 차로 약 30분",
       "options": [
-        "Novotel Auckland Airport",
-        "Sudima Auckland Airport"
+        "Imagine Beach Road",
+        "31 Beach Road, Auckland"
       ]
     },
     "links": [

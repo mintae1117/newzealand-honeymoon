@@ -60,13 +60,23 @@ const MapSection = ({ dayNumber, fullscreen = false }: MapSectionProps) => {
       iconAnchor: [14, 14],
     });
 
+    // 숙소 마커 (침대 아이콘 + road 컬러)
+    const stayIcon = L.divIcon({
+      className: "",
+      html: `<div style="width:28px;height:28px;background:#c2751f;border:3px solid white;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:center">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20v-8a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v8"/><path d="M4 10V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v4"/><path d="M2 18h20"/></svg>
+      </div>`,
+      iconSize: [28, 28],
+      iconAnchor: [14, 14],
+    });
+
     const markers: L.Marker[] = [];
     pins.forEach((pin) => {
-      const marker = L.marker([pin.lat, pin.lng], { icon: locationIcon }).addTo(
-        map,
-      );
+      const marker = L.marker([pin.lat, pin.lng], {
+        icon: pin.type === "stay" ? stayIcon : locationIcon,
+      }).addTo(map);
       marker.bindPopup(
-        `<div style="font-size:13px;font-weight:600;padding:2px 0">${pin.label}</div>`,
+        `<div style="font-size:13px;font-weight:600;padding:2px 0">${pin.type === "stay" ? "🛏 " : ""}${pin.label}</div>`,
         { closeButton: false, offset: [0, -8] },
       );
       markers.push(marker);
@@ -201,9 +211,13 @@ const MapSection = ({ dayNumber, fullscreen = false }: MapSectionProps) => {
               mapRef.current.setView([pin.lat, pin.lng], 14);
             }
           }}
-          className="text-[11px] bg-[var(--fern-tint)] text-[var(--fern-deep)] px-2 py-0.5 rounded-md active:opacity-60 transition-opacity"
+          className={`text-[11px] px-2 py-0.5 rounded-md active:opacity-60 transition-opacity ${
+            pin.type === "stay"
+              ? "bg-[var(--road-tint)] text-[var(--road-deep)]"
+              : "bg-[var(--fern-tint)] text-[var(--fern-deep)]"
+          }`}
         >
-          {pin.label}
+          {pin.type === "stay" ? `🛏 ${pin.label}` : pin.label}
         </button>
       ))}
     </div>

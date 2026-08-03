@@ -46,7 +46,10 @@ const isAccommodation = (value: unknown): value is Accommodation | null => {
     ) &&
     ((value as Accommodation).note === undefined ||
       (value as Accommodation).note === null ||
-      typeof (value as Accommodation).note === "string")
+      typeof (value as Accommodation).note === "string") &&
+    ((value as Accommodation).url === undefined ||
+      (value as Accommodation).url === null ||
+      typeof (value as Accommodation).url === "string")
   );
 };
 

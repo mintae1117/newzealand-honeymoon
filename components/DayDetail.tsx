@@ -110,14 +110,14 @@ const DayDetail = ({ day, prevDay, nextDay, onBack, onNavigate }: DayDetailProps
 
   // --- 숙소 ---
   const addAccommodation = () => {
-    setEditAccommodation({ name: '', options: [], note: '' });
+    setEditAccommodation({ name: '', options: [], note: '', url: '' });
   };
 
   const removeAccommodation = () => {
     setEditAccommodation(null);
   };
 
-  const updateAccommodationField = (field: 'name' | 'note', value: string) => {
+  const updateAccommodationField = (field: 'name' | 'note' | 'url', value: string) => {
     setEditAccommodation((prev) => prev ? { ...prev, [field]: value } : prev);
   };
 
@@ -455,6 +455,13 @@ const DayDetail = ({ day, prevDay, nextDay, onBack, onNavigate }: DayDetailProps
                     className={`text-xs w-full ${inputClass}`}
                     style={{ color: theme.main }}
                   />
+                  <input
+                    type="text"
+                    value={editAccommodation?.url || ''}
+                    onChange={(e) => updateAccommodationField('url', e.target.value)}
+                    placeholder="예약 링크 https://... (선택)"
+                    className={`text-xs text-[var(--ink)]/45 w-full ${inputClass}`}
+                  />
                 </div>
               ) : (
                 <>
@@ -477,6 +484,19 @@ const DayDetail = ({ day, prevDay, nextDay, onBack, onNavigate }: DayDetailProps
                     >
                       {currentAccommodation.note}
                     </p>
+                  )}
+                  {currentAccommodation.url && (
+                    <a
+                      href={currentAccommodation.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-3 flex items-center justify-between px-3 py-2.5 rounded-xl bg-[var(--paper)] border border-[var(--line-soft)] active:opacity-70 transition-opacity"
+                    >
+                      <span className="text-sm font-medium text-[var(--ink)]/80">
+                        예약 페이지 바로가기
+                      </span>
+                      <ExternalLink size={14} style={{ color: theme.main }} />
+                    </a>
                   )}
                 </>
               )
