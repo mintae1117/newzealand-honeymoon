@@ -60,10 +60,12 @@ export const dayCoordinates: Record<number, LocationPin[]> = {
     { label: "와나카 시내", lat: -44.6942, lng: 169.1365 },
     STAYS.wanaka,
   ],
-  // 와나카 자유일
+  // 와나카 자유일: 라벤더 팜 / Rippon 와이너리
   6: [
     { label: "와나카 시내", lat: -44.6942, lng: 169.1365 },
     { label: "와나카 트리", lat: -44.6984, lng: 169.1176 },
+    { label: "와나카 라벤더 팜", lat: -44.7031, lng: 169.1864 },
+    { label: "Rippon 와이너리", lat: -44.6949, lng: 169.1047 },
     STAYS.wanaka,
   ],
   // 테카포로 이동: 린디스패스 → 클레이클리프 → 푸카키 → 테카포

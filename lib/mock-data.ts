@@ -395,6 +395,18 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
         "title": "호수 산책 / 카약 / 자전거 (선택)"
       },
       {
+        "time": "오후",
+        "emoji": "💜",
+        "title": "와나카 라벤더 팜",
+        "description": "라벤더 밭 + 동물 먹이주기(양·알파카 등) + 라벤더 아이스크림·기념품 숍. 시내에서 차 7분, 입장료 있음. 만개 시즌은 12~2월이라 11월 초엔 꽃이 덜할 수 있음"
+      },
+      {
+        "time": "늦은 오후",
+        "emoji": "🍷",
+        "title": "Rippon 와이너리 셀러도어",
+        "description": "호수를 내려다보는 포도밭 뷰로 유명한 와나카 대표 와이너리(비오디나미 농법). 피노 누아·리슬링 시음, 예약 권장. 시내에서 차 5분"
+      },
+      {
         "time": "",
         "emoji": "📖",
         "title": "카페에서 책 읽기"
@@ -408,6 +420,9 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
     "tips": [
       {
         "text": "아무것도 안 해도 되는 날!"
+      },
+      {
+        "text": "Rippon 시음은 홈페이지에서 예약하고 가는 게 안전. 운전자는 시음 자제 — 음주운전 단속 기준 엄격!"
       }
     ],
     "accommodation": {
@@ -419,7 +434,16 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
         "42 Manuka Crescent, Wanaka"
       ]
     },
-    "links": []
+    "links": [
+      {
+        "url": "https://www.rippon.co.nz",
+        "label": "Rippon 와이너리"
+      },
+      {
+        "url": "https://www.wanakalavenderfarm.com",
+        "label": "와나카 라벤더 팜"
+      }
+    ]
   },
   {
     "id": 7,
