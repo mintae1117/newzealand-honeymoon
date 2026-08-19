@@ -62,7 +62,6 @@ export const dayCoordinates: Record<number, LocationPin[]> = {
   ],
   // 와나카 자유일
   6: [
-    { label: "로이스 피크 주차장", lat: -44.6892, lng: 169.0652 },
     { label: "와나카 시내", lat: -44.6942, lng: 169.1365 },
     { label: "와나카 트리", lat: -44.6984, lng: 169.1176 },
     STAYS.wanaka,
