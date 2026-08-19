@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { verifyToken } from "@/app/api/auth/route";
+import { verifyToken } from "@/lib/auth";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import {
   Accommodation,

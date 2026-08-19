@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { verifyToken } from "../route";
+import { verifyToken } from "@/lib/auth";
 
 const COOKIE_NAME = "edit_token";
 

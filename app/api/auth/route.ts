@@ -1,61 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
+import { createToken, EDIT_PASSWORD, TOKEN_EXPIRY } from "@/lib/auth";
 
-const EDIT_PASSWORD = process.env.EDIT_PASSWORD || "";
 const COOKIE_NAME = "edit_token";
-const TOKEN_EXPIRY = 60 * 60 * 24; // 24시간 (초)
-
-async function createToken(): Promise<string> {
-  const encoder = new TextEncoder();
-  const key = await crypto.subtle.importKey(
-    "raw",
-    encoder.encode(EDIT_PASSWORD),
-    { name: "HMAC", hash: "SHA-256" },
-    false,
-    ["sign"],
-  );
-  const timestamp = Date.now().toString();
-  const signature = await crypto.subtle.sign(
-    "HMAC",
-    key,
-    encoder.encode(timestamp),
-  );
-  const signatureHex = Array.from(new Uint8Array(signature))
-    .map((b) => b.toString(16).padStart(2, "0"))
-    .join("");
-  return `${timestamp}.${signatureHex}`;
-}
-
-export async function verifyToken(token: string): Promise<boolean> {
-  try {
-    const [timestamp, signature] = token.split(".");
-    if (!timestamp || !signature) return false;
-
-    // 토큰 만료 확인 (24시간)
-    const tokenTime = parseInt(timestamp, 10);
-    if (Date.now() - tokenTime > TOKEN_EXPIRY * 1000) return false;
-
-    const encoder = new TextEncoder();
-    const key = await crypto.subtle.importKey(
-      "raw",
-      encoder.encode(EDIT_PASSWORD),
-      { name: "HMAC", hash: "SHA-256" },
-      false,
-      ["sign"],
-    );
-    const expectedSignature = await crypto.subtle.sign(
-      "HMAC",
-      key,
-      encoder.encode(timestamp),
-    );
-    const expectedHex = Array.from(new Uint8Array(expectedSignature))
-      .map((b) => b.toString(16).padStart(2, "0"))
-      .join("");
-
-    return signature === expectedHex;
-  } catch {
-    return false;
-  }
-}
 
 // POST /api/auth — 비밀번호 검증 + 쿠키 설정
 export async function POST(request: NextRequest) {
