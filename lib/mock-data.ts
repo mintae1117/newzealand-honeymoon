@@ -380,6 +380,12 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
     "is_rest_day": true,
     "activities": [
       {
+        "time": "이른 아침",
+        "emoji": "⛰️",
+        "title": "로이스 피크 트래킹 (선택)",
+        "description": "왕복 16km · 5~6시간 · 오르막 약 1,200m. 인생샷 뷰포인트는 정상 30분 아래. 주차장은 시내에서 차 6분(Mt Aspiring Rd), 이른 출발 권장"
+      },
+      {
         "time": "오전",
         "emoji": "😴",
         "title": "여유롭게 늦잠"
@@ -408,6 +414,12 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
     "tips": [
       {
         "text": "아무것도 안 해도 되는 날!"
+      },
+      {
+        "text": "⚠️ 로이스 피크는 매년 10/1~11/10 양 출산기(lambing) 폐쇄 — 11/6은 폐쇄 기간에 해당. 출발 전 DOC 페이지에서 개방 여부 꼭 확인!"
+      },
+      {
+        "text": "폐쇄 시 대안: 다이아몬드 레이크·록키 마운틴 트랙 (연중 개방, 왕복 약 3시간, 와나카 호수 전망)"
       }
     ],
     "accommodation": {
@@ -419,7 +431,12 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
         "42 Manuka Crescent, Wanaka"
       ]
     },
-    "links": []
+    "links": [
+      {
+        "label": "로이스 피크 트랙 (DOC 공지·개방 여부)",
+        "url": "https://www.doc.govt.nz/parks-and-recreation/places-to-go/otago/places/wanaka-area/things-to-do/tracks/roys-peak-track/"
+      }
+    ]
   },
   {
     "id": 7,
