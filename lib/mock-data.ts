@@ -251,15 +251,15 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
     "is_rest_day": true,
     "activities": [
       {
-        "time": "오전",
-        "emoji": "🏔️",
-        "title": "글레노키 드라이브 (선택)",
-        "description": "호수 따라 45분, 반지의 제왕 촬영지. 안 가도 됨!"
+        "time": "오전 10:00",
+        "emoji": "♨️",
+        "title": "오네센 온천 (호수뷰) - 예약 확정"
       },
       {
         "time": "오후",
-        "emoji": "♨️",
-        "title": "오네센 온천 (호수뷰) - 추천!"
+        "emoji": "🏔️",
+        "title": "글레노키 드라이브 (선택)",
+        "description": "호수 따라 45분, 반지의 제왕 촬영지. 안 가도 됨!"
       },
       {
         "time": "오후",
@@ -274,7 +274,7 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
     ],
     "tips": [
       {
-        "text": "오네센 온천은 미리 예약 필수 (조기 매진 주의)"
+        "text": "오네센 온천 오전 10시 예약 확정 · 여유 있게 조금 일찍 도착"
       }
     ],
     "accommodation": {

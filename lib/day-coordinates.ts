@@ -44,10 +44,10 @@ export const dayCoordinates: Record<number, LocationPin[]> = {
     { label: "애로우타운", lat: -44.9406, lng: 168.8351 },
     STAYS.queenstown,
   ],
-  // 퀸즈타운 자유일: 글레노키 / 온천 / 와이너리 / 디너
+  // 퀸즈타운 자유일: 온천(10시 확정) / 글레노키 / 와이너리 / 디너
   4: [
-    { label: "글레노키", lat: -44.8497, lng: 168.3852 },
     { label: "오네센 온천", lat: -44.981, lng: 168.6854 },
+    { label: "글레노키", lat: -44.8497, lng: 168.3852 },
     { label: "깁스턴 밸리 와이너리", lat: -45.0123, lng: 168.9152 },
     { label: "Botswana Butchery", lat: -45.0334, lng: 168.6617 },
     STAYS.queenstown,
