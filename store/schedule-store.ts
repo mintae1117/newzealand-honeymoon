@@ -42,6 +42,9 @@ const writeStoredDataSource = (source: DataSource) => {
 // SSR에서는 localStorage가 없으므로 첫 클라이언트 조회 시점에 한 번만 복원
 let dataSourceRestored = false;
 
+// 마지막으로 메모를 요청한 날짜 — 느린 응답이 뒤늦게 와서 다른 날짜의 메모를 덮어쓰지 않도록
+let latestMemoDayId: number | null = null;
+
 const withTimeout = <T>(promise: PromiseLike<T>): Promise<T> =>
   Promise.race([
     Promise.resolve(promise),
@@ -200,8 +203,10 @@ export const useScheduleStore = create<ScheduleState>((set, get) => ({
   },
 
   fetchMemos: async (dayId) => {
-    // 목데이터 모드에서는 네트워크 조회 없이 스냅샷 사용
-    if (get().dataSource === "mock") {
+    latestMemoDayId = dayId;
+    // 목데이터 모드, 또는 이미 서버 연결에 실패해 폴백 중이면 네트워크 조회 없이 스냅샷 사용
+    // (폴백 중 날짜마다 5초 타임아웃을 다시 기다리며 "불러오는 중..."을 보이지 않게)
+    if (get().dataSource === "mock" || get().isFallback) {
       set({
         memos: MOCK_MEMOS.filter((m) => m.day_id === dayId),
         memosLoading: false,
@@ -217,6 +222,8 @@ export const useScheduleStore = create<ScheduleState>((set, get) => ({
           .eq("day_id", dayId)
           .order("created_at", { ascending: false }),
       );
+      // 응답이 오기 전에 다른 날짜로 이동했다면 결과를 버림
+      if (latestMemoDayId !== dayId) return;
       // 조회 중 사용자가 목데이터로 전환했다면 결과를 버림
       if (get().dataSource === "mock") {
         set({
@@ -230,6 +237,7 @@ export const useScheduleStore = create<ScheduleState>((set, get) => ({
       }
       set({ memos: data as Memo[], memosLoading: false });
     } catch {
+      if (latestMemoDayId !== dayId) return;
       // 메모 조회 실패 시에도 스냅샷으로 폴백 (수정 불가 모드 전환)
       set({
         memos: MOCK_MEMOS.filter((m) => m.day_id === dayId),

@@ -1,12 +1,15 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { useScheduleStore } from "@/store/schedule-store";
 import Header from "@/components/Header";
 import DayCard from "@/components/DayCard";
 
 export default function Home() {
+  const router = useRouter();
   const {
+    days,
     loading,
     isFallback,
     dataSource,
@@ -30,6 +33,21 @@ export default function Home() {
       restored.current = true;
     }
   }, [loading, scrollY]);
+
+  // 리스트가 뜬 뒤 유휴 시간에 14일 상세(정적, 각 수 KB)를 모두 미리 받아둔다.
+  // <Link>는 화면에 보이는 카드만 미리 받으므로, 빨리 스크롤해 탭하거나
+  // 잠깐 네트워크가 끊겨도 이동이 되도록 보완한다.
+  useEffect(() => {
+    if (loading || days.length === 0) return;
+    const prefetchAll = () => days.forEach((d) => router.prefetch(`/day/${d.id}`));
+    if (typeof window.requestIdleCallback === "function") {
+      const id = window.requestIdleCallback(prefetchAll, { timeout: 2000 });
+      return () => window.cancelIdleCallback(id);
+    }
+    // Safari(iOS)는 requestIdleCallback 미지원
+    const id = window.setTimeout(prefetchAll, 800);
+    return () => window.clearTimeout(id);
+  }, [loading, days, router]);
 
   const filteredDays = getFilteredDays();
 

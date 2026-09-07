@@ -10,6 +10,7 @@ import DateLeaf from '@/components/DateLeaf';
 import MemoSection from '@/components/MemoSection';
 import PasswordModal from '@/components/PasswordModal';
 import dynamic from 'next/dynamic';
+import Link from 'next/link';
 
 const MapSection = dynamic(() => import('@/components/MapSection'), { ssr: false });
 
@@ -17,8 +18,6 @@ interface DayDetailProps {
   day: DaySchedule;
   prevDay: DaySchedule | null;
   nextDay: DaySchedule | null;
-  onBack: () => void;
-  onNavigate: (id: number) => void;
 }
 
 const inputClass =
@@ -28,7 +27,7 @@ const inputClass =
 const cardClass =
   'bg-[var(--card)] rounded-2xl p-4 border border-[var(--line-soft)] shadow-[0_1px_2px_rgba(38,34,27,0.06)]';
 
-const DayDetail = ({ day, prevDay, nextDay, onBack, onNavigate }: DayDetailProps) => {
+const DayDetail = ({ day, prevDay, nextDay }: DayDetailProps) => {
   const { updateSchedule, isFallback } = useScheduleStore();
   const { isAuthenticated, login } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
@@ -168,32 +167,44 @@ const DayDetail = ({ day, prevDay, nextDay, onBack, onNavigate }: DayDetailProps
         style={{ background: theme.deep }}
       >
         <div className="flex items-center justify-between mb-5">
-          <button
-            onClick={onBack}
+          <Link
+            href="/"
             className="flex items-center gap-1 text-white/85 text-sm active:opacity-60 -ml-1"
           >
             <ArrowLeft size={18} />
             <span>돌아가기</span>
-          </button>
+          </Link>
           {/* 이전/다음 날 네비게이션 */}
           <div className="flex items-center gap-1">
-            <button
-              onClick={() => prevDay && onNavigate(prevDay.id)}
-              disabled={!prevDay}
-              className="flex items-center gap-0.5 text-white/75 text-xs px-2 py-1 rounded-lg active:opacity-60 disabled:opacity-30 transition-opacity"
-            >
-              <ChevronLeft size={14} />
-              <span>{prevDay ? `DAY ${prevDay.day}` : ''}</span>
-            </button>
+            {prevDay ? (
+              <Link
+                href={`/day/${prevDay.id}`}
+                prefetch={true}
+                className="flex items-center gap-0.5 text-white/75 text-xs px-2 py-1 rounded-lg active:opacity-60 transition-opacity"
+              >
+                <ChevronLeft size={14} />
+                <span>DAY {prevDay.day}</span>
+              </Link>
+            ) : (
+              <span className="flex items-center gap-0.5 text-white/75 text-xs px-2 py-1 rounded-lg opacity-30">
+                <ChevronLeft size={14} />
+              </span>
+            )}
             <div className="w-px h-3 bg-white/30" />
-            <button
-              onClick={() => nextDay && onNavigate(nextDay.id)}
-              disabled={!nextDay}
-              className="flex items-center gap-0.5 text-white/75 text-xs px-2 py-1 rounded-lg active:opacity-60 disabled:opacity-30 transition-opacity"
-            >
-              <span>{nextDay ? `DAY ${nextDay.day}` : ''}</span>
-              <ChevronRight size={14} />
-            </button>
+            {nextDay ? (
+              <Link
+                href={`/day/${nextDay.id}`}
+                prefetch={true}
+                className="flex items-center gap-0.5 text-white/75 text-xs px-2 py-1 rounded-lg active:opacity-60 transition-opacity"
+              >
+                <span>DAY {nextDay.day}</span>
+                <ChevronRight size={14} />
+              </Link>
+            ) : (
+              <span className="flex items-center gap-0.5 text-white/75 text-xs px-2 py-1 rounded-lg opacity-30">
+                <ChevronRight size={14} />
+              </span>
+            )}
           </div>
         </div>
 

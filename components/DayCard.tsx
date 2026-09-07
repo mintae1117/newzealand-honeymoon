@@ -1,7 +1,6 @@
 "use client";
 
-import { KeyboardEvent } from "react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { Car, Coffee, BedDouble } from "lucide-react";
 import { DaySchedule } from "@/types/schedule";
 import { useScheduleStore } from "@/store/schedule-store";
@@ -15,22 +14,12 @@ interface DayCardProps {
 }
 
 const DayCard = ({ day, isLast = false }: DayCardProps) => {
-  const router = useRouter();
   const { setScrollY } = useScheduleStore();
   const theme = regionTheme[day.region];
   const isToday = isTodayTripDay(day.day);
 
-  const goToDetail = () => {
-    setScrollY(window.scrollY);
-    router.push(`/day/${day.id}`);
-  };
-
-  const handleCardKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
-    if (event.key === "Enter" || event.key === " ") {
-      event.preventDefault();
-      goToDetail();
-    }
-  };
+  // 돌아왔을 때 스크롤 복원용. 이동은 <Link>가 담당한다(정적 상세 페이지를 뷰포트에서 미리 받아둠).
+  const rememberScroll = () => setScrollY(window.scrollY);
 
   return (
     <div className="flex gap-3">
@@ -62,12 +51,11 @@ const DayCard = ({ day, isLast = false }: DayCardProps) => {
       </div>
 
       {/* 카드 */}
-      <div
-        role="link"
-        tabIndex={0}
-        onClick={goToDetail}
-        onKeyDown={handleCardKeyDown}
-        className="min-w-0 flex-1 mb-4 bg-[var(--card)] rounded-2xl p-4 border border-[var(--line-soft)] shadow-[0_1px_2px_rgba(38,34,27,0.06)] active:scale-[0.98] transition-transform cursor-pointer focus-visible:outline-2 focus-visible:outline-[var(--ink)]"
+      <Link
+        href={`/day/${day.id}`}
+        prefetch={true}
+        onClick={rememberScroll}
+        className="block min-w-0 flex-1 mb-4 bg-[var(--card)] rounded-2xl p-4 border border-[var(--line-soft)] shadow-[0_1px_2px_rgba(38,34,27,0.06)] active:scale-[0.98] transition-transform cursor-pointer focus-visible:outline-2 focus-visible:outline-[var(--ink)]"
       >
         {/* 본문 왼쪽 + 달력 낱장(실제 날짜) 오른쪽 — DAY 순번(왼쪽 도장)과 형태로 구분한다. */}
         <div className="flex gap-3">
@@ -144,7 +132,7 @@ const DayCard = ({ day, isLast = false }: DayCardProps) => {
             ))}
           </div>
         )}
-      </div>
+      </Link>
     </div>
   );
 };

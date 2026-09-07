@@ -29,15 +29,9 @@ body {
     "Apple SD Gothic Neo", sans-serif;
 }
 
-/* 실제 사람 손글씨(온글잎 박다현체) — 노트에 쓴 느낌 + 또박또박 읽기 편함 */
-@font-face {
-  font-family: "Ownglyph_ParkDaHyun";
-  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/2411-3@1.0/Ownglyph_ParkDaHyun.woff2")
-    format("woff2");
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
+/* 실제 사람 손글씨(온글잎 박다현체) — 노트에 쓴 느낌 + 또박또박 읽기 편함
+   ≈1MB라 @font-face로 두면 첫 화면 JS와 대역폭을 경쟁해 느린 네트워크에서 첫 로드가 10초를 넘겼다.
+   components/HandwritingFontLoader.tsx 가 페이지 로드 후 FontFace API로 등록한다. */
 
 /* 제목·메모 모두 손글씨 — 수첩에 직접 쓴 느낌으로 통일 */
 .font-disp,

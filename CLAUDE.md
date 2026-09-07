@@ -18,16 +18,25 @@
 
 ```
 app/                  # Next.js App Router 페이지 및 레이아웃
-  layout.tsx          # 루트 레이아웃 (모바일 viewport, max-w-lg)
-  page.tsx            # 홈 페이지 (리스트 ↔ 디테일 전환)
+  layout.tsx          # 루트 레이아웃 (모바일 viewport, max-w-lg, 손글씨 폰트 지연 로더)
+  page.tsx            # 홈 페이지 (일정 리스트, 뜬 뒤 유휴 시간에 14일 상세 프리페치)
+  error.tsx           # 렌더 오류(JS 조각 로드 실패 등) 시 빈 화면 대신 "다시 불러오기" 화면
   globals.css         # 글로벌 스타일
+  day/[id]/
+    page.tsx          # 서버 래퍼: generateStaticParams 로 14일 상세를 정적 프리렌더(●)
+    DayPageClient.tsx # 상세 화면 클라이언트 (스토어에서 day 조회 → DayDetail)
+    map/page.tsx      # 서버 래퍼 (정적 프리렌더) → DayMapClient.tsx (전체화면 지도)
   api/auth/           # 비밀번호 인증 API
     route.ts          # POST (로그인) / DELETE (로그아웃)
     check/route.ts    # GET (인증 상태 확인)
+  api/schedules/[id]/route.ts  # PATCH 일정 수정 (service role)
 components/           # UI 컴포넌트
   Header.tsx          # 상단 헤더 + 지역 필터 (전체/남섬/북섬/이동) + 데이터 소스 토글
   DayCard.tsx         # 리스트 카드
-  DayDetail.tsx       # 상세 화면 (타임라인, 팁, 숙소, 링크, 메모)
+  DayDetail.tsx       # 상세 화면 (타임라인, 팁, 숙소, 링크, 지도, 메모)
+  MapSection.tsx      # Leaflet 지도 (카드/전체화면 공용, ssr:false)
+  DateLeaf.tsx        # 달력 낱장 날짜 뱃지
+  HandwritingFontLoader.tsx  # 손글씨 폰트(1MB)를 페이지 로드 후 FontFace API로 등록
   MemoSection.tsx     # 날짜별 메모 CRUD
   PasswordModal.tsx   # 비밀번호 입력 모달
 hooks/                # 커스텀 훅
@@ -91,6 +100,15 @@ public/               # 정적 파일
 - 폴백/목데이터 모드에서는 일정 수정·메모 작성/삭제가 모두 차단됨
 - 헤더 우측 토글로 실데이터 ↔ 목데이터 수동 전환 가능, 선택은 localStorage(`honeymoon-data-source`)에 유지됨
 - **중요**: DB의 schedules/memos 데이터를 변경하면 `lib/mock-data.ts`도 DB 조회 결과로 재생성해서 항상 동일하게 유지할 것
+
+### 느린 해외 네트워크 대비 (여행 중 로밍/호텔 와이파이 기준)
+- `/day/[id]`, `/day/[id]/map` 은 반드시 정적(●)으로 유지: `page.tsx`(서버)에서 `generateStaticParams` export, 클라이언트 로직은 `*Client.tsx`에.
+  동적(ƒ)이 되면 날짜 이동마다 서버 응답을 기다려 네트워크가 나쁠 때 멈춘 듯 보이고, 라우터 캐시도 0초가 됨
+- 날짜 간 이동(카드, 이전/다음, 돌아가기)은 `<Link prefetch>`로. `router.push`는 미리 받아두지 않아 오프라인 이동이 안 됨
+- 리스트가 뜨면 `page.tsx`가 유휴 시간에 14일 상세를 모두 프리페치 → 이후 네트워크가 끊겨도 날짜 이동은 캐시로 동작
+- 손글씨 폰트는 CSS `@font-face`로 선언하지 말 것. 1MB라 첫 화면 JS와 대역폭을 경쟁해 1Mbps에서 첫 로드가 15초까지 늘어남(지연 로드 시 4초)
+- 폴백(`isFallback`) 중에는 메모도 네트워크 조회 없이 스냅샷 사용 (날짜마다 5초 타임아웃을 다시 기다리지 않도록)
+- `app/error.tsx`는 새로고침만 제공: Next `reset()`은 실패한 JS 조각 로드를 다시 시도하지 못함(React.lazy가 실패를 기억)
 
 ### Components
 - 재사용 가능한 UI 컴포넌트는 `components/` 디렉토리에 배치
