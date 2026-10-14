@@ -1,6 +1,7 @@
 import { DaySchedule, Memo } from "@/types/schedule";
 
 // Supabase DB 스냅샷 (2026-08-03 기준)
+// 2026-10-14: day 10 국내선(제트스타 JQ232) 상세를 수동으로 추가함 — DB 는 일시중지 상태라 미반영. 재개 후 scripts/update-day10-flight.mjs 실행해 동기화
 // 네트워크 오류/지연 시 폴백으로만 사용. 이 데이터를 보는 동안에는 수정 불가.
 export const MOCK_SCHEDULES: DaySchedule[] = [
   {
@@ -669,23 +670,26 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
     "title": "오클랜드 이동",
     "subtitle": null,
     "region": "north",
-    "drive_info": "국내선 1시간 20분",
+    "drive_info": "국내선 JQ232 09:55 → 11:15 (1시간 20분)",
     "is_rest_day": false,
     "activities": [
       {
         "time": "오전",
         "emoji": "🚗",
-        "title": "렌트카 반납 (크라이스트처치 공항)"
+        "title": "렌트카 반납 (크라이스트처치 공항)",
+        "description": "반납 후 국내선 터미널로 이동 · 09:55 출발 전 여유 있게"
       },
       {
-        "time": "",
+        "time": "09:55 출발",
         "emoji": "✈️",
-        "title": "국내선 탑승 (약 1시간 20분)"
+        "title": "제트스타 JQ232 크라이스트처치 → 오클랜드",
+        "description": "에어버스 A320 · 이코노미(스타터 운임) · 비행 1시간 20분 · 크라이스트처치 국내선 터미널"
       },
       {
-        "time": "낮",
+        "time": "11:15 도착",
         "emoji": "🛬",
-        "title": "오클랜드 도착"
+        "title": "오클랜드 도착",
+        "description": "오클랜드 국내선 터미널"
       },
       {
         "time": "점심",
@@ -708,7 +712,14 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
         "title": "워터프론트 레스토랑"
       }
     ],
-    "tips": [],
+    "tips": [
+      {
+        "text": "제트스타 JQ232 (2026.08.01 예약) · 탑승객 MS Naeun Kim, MR Mintae Kim"
+      },
+      {
+        "text": "수하물 1인당 휴대 7kg + 위탁 25kg · 좌석은 아직 미지정(좌석 선택 가능)"
+      }
+    ],
     "accommodation": {
       "url": "https://www.booking.com/hotel/nz/imagine-beach-road.ko.html?checkin=2026-11-10&checkout=2026-11-13&group_adults=2&no_rooms=1&group_children=0",
       "name": "오클랜드 (1/3박)",
