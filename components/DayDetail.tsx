@@ -11,6 +11,7 @@ import MemoSection from '@/components/MemoSection';
 import PasswordModal from '@/components/PasswordModal';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const MapSection = dynamic(() => import('@/components/MapSection'), { ssr: false });
 
@@ -366,6 +367,18 @@ const DayDetail = ({ day, prevDay, nextDay }: DayDetailProps) => {
                         <p className="text-xs text-[var(--ink)]/45 mt-0.5 leading-relaxed">
                           {activity.description}
                         </p>
+                      )}
+                      {activity.image && (
+                        // 지도 등 안내 이미지 — 탭하면 원본을 새 탭으로
+                        <a href={activity.image} target="_blank" rel="noreferrer" className="block mt-2">
+                          <Image
+                            src={activity.image}
+                            alt={activity.title}
+                            width={680}
+                            height={400}
+                            className="w-full h-auto rounded-xl border border-[var(--line-soft)]"
+                          />
+                        </a>
                       )}
                     </>
                   )}

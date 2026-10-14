@@ -3,6 +3,8 @@ export interface Activity {
   title: string;
   description?: string;
   emoji?: string;
+  // 설명 아래에 보여줄 이미지 경로 (public/ 기준, 예: 렌트카 픽업 지도)
+  image?: string;
 }
 
 export interface Tip {

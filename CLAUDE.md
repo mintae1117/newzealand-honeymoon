@@ -47,10 +47,11 @@ lib/                  # 유틸리티
   supabase.ts         # Supabase 클라이언트
   mock-data.ts        # DB 스냅샷 목데이터 (폴백/목데이터 모드용)
 types/                # 타입 정의
-  schedule.ts         # DaySchedule, Memo 등
+  schedule.ts         # DaySchedule, Memo 등 (Activity.image: 설명 아래 이미지 경로, 선택)
 scripts/              # 스크립트
   seed.ts             # Supabase 데이터 시드
 public/               # 정적 파일
+  images/             # 활동(Activity.image)에 붙는 안내 이미지 — Apex 렌트카 픽업/반납 지도
 ```
 
 ## Supabase Tables
@@ -100,6 +101,7 @@ public/               # 정적 파일
 - 폴백/목데이터 모드에서는 일정 수정·메모 작성/삭제가 모두 차단됨
 - 헤더 우측 토글로 실데이터 ↔ 목데이터 수동 전환 가능, 선택은 localStorage(`honeymoon-data-source`)에 유지됨
 - **중요**: DB의 schedules/memos 데이터를 변경하면 `lib/mock-data.ts`도 DB 조회 결과로 재생성해서 항상 동일하게 유지할 것
+- DB가 일시중지 중이라 `lib/mock-data.ts`에 먼저 반영한 변경(2026-10-14 day 1·3·10 렌트카/국내선)은 DB 재개 후 `node scripts/sync-days-to-db.mjs`로 올리고 스냅샷을 재생성할 것
 
 ### 느린 해외 네트워크 대비 (여행 중 로밍/호텔 와이파이 기준)
 - `/day/[id]`, `/day/[id]/map` 은 반드시 정적(●)으로 유지: `page.tsx`(서버)에서 `generateStaticParams` export, 클라이언트 로직은 `*Client.tsx`에.

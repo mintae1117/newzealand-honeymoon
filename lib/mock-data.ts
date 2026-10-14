@@ -1,7 +1,8 @@
 import { DaySchedule, Memo } from "@/types/schedule";
 
 // Supabase DB 스냅샷 (2026-08-03 기준)
-// 2026-10-14: day 10 국내선(제트스타 JQ232) 상세를 수동으로 추가함 — DB 는 일시중지 상태라 미반영. 재개 후 scripts/update-day10-flight.mjs 실행해 동기화
+// 2026-10-14: day 1·3·10 에 렌트카(Apex 4202766)·국내선(제트스타 JQ232) 상세를 수동으로 추가함 — DB 는 일시중지 상태라 미반영.
+//             재개 후 scripts/sync-days-to-db.mjs 를 실행하면 이 파일의 day 1·3·10 을 DB 에 올리고 스냅샷을 재생성한다
 // 네트워크 오류/지연 시 폴백으로만 사용. 이 데이터를 보는 동안에는 수정 불가.
 export const MOCK_SCHEDULES: DaySchedule[] = [
   {
@@ -64,7 +65,7 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
         "time": "",
         "emoji": "🚕",
         "title": "택시/버스로 숙소 이동",
-        "description": "공항에서 숙소까지 차로 10분 (렌트카는 DAY 3 오후 픽업)"
+        "description": "공항에서 숙소까지 차로 10분 (렌트카는 DAY 3 14:00 공항점 픽업)"
       },
       {
         "time": "오후",
@@ -195,10 +196,11 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
         "title": "퍼그버거 (유명 버거집)"
       },
       {
-        "time": "오후",
+        "time": "14:00",
         "emoji": "🚗",
-        "title": "렌트카 픽업",
-        "description": "여기부터 남섬 드라이브 시작!"
+        "title": "렌트카 픽업 · Apex 퀸즈타운 공항점 (32 Lucas Place)",
+        "description": "현대 투싼 2WD급 중형 SUV · 예약번호 4202766 · 터미널에서 차로 2분, 걸어서 5분 · 여기부터 남섬 드라이브 시작!",
+        "image": "/images/apex-queenstown-pickup.png"
       },
       {
         "time": "",
@@ -218,6 +220,18 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
       },
       {
         "text": "좌측통행! 첫 운전은 천천히"
+      },
+      {
+        "text": "픽업 가는 법 ① 공항 터미널에서 무료전화 0800 304 300 으로 Apex 셔틀 호출(또는 확인 메일의 Ready to Collect 버튼) → 터미널 나와 오른쪽 출발층 쪽에서 탑승, 짐은 직접 싣기"
+      },
+      {
+        "text": "픽업 가는 법 ② 걸어서 약 5분: 터미널에서 Sir Henry Wigley Dr 로 나와 로터리에서 좌회전 → Lucas Place 250m 오른쪽"
+      },
+      {
+        "text": "결제는 픽업 때 실물 신용/체크카드로 NZ$1,115.17 · 카드 명의자(민태) 본인이 계약서 서명 · 영문 면허(국제면허증) 필수"
+      },
+      {
+        "text": "포함: $0 면책(Excess Reduction) · 무제한 km · 로드사이드 커버 · 추가 운전자 무료 · 7일 남섬 한정"
       }
     ],
     "accommodation": {
@@ -237,6 +251,10 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
       {
         "url": "https://arrowtown.com",
         "label": "애로우타운"
+      },
+      {
+        "url": "https://www.apexrentals.co.nz/location-instructions.aspx?type=pickup&id=BZ3083852",
+        "label": "Apex 픽업 안내 (지도·영상)"
       }
     ]
   },
@@ -674,10 +692,11 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
     "is_rest_day": false,
     "activities": [
       {
-        "time": "오전",
+        "time": "09:00 반납",
         "emoji": "🚗",
-        "title": "렌트카 반납 (크라이스트처치 공항)",
-        "description": "반납 후 국내선 터미널로 이동 · 09:55 출발 전 여유 있게"
+        "title": "렌트카 반납 · Apex 크라이스트처치 공항점 (28 Ron Guthrey Rd)",
+        "description": "Russley Rd 에서 진입 · 반납 후 Apex 무료 셔틀로 터미널 이동 · 주유는 Russley Rd 남쪽 2~3km 주유소",
+        "image": "/images/apex-christchurch-dropoff.png"
       },
       {
         "time": "09:55 출발",
@@ -714,6 +733,9 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
     ],
     "tips": [
       {
+        "text": "렌트카 반납 09:00 → JQ232 출발 09:55 (여유 55분) · 반납·셔틀 시간 감안해 더 일찍 도착 권장 · 예약번호 4202766"
+      },
+      {
         "text": "제트스타 JQ232 (2026.08.01 예약) · 탑승객 MS Naeun Kim, MR Mintae Kim"
       },
       {
@@ -737,6 +759,14 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
       {
         "url": "https://aucklandnz.com",
         "label": "오클랜드"
+      },
+      {
+        "url": "https://www.apexrentals.co.nz/location-instructions.aspx?type=dropoff&id=BZ3083852",
+        "label": "Apex 반납 안내 (지도)"
+      },
+      {
+        "url": "https://maps.app.goo.gl/pmHPY7rB5ez9hLQ19",
+        "label": "반납 지점 길찾기 (Google 지도)"
       }
     ]
   },
