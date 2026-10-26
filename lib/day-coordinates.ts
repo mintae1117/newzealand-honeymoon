@@ -37,11 +37,12 @@ export const dayCoordinates: Record<number, LocationPin[]> = {
     { label: "밀포드사운드", lat: -44.619, lng: 167.8688 },
     STAYS.queenstown,
   ],
-  // 곤돌라 & 애로우타운 (오후 렌트카 픽업)
+  // 곤돌라+루지 → 1번 버스 → 렌트카 픽업(14:00, Apex 공항점) → 키위파크(곤돌라 베이스 바로 아래)
   3: [
-    { label: "스카이라인 곤돌라", lat: -45.028, lng: 168.6469 },
+    { label: "스카이라인 곤돌라", lat: -45.0283, lng: 168.6561 },
     { label: "퍼그버거", lat: -45.0317, lng: 168.6595 },
-    { label: "애로우타운", lat: -44.9406, lng: 168.8351 },
+    { label: "Apex 렌트카 (32 Lucas Pl)", lat: -45.0244, lng: 168.7368 },
+    { label: "키위파크", lat: -45.0289, lng: 168.6572 },
     STAYS.queenstown,
   ],
   // 퀸즈타운 자유일: 온천(10시 확정) / 글레노키 / 와이너리 / 디너

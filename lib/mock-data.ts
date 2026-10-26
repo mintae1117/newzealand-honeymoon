@@ -3,6 +3,7 @@ import { DaySchedule, Memo } from "@/types/schedule";
 // Supabase DB 스냅샷 (2026-08-03 기준)
 // 2026-10-14: day 1·3·10 에 렌트카(Apex 4202766)·국내선(제트스타 JQ232) 상세를 수동으로 추가함 — DB 는 일시중지 상태라 미반영.
 //             재개 후 scripts/sync-days-to-db.mjs 를 실행하면 이 파일의 day 1·3·10 을 DB 에 올리고 스냅샷을 재생성한다
+// 2026-10-26: day 3 을 곤돌라+루지 → 1번 버스 → 렌트카 픽업(14:00) → 키위파크 순으로 재구성(애로우타운 제외). 역시 DB 미반영, 같은 스크립트로 올림.
 // 네트워크 오류/지연 시 폴백으로만 사용. 이 데이터를 보는 동안에는 수정 불가.
 export const MOCK_SCHEDULES: DaySchedule[] = [
   {
@@ -178,22 +179,35 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
     "day": 3,
     "date": "11월 3일",
     "day_of_week": "화",
-    "title": "곤돌라 & 애로우타운",
+    "title": "곤돌라 & 키위파크",
     "subtitle": "퀸즈타운",
     "region": "south",
-    "drive_info": "애로우타운 20분",
+    "drive_info": "공항 ↔ 시내 차로 10분",
     "is_rest_day": false,
     "activities": [
       {
-        "time": "오전",
-        "emoji": "🎿",
-        "title": "스카이라인 곤돌라 + 루지",
-        "description": "퀸즈타운 전경, 재미있는 루지"
+        "time": "오전 9:30",
+        "emoji": "🚡",
+        "title": "스카이라인 곤돌라 (Brecon St 베이스)",
+        "description": "첫 곤돌라 09:30 · 봅스피크 전망대에서 퀸즈타운·와카티푸 호수 전경 · 숙소에서 도보 25~30분 또는 1번 버스 → Stanley St 허브 하차 후 Brecon St 도보 10분"
       },
       {
-        "time": "점심",
+        "time": "10:00",
+        "emoji": "🛷",
+        "title": "루지 (첫 탑승 10:00 세션)",
+        "description": "1,600m 트랙, 리프트 타고 반복 · 1회 약 15분 → 3회권이면 12시 전 충분 · Gondola+3 Luge 성인 NZ$99 (5회 $104 · 6회 $106) · 온라인 예약 시 첫 루지 시간(30분 세션) 선택 · 비 오면 루지 일시 중단"
+      },
+      {
+        "time": "12:15",
         "emoji": "🍔",
-        "title": "퍼그버거 (유명 버거집)"
+        "title": "퍼그버거 (42 Shotover St)",
+        "description": "곤돌라 베이스에서 도보 5분 · 매일 07:00~02:30 · 점심 줄 20~40분 각오 → 늦어도 13:10엔 출발"
+      },
+      {
+        "time": "13:14",
+        "emoji": "🚌",
+        "title": "1번 버스로 공항 이동 (Stanley St 버스허브 B → 공항 약 20분)",
+        "description": "퍼그버거에서 허브까지 도보 3분 · 15분 간격(12:59 · 13:14 · 13:29) · 성인 Bee Card $2.50 / 현금 $10 (카드 결제 불가) · 급하면 택시·우버 약 15분(NZ$35~45) 으로 Apex(32 Lucas Place) 직행"
       },
       {
         "time": "14:00",
@@ -203,15 +217,16 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
         "image": "/images/apex-queenstown-pickup.png"
       },
       {
-        "time": "",
-        "emoji": "🏘️",
-        "title": "애로우타운 드라이브",
-        "description": "금광 마을, 예쁜 거리 산책, 카페에서 여유"
+        "time": "15:00",
+        "emoji": "🥝",
+        "title": "키위파크 (51 Brecon St, 곤돌라 베이스 바로 아래)",
+        "description": "공항에서 차로 10분 · 주차는 스카이라인 입체주차장(297면, 도보 2분, 키위파크 티켓 실물 제시 시 20% 할인) · 여름 운영 09:30~18:30, 마지막 입장 17:45 · 성인 NZ$68 · 예약 시 Kiwi Encounter 시간 선택(15:00 / 16:15 / 17:00, 15분 전 도착) · 컨서베이션 쇼 15:30 · 17:30 (30분) · 관람 1.5~2시간"
       },
       {
-        "time": "저녁",
+        "time": "17:00",
         "emoji": "🌙",
-        "title": "시내에서 자유롭게"
+        "title": "숙소 복귀 후 시내에서 자유롭게",
+        "description": "키위파크 → 알렉시스 모텔 차로 5분 · 해 지는 시간 20:25 쯤이라 저녁 드라이브도 여유"
       }
     ],
     "tips": [
@@ -232,6 +247,15 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
       },
       {
         "text": "포함: $0 면책(Excess Reduction) · 무제한 km · 로드사이드 커버 · 추가 운전자 무료 · 7일 남섬 한정"
+      },
+      {
+        "text": "스카이라인·키위파크 둘 다 온라인 예약 권장 — 루지는 첫 탑승 시간, 키위파크는 Kiwi Encounter 시간을 고름(키위파크는 48시간 전까지 전액 환불) · 스카이라인 주간 운영시간표는 방문 주에 다시 확인"
+      },
+      {
+        "text": "키위파크는 곤돌라 승강장 바로 아래(도보 2분) → 비로 루지가 멈추면 순서만 바꾸면 됨: 오전 키위파크(10:00 인카운터) → 점심 → 픽업 → 오후 곤돌라·루지"
+      },
+      {
+        "text": "키위 하우스 안은 사진·휴대폰 사용 금지 · 파크는 언덕에 자갈길·경사 → 운동화 · 버스는 현금 또는 Bee Card 만 (카드 결제 불가)"
       }
     ],
     "accommodation": {
@@ -245,12 +269,24 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
     },
     "links": [
       {
-        "url": "https://skyline.co.nz/queenstown",
-        "label": "스카이라인"
+        "url": "https://queenstown.skyline.co.nz/",
+        "label": "스카이라인 (예약·요금)"
       },
       {
-        "url": "https://arrowtown.com",
-        "label": "애로우타운"
+        "url": "https://queenstown.skyline.co.nz/opening-hours/",
+        "label": "스카이라인 주간 운영시간"
+      },
+      {
+        "url": "https://kiwibird.co.nz/",
+        "label": "키위파크 (운영시간·쇼 시간)"
+      },
+      {
+        "url": "https://kiwibird.co.nz/products/",
+        "label": "키위파크 입장권 예약"
+      },
+      {
+        "url": "https://www.orc.govt.nz/orbus/queenstown-buses/check-your-timetables/1-sunshine-bay-to-remarkables-shops",
+        "label": "Orbus 1번 버스 시간표 (시내 → 공항)"
       },
       {
         "url": "https://www.apexrentals.co.nz/location-instructions.aspx?type=pickup&id=BZ3083852",
