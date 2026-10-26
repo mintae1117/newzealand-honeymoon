@@ -1,4 +1,4 @@
-// lib/mock-data.ts 에 수동으로 반영해 둔 날짜(day 1·3·10: 렌트카 Apex 4202766, 국내선 제트스타 JQ232)를
+// lib/mock-data.ts 에 수동으로 반영해 둔 날짜(day 1·3·10: 렌트카 Apex 4202766, 국내선 제트스타 JQ232 / 10-26: day 3 키위파크 재구성, day 4 애로우타운 선택)를
 // Supabase 에 올리고, lib/mock-data.ts 를 DB 스냅샷으로 재생성한다.
 // 2026-10-14 작성. DB 가 일시중지 상태라 mock-data 에만 먼저 반영해 두었다 — DB 재개 후 한 번 실행할 것.
 // id 는 0-based(2026-08-03 renumber 이후). 실행: node scripts/sync-days-to-db.mjs
@@ -19,7 +19,7 @@ const supabase = createClient(env.NEXT_PUBLIC_SUPABASE_URL, env.SUPABASE_SERVICE
 });
 
 // 올릴 날짜와, id 가 어긋났을 때 막기 위한 제목
-const TARGETS = { 1: "퀸즈타운 도착", 3: "곤돌라 & 키위파크", 10: "오클랜드 이동" };
+const TARGETS = { 1: "퀸즈타운 도착", 3: "곤돌라 & 키위파크", 4: "퀸즈타운 자유일", 10: "오클랜드 이동" };
 
 // mock-data.ts 의 MOCK_SCHEDULES 를 그대로 읽는다 (단일 출처)
 const mockSrc = readFileSync(path.join(root, "lib/mock-data.ts"), "utf8");

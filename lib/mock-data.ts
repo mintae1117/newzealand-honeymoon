@@ -3,7 +3,7 @@ import { DaySchedule, Memo } from "@/types/schedule";
 // Supabase DB 스냅샷 (2026-08-03 기준)
 // 2026-10-14: day 1·3·10 에 렌트카(Apex 4202766)·국내선(제트스타 JQ232) 상세를 수동으로 추가함 — DB 는 일시중지 상태라 미반영.
 //             재개 후 scripts/sync-days-to-db.mjs 를 실행하면 이 파일의 day 1·3·10 을 DB 에 올리고 스냅샷을 재생성한다
-// 2026-10-26: day 3 을 곤돌라+루지 → 1번 버스 → 렌트카 픽업(14:00) → 키위파크 순으로 재구성(애로우타운 제외). 역시 DB 미반영, 같은 스크립트로 올림.
+// 2026-10-26: day 3 을 곤돌라+루지 → 1번 버스 → 렌트카 픽업(14:00) → 키위파크 순으로 재구성, 애로우타운은 day 4 자유일 선택 항목으로 이동. 역시 DB 미반영, 같은 스크립트로 올림.
 // 네트워크 오류/지연 시 폴백으로만 사용. 이 데이터를 보는 동안에는 수정 불가.
 export const MOCK_SCHEDULES: DaySchedule[] = [
   {
@@ -312,6 +312,12 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
       },
       {
         "time": "오후",
+        "emoji": "🏘️",
+        "title": "애로우타운 (선택)",
+        "description": "온천에서 Malaghans Rd 로 15~20분(시내에서는 20분) · 1860년대 금광 마을, Buckingham St 산책·카페, 중국인 정착촌 유적 · 깁스턴 와이너리와 같은 방향이라 묶기 좋음, 글레노키는 반대 방향이라 둘 중 하나만"
+      },
+      {
+        "time": "오후",
         "emoji": "🏔️",
         "title": "글레노키 드라이브 (선택)",
         "description": "호수 따라 45분, 반지의 제왕 촬영지. 안 가도 됨!"
@@ -345,6 +351,10 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
       {
         "url": "https://onsen.co.nz",
         "label": "오네센 온천"
+      },
+      {
+        "url": "https://arrowtown.com",
+        "label": "애로우타운"
       },
       {
         "url": "https://glenorchy.nz",
