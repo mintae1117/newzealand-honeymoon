@@ -5,6 +5,7 @@ import { DaySchedule, Memo } from "@/types/schedule";
 //             재개 후 scripts/sync-days-to-db.mjs 를 실행하면 이 파일의 day 1·3·10 을 DB 에 올리고 스냅샷을 재생성한다
 // 2026-10-26: day 3 을 곤돌라+루지 → 1번 버스 → 렌트카 픽업(14:00) → 키위파크 순으로 재구성, 애로우타운은 day 4 자유일 선택 항목으로 이동. 역시 DB 미반영, 같은 스크립트로 올림.
 // 2026-10-26: 동선 위 추가 추천 장소를 전 일정에 삽입. 추가분은 활동 제목·팁·링크 라벨 앞 "[추천]" 접두사로 구분 (기존 항목은 그대로). 역시 DB 미반영, 같은 스크립트로 올림.
+// 2026-10-26: day 2 밀포드 투어를 GetYourGuide 예약(GYGWZALM8Q3V) 기준으로 재작성 — 07:07 Copthorne Lakeview 픽업, 정차지·포함 내역·준비물. PIN·개인정보는 공개 리포라 미기재. DB 미반영.
 // 네트워크 오류/지연 시 폴백으로만 사용. 이 데이터를 보는 동안에는 수정 불가.
 export const MOCK_SCHEDULES: DaySchedule[] = [
   {
@@ -102,7 +103,7 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
         "text": "시차 적응 - 무리하지 않기!"
       },
       {
-        "text": "다음 날 새벽 밀포드 투어 출발 - 일찍 자기!"
+        "text": "다음 날 07:07 Copthorne Lakeview(88 Frankton Rd, 숙소 건너편) 앞 픽업 - 일찍 자기!"
       }
     ],
     "accommodation": {
@@ -129,37 +130,44 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
     "title": "밀포드사운드 당일투어",
     "subtitle": null,
     "region": "south",
-    "drive_info": "왕복 ~12시간 (투어)",
+    "drive_info": "약 13시간 투어 · 07:07 픽업 → 20시쯤 복귀",
     "is_rest_day": false,
     "activities": [
       {
-        "time": "새벽",
-        "emoji": "🚌",
-        "title": "투어버스 출발",
-        "description": "직접 운전보다 편하게!"
+        "time": "06:55",
+        "emoji": "🚶",
+        "title": "Copthorne Lakeview 앞으로 이동 (88 Frankton Rd)",
+        "description": "숙소(69 Frankton Rd) 바로 건너편, 도보 1~2분 · 픽업 5분 전엔 건물 밖에서 대기 · 기사는 여러 숙소를 돌며 ±10분 변동, 늦은 손님은 못 기다림"
       },
       {
-        "time": "",
+        "time": "07:07",
+        "emoji": "🚌",
+        "title": "투어버스 픽업 · 소규모 그룹 가이드 투어 (영어)",
+        "description": "GetYourGuide 예약 GYGWZALM8Q3V · 성인 2명 · 호텔 픽업·하차 포함, 하차도 같은 자리"
+      },
+      {
+        "time": "오전",
         "emoji": "📸",
-        "title": "밀포드로드 드라이브",
-        "description": "미러레이크, 호머터널 등 포토스팟"
+        "title": "밀포드로드 드라이브 (정차 7곳)",
+        "description": "와카티푸 호수·Devils Staircase 차창 → 테아나우 30분 휴식(카페는 자비) → Eglinton Valley 10분 → 미러레이크 30분 → 건 호수 15분 → Hollyford River 5분 → 호머터널"
       },
       {
         "time": "낮",
         "emoji": "🚢",
-        "title": "밀포드사운드 크루즈 (약 2시간)",
-        "description": "피오르드 절벽, 폭포, 물개"
+        "title": "밀포드사운드 부티크 크루즈 (1시간 30분)",
+        "description": "밀포드 체류 약 105분 · 피오르드 절벽·폭포·물개·돌고래 · 피크닉 점심(생수·간식 포함)"
       },
       {
         "time": "오후 (선택)",
         "emoji": "🛩️",
-        "title": "[추천] 경비행기로 퀸즈타운 복귀 (Coach–Cruise–Fly)",
-        "description": "버스 4시간 대신 피오르드·남알프스 위를 약 40분 비행 · RealNZ·Southern Discoveries 에 '편도 비행 복귀' 옵션 · 리셀러가 NZ$479~750 으로 제각각이라 공식가 확인 · 날씨로 취소되면 버스로 복귀(차액 환불)"
+        "title": "[추천] 경비행기로 퀸즈타운 복귀 (추가 옵션)",
+        "description": "이 투어는 밀포드→퀸즈타운 비행 복귀를 선택 옵션으로 제공(현재 미포함) · 외부 항공사라 가용성·요금 변동, 비싸지면 전액 환불로 취소 가능 · 원하면 GetYourGuide 예약 수정 또는 운영사 문의 · 날씨 되면 피오르드 위 40분 비행이 이 여행 최고의 한 방"
       },
       {
-        "time": "저녁",
+        "time": "20시쯤",
         "emoji": "🏠",
-        "title": "퀸즈타운 복귀"
+        "title": "Copthorne Lakeview 하차 → 숙소 도보 복귀",
+        "description": "총 소요 약 13시간 · 픽업과 같은 장소에 내려줌"
       }
     ],
     "tips": [
@@ -167,13 +175,22 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
         "text": "숙소 그대로! 짐 안 옮겨도 됨"
       },
       {
-        "text": "투어 사전 예약 필수 - 숙소 픽업 가능한 투어 추천 (아직 차 없음)"
+        "text": "예약 완료 · GetYourGuide 예약번호 GYGWZALM8Q3V · 성인 2명(Naeun Kim 명의) · ₩647,412 결제 · PIN 은 예약 메일 참조"
+      },
+      {
+        "text": "픽업 장소·시간은 바뀔 수 있음 → 투어 전날 운영사 안내 메일 꼭 확인 (픽업 장소는 GetYourGuide 에서 언제든 변경 가능)"
+      },
+      {
+        "text": "픽업은 출발 최대 20분 전부터 돌기 시작 → 07:00 전엔 밖에서, 가이드는 늦는 손님을 기다리지 않음"
+      },
+      {
+        "text": "준비물: 편한 운동화 · 선글라스 · 카메라 · 우비/방수·방풍 재킷 · 방충제(샌드플라이) · 겹쳐 입을 옷 — 밀포드 날씨는 예측 불가"
+      },
+      {
+        "text": "포함: 호텔 픽업·하차, 소규모 가이드 투어, 부티크 크루즈 90분, 피크닉 점심 · 미포함: 테아나우 카페, 비행 복귀(선택 안 함)"
       },
       {
         "text": "멀미약 챙기기 (버스 구간 구불구불)"
-      },
-      {
-        "text": "[추천] 비행 복귀를 고르면 이 여행 최고의 한 방이 될 수 있음 · 예산·날씨 둘 다 허락할 때만"
       }
     ],
     "accommodation": {
@@ -187,16 +204,12 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
     },
     "links": [
       {
-        "url": "https://realnz.com",
-        "label": "RealNZ 투어"
+        "url": "https://www.getyourguide.com/ko-kr/bookings/",
+        "label": "GetYourGuide 내 예약 (픽업 변경)"
       },
       {
         "url": "https://milford-sound.co.nz",
         "label": "밀포드사운드"
-      },
-      {
-        "url": "https://www.southerndiscoveries.co.nz",
-        "label": "[추천] Southern Discoveries (Fly 옵션)"
       }
     ]
   },

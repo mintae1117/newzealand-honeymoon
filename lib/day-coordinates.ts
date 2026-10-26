@@ -30,8 +30,10 @@ export const dayCoordinates: Record<number, LocationPin[]> = {
     { label: "워터프론트", lat: -45.0333, lng: 168.6578 },
     STAYS.queenstown,
   ],
-  // 밀포드사운드 당일투어 (밀포드로드 포토스팟 포함)
+  // 밀포드사운드 당일투어: 07:07 Copthorne Lakeview 픽업(숙소 건너편) → 테아나우 휴식 → 밀포드로드 포토스팟 → 크루즈
   2: [
+    { label: "픽업 · Copthorne Lakeview", lat: -45.0342, lng: 168.6704 },
+    { label: "테아나우", lat: -45.4145, lng: 167.7175 },
     { label: "미러레이크", lat: -45.0284, lng: 168.011 },
     { label: "호머터널", lat: -44.7642, lng: 167.981 },
     { label: "밀포드사운드", lat: -44.619, lng: 167.8688 },

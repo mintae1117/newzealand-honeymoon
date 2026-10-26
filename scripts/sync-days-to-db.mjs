@@ -19,7 +19,11 @@ const supabase = createClient(env.NEXT_PUBLIC_SUPABASE_URL, env.SUPABASE_SERVICE
 });
 
 // 올릴 날짜와, id 가 어긋났을 때 막기 위한 제목
-const TARGETS = { 1: "퀸즈타운 도착", 3: "곤돌라 & 키위파크", 4: "퀸즈타운 자유일", 10: "오클랜드 이동" };
+const TARGETS = {
+  1: "퀸즈타운 도착", 2: "밀포드사운드 당일투어", 3: "곤돌라 & 키위파크", 4: "퀸즈타운 자유일",
+  5: "와나카로 이동", 6: "와나카 자유일", 7: "테카포로 이동", 8: "테카포 자유일 & 별 관측",
+  9: "크라이스트처치로 이동", 10: "오클랜드 이동", 11: "호빗마을 & 와이토모", 12: "오클랜드 마지막 날",
+}; // 10-26 [추천] 항목이 1~12일 전부에 들어가서 대상도 전부로 확장
 
 // mock-data.ts 의 MOCK_SCHEDULES 를 그대로 읽는다 (단일 출처)
 const mockSrc = readFileSync(path.join(root, "lib/mock-data.ts"), "utf8");
