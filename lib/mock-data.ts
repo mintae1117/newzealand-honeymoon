@@ -7,6 +7,7 @@ import { DaySchedule, Memo } from "@/types/schedule";
 // 2026-10-26: 동선 위 추가 추천 장소를 전 일정에 삽입. 추가분은 활동 제목·팁·링크 라벨 앞 "[추천]" 접두사로 구분 (기존 항목은 그대로). 역시 DB 미반영, 같은 스크립트로 올림.
 // 2026-10-26: day 2 밀포드 투어를 GetYourGuide 예약(GYGWZALM8Q3V) 기준으로 재작성 — 07:07 Copthorne Lakeview 픽업, 정차지·포함 내역·준비물. PIN·개인정보는 공개 리포라 미기재. DB 미반영.
 // 2026-10-26: day 11 호빗마을·와이토모를 GetYourGuide 가이드 투어 예약(GYGN6BZYBG9H, 숙소 픽업) 기준으로 재작성, 북섬 렌트카 전제 제거(day 12 반납 항목 삭제). DB 미반영.
+// 2026-10-26: day 2 정차지를 활동 단위로 세로 분리(12개), 비행 복귀 옵션은 예약대로 확정하기로 해 제거. DB 미반영.
 // 네트워크 오류/지연 시 폴백으로만 사용. 이 데이터를 보는 동안에는 수정 불가.
 export const MOCK_SCHEDULES: DaySchedule[] = [
   {
@@ -138,37 +139,73 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
         "time": "06:55",
         "emoji": "🚶",
         "title": "Copthorne Lakeview 앞으로 이동 (88 Frankton Rd)",
-        "description": "숙소(69 Frankton Rd) 바로 건너편, 도보 1~2분 · 픽업 5분 전엔 건물 밖에서 대기 · 기사는 여러 숙소를 돌며 ±10분 변동, 늦은 손님은 못 기다림"
+        "description": "숙소 바로 건너편, 도보 1~2분 · 픽업 5분 전엔 건물 밖에서 대기"
       },
       {
         "time": "07:07",
         "emoji": "🚌",
         "title": "투어버스 픽업 · 소규모 그룹 가이드 투어 (영어)",
-        "description": "GetYourGuide 예약 GYGWZALM8Q3V · 성인 2명 · 호텔 픽업·하차 포함, 하차도 같은 자리"
+        "description": "GetYourGuide 예약 GYGWZALM8Q3V · 성인 2명 · 기사는 여러 숙소를 돌며 ±10분 변동, 늦은 손님은 못 기다림"
       },
       {
-        "time": "오전",
-        "emoji": "📸",
-        "title": "밀포드로드 드라이브 (정차 7곳)",
-        "description": "와카티푸 호수·Devils Staircase 차창 → 테아나우 30분 휴식(카페는 자비) → Eglinton Valley 10분 → 미러레이크 30분 → 건 호수 15분 → Hollyford River 5분 → 호머터널"
+        "time": "차창",
+        "emoji": "🏞️",
+        "title": "와카티푸 호수 · Devils Staircase",
+        "description": "호수 남쪽 끝을 따라가는 절벽길 · 버스 안에서 경치 감상"
       },
       {
-        "time": "낮",
+        "time": "휴식 30분",
+        "emoji": "☕",
+        "title": "테아나우",
+        "description": "피오르드랜드 입구 마을 · 커피·화장실·간식 (카페는 자비) · 이후 밀포드까지 상점 없음"
+      },
+      {
+        "time": "사진 10분",
+        "emoji": "🌾",
+        "title": "Eglinton Valley",
+        "description": "빙하가 깎은 U자 계곡, 황금빛 터삭 초원"
+      },
+      {
+        "time": "산책 30분",
+        "emoji": "🪞",
+        "title": "미러레이크",
+        "description": "바람 없으면 얼 산맥이 거울처럼 비침 · 짧은 보드워크 자유 산책"
+      },
+      {
+        "time": "15분",
+        "emoji": "💧",
+        "title": "건 호수 (Lake Gunn)",
+        "description": "너도밤나무 숲 사이 호수 · 사진·휴식"
+      },
+      {
+        "time": "5분",
+        "emoji": "🦜",
+        "title": "Hollyford River",
+        "description": "케아(고산 앵무새) 등 야생동물 관찰 포인트"
+      },
+      {
+        "time": "통과",
+        "emoji": "🚇",
+        "title": "호머터널",
+        "description": "1.2km 바위 터널 · 나오면 바로 피오르드 절벽"
+      },
+      {
+        "time": "체류 105분",
         "emoji": "🚢",
         "title": "밀포드사운드 부티크 크루즈 (1시간 30분)",
-        "description": "밀포드 체류 약 105분 · 피오르드 절벽·폭포·물개·돌고래 · 피크닉 점심(생수·간식 포함)"
+        "description": "피오르드 절벽·폭포·물개·돌고래 · 피크닉 점심(생수·간식 포함) · 커피·차"
       },
       {
-        "time": "오후 (선택)",
-        "emoji": "🛩️",
-        "title": "[추천] 경비행기로 퀸즈타운 복귀 (추가 옵션)",
-        "description": "이 투어는 밀포드→퀸즈타운 비행 복귀를 선택 옵션으로 제공(현재 미포함) · 외부 항공사라 가용성·요금 변동, 비싸지면 전액 환불로 취소 가능 · 원하면 GetYourGuide 예약 수정 또는 운영사 문의 · 날씨 되면 피오르드 위 40분 비행이 이 여행 최고의 한 방"
+        "time": "오후",
+        "emoji": "🔁",
+        "title": "같은 길로 퀸즈타운 복귀",
+        "description": "돌아오는 길 4시간 안팎 · 낮잠·멀미약"
       },
       {
         "time": "20시쯤",
         "emoji": "🏠",
         "title": "Copthorne Lakeview 하차 → 숙소 도보 복귀",
-        "description": "총 소요 약 13시간 · 픽업과 같은 장소에 내려줌"
+        "description": "총 소요 약 13시간 · 픽업과 같은 장소"
       }
     ],
     "tips": [
@@ -188,7 +225,7 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
         "text": "준비물: 편한 운동화 · 선글라스 · 카메라 · 우비/방수·방풍 재킷 · 방충제(샌드플라이) · 겹쳐 입을 옷 — 밀포드 날씨는 예측 불가"
       },
       {
-        "text": "포함: 호텔 픽업·하차, 소규모 가이드 투어, 부티크 크루즈 90분, 피크닉 점심 · 미포함: 테아나우 카페, 비행 복귀(선택 안 함)"
+        "text": "포함: 호텔 픽업·하차, 소규모 가이드 투어, 부티크 크루즈 90분, 피크닉 점심 · 미포함: 테아나우 카페"
       },
       {
         "text": "멀미약 챙기기 (버스 구간 구불구불)"
