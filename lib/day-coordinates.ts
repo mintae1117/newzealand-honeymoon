@@ -103,15 +103,14 @@ export const dayCoordinates: Record<number, LocationPin[]> = {
     { label: "비아덕트 하버", lat: -36.8432, lng: 174.7607 },
     STAYS.auckland,
   ],
-  // 호빗마을 & 와이토모 당일치기
+  // 호빗마을 & 와이토모 당일치기 (GetYourGuide 가이드 투어, 숙소 픽업·하차)
   11: [
     { label: "호빗마을 (마타마타)", lat: -37.8579, lng: 175.6809 },
     { label: "와이토모 동굴", lat: -38.2609, lng: 175.1035 },
     STAYS.auckland,
   ],
-  // 오클랜드 마지막 날: 렌트카 반납(공항 근처) → 쇼핑 → 시내 숙소
+  // 오클랜드 마지막 날: 차 없이 (북섬 렌트카 미예약) 쇼핑·카페 → 시내 숙소
   12: [
-    { label: "오클랜드 공항", lat: -37.0066, lng: 174.7903 },
     { label: "퀸스트리트", lat: -36.8509, lng: 174.7642 },
     { label: "폰손비", lat: -36.8502, lng: 174.7421 },
     STAYS.auckland,

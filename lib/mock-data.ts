@@ -6,6 +6,7 @@ import { DaySchedule, Memo } from "@/types/schedule";
 // 2026-10-26: day 3 을 곤돌라+루지 → 1번 버스 → 렌트카 픽업(14:00) → 키위파크 순으로 재구성, 애로우타운은 day 4 자유일 선택 항목으로 이동. 역시 DB 미반영, 같은 스크립트로 올림.
 // 2026-10-26: 동선 위 추가 추천 장소를 전 일정에 삽입. 추가분은 활동 제목·팁·링크 라벨 앞 "[추천]" 접두사로 구분 (기존 항목은 그대로). 역시 DB 미반영, 같은 스크립트로 올림.
 // 2026-10-26: day 2 밀포드 투어를 GetYourGuide 예약(GYGWZALM8Q3V) 기준으로 재작성 — 07:07 Copthorne Lakeview 픽업, 정차지·포함 내역·준비물. PIN·개인정보는 공개 리포라 미기재. DB 미반영.
+// 2026-10-26: day 11 호빗마을·와이토모를 GetYourGuide 가이드 투어 예약(GYGN6BZYBG9H, 숙소 픽업) 기준으로 재작성, 북섬 렌트카 전제 제거(day 12 반납 항목 삭제). DB 미반영.
 // 네트워크 오류/지연 시 폴백으로만 사용. 이 데이터를 보는 동안에는 수정 불가.
 export const MOCK_SCHEDULES: DaySchedule[] = [
   {
@@ -1078,48 +1079,52 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
     "date": "11월 11일",
     "day_of_week": "수",
     "title": "호빗마을 & 와이토모",
-    "subtitle": "당일치기",
+    "subtitle": "가이드 투어 당일치기",
     "region": "north",
-    "drive_info": "오클랜드→호빗 2h / 호빗→와이토모 1h / 와이토모→오클랜드 2.5h",
+    "drive_info": "가이드 투어 약 11시간 · 숙소 픽업·하차 (렌트카 불필요)",
     "is_rest_day": false,
     "activities": [
       {
+        "time": "픽업 (시간은 확정 메일)",
+        "emoji": "🚌",
+        "title": "숙소 로비에서 투어 픽업 (Imagine Beach Road)",
+        "description": "픽업 시간은 예약 후 24~48시간 내 확정 메일로 안내 · 최소 10분 전 로비 대기 · 투어 시작 전 미리 올 수도 있음 · 10/1~4/30 에는 07:30 출발편도 운영 · 최대 16명 소그룹, 영어 운전사 겸 가이드"
+      },
+      {
         "time": "오전",
-        "emoji": "🚗",
-        "title": "렌트카 픽업, 호빗마을로 출발"
+        "emoji": "🚐",
+        "title": "오클랜드 → 호비튼 이동 (약 2시간)",
+        "description": "교통·가이드 포함, 운전 안 해도 됨"
       },
       {
         "time": "",
         "emoji": "🧙",
-        "title": "호빗마을 투어 (약 2시간)",
-        "description": "44개 호빗집, 파티트리"
+        "title": "호비튼 영화 세트장 가이드 투어 (2시간 30분)",
+        "description": "44개 호빗집, 파티트리 · 세트장 입장+가이드 투어 포함"
       },
       {
         "time": "",
         "emoji": "🍺",
-        "title": "그린드래곤 펍에서 맥주"
+        "title": "그린드래곤 인에서 무료 음료 1잔",
+        "description": "투어에 포함 · 맥주·사이다·진저비어 중 선택"
       },
       {
         "time": "점심",
-        "emoji": "🍽️",
-        "title": "호빗마을 인근"
+        "emoji": "🥪",
+        "title": "와이토모 카페 점심 (1시간, 포함)",
+        "description": "클래식 키위 스타일 가벼운 카페 점심 · 채식·비건 등 식이 제한은 미리 요청"
       },
       {
         "time": "오후",
         "emoji": "✨",
-        "title": "와이토모 반딧불 동굴",
-        "description": "보트 타고 동굴 속 반딧불"
-      },
-      {
-        "time": "오후",
-        "emoji": "🕳️",
-        "title": "[추천] 루아쿠리 동굴 (Ruakuri) 콤보",
-        "description": "Glowworm 단독보다 Glowworm+Ruakuri 콤보(셀프 NZ$98 / 가이드 NZ$197) · Ruakuri 는 나선 입구·2시간, 사진 촬영 가능"
+        "title": "와이토모 반딧불 동굴 가이드 투어 (45분, 입장 포함)",
+        "description": "보트 타고 동굴 속 반딧불 · 동굴 안 사진 촬영 금지 · 현지 일정 1시간"
       },
       {
         "time": "저녁",
         "emoji": "🌙",
-        "title": "오클랜드 복귀, 시내 디너"
+        "title": "오클랜드 복귀 · 숙소 하차 후 시내 디너",
+        "description": "픽업과 같은 곳(Imagine Beach Road)에 내려줌 · 총 약 11시간"
       }
     ],
     "tips": [
@@ -1127,10 +1132,19 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
         "text": "숙소 그대로! 짐 안 옮김"
       },
       {
-        "text": "호빗마을·와이토모 투어 예약 필수 (매진 잦음)"
+        "text": "예약 완료 · GetYourGuide 예약번호 GYGN6BZYBG9H · 성인 2명(Naeun Kim 명의) · ₩634,432 결제 · PIN 은 예약 메일 참조"
       },
       {
-        "text": "[추천] 호빗마을 → 와이토모는 1시간이 아니라 1시간 30분으로 잡기 · 와이토모 투어 시간은 호빗 투어 종료 +2시간 뒤로"
+        "text": "픽업 시간 확정 메일(예약 후 24~48시간)을 꼭 확인 · 오클랜드 다운타운 호텔만 픽업 · 로비에서 10분 전 대기"
+      },
+      {
+        "text": "포함: 호텔 픽업·복귀, 교통, 운전사 겸 가이드, 호비튼 입장+가이드 투어, 그린드래곤 음료 1잔, 카페 점심, 와이토모 입장+45분 가이드 투어 · 미포함: 팁(선택)"
+      },
+      {
+        "text": "준비물: 편한 신발 · 드론 반입 금지 · 우천에도 진행하니 날씨에 맞는 옷 · 힘들진 않지만 걷는 구간 있음"
+      },
+      {
+        "text": "이 날은 렌트카 필요 없음 (북섬 렌트카는 미예약) → Day 12 도 차 없이 페리·버스·택시 기준"
       }
     ],
     "accommodation": {
@@ -1143,6 +1157,10 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
       ]
     },
     "links": [
+      {
+        "url": "https://www.getyourguide.com/ko-kr/booking/0LT6TIZQOB9A5LDUP204VLY62GNEJARX",
+        "label": "GetYourGuide 예약 상세 (픽업 시간 확인)"
+      },
       {
         "url": "https://hobbitontours.com",
         "label": "호빗마을"
@@ -1167,20 +1185,14 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
       {
         "time": "이른 아침 (선택)",
         "emoji": "🐦",
-        "title": "[추천] 무리와이 가넷 군락 (반납 전)",
-        "description": "시내에서 서쪽 45분, 무료 · 11월이 번식기 피크(수천 마리) · 검은 모래 해변 · 보고 나서 공항으로 반납하면 동선 자연스러움"
+        "title": "[추천] 무리와이 가넷 군락 (차 있을 때만)",
+        "description": "북섬 렌트카는 미예약 → 가려면 시내 지점 당일 렌트나 반나절 투어 필요 · 시내에서 서쪽 45분, 무료 · 11월이 번식기 피크(수천 마리) · 검은 모래 해변 · 차 없으면 와이헤케로"
       },
       {
-        "time": "오전",
-        "emoji": "🚗",
-        "title": "렌트카 반납 (공항 근처)",
-        "description": "셔틀로 시내 이동"
-      },
-      {
-        "time": "낮",
+        "time": "오전~오후",
         "emoji": "⛴️",
         "title": "[추천] 와이헤케 섬 + Mudbrick 점심",
-        "description": "다운타운 페리 40분(Fullers360) · Matiatia 선착장에서 Mudbrick 까지 택시 5분 · 바다 보며 와인·점심 · 퀸스트리트 쇼핑 대신 이걸 권함 · 16~17시 페리로 복귀"
+        "description": "숙소에서 다운타운 페리터미널 도보 10분 → Fullers360 페리 40분 · Matiatia 선착장에서 Mudbrick 까지 택시 5분 · 바다 보며 와인·점심 · 차 없는 마지막 날에 가장 현실적인 코스 · 16~17시 페리로 복귀"
       },
       {
         "time": "낮",
