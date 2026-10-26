@@ -4,6 +4,7 @@ import { DaySchedule, Memo } from "@/types/schedule";
 // 2026-10-14: day 1·3·10 에 렌트카(Apex 4202766)·국내선(제트스타 JQ232) 상세를 수동으로 추가함 — DB 는 일시중지 상태라 미반영.
 //             재개 후 scripts/sync-days-to-db.mjs 를 실행하면 이 파일의 day 1·3·10 을 DB 에 올리고 스냅샷을 재생성한다
 // 2026-10-26: day 3 을 곤돌라+루지 → 1번 버스 → 렌트카 픽업(14:00) → 키위파크 순으로 재구성, 애로우타운은 day 4 자유일 선택 항목으로 이동. 역시 DB 미반영, 같은 스크립트로 올림.
+// 2026-10-26: 동선 위 추가 추천 장소를 전 일정에 삽입. 추가분은 활동 제목·팁·링크 라벨 앞 "[추천]" 접두사로 구분 (기존 항목은 그대로). 역시 DB 미반영, 같은 스크립트로 올림.
 // 네트워크 오류/지연 시 폴백으로만 사용. 이 데이터를 보는 동안에는 수정 불가.
 export const MOCK_SCHEDULES: DaySchedule[] = [
   {
@@ -79,9 +80,21 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
         "title": "시내 가볍게 산책"
       },
       {
+        "time": "",
+        "emoji": "🌳",
+        "title": "[추천] 퀸즈타운 가든 반도 산책",
+        "description": "워터프론트 끝에서 이어지는 반도 공원, 한 바퀴 30분 · 시차 풀기에 딱 · 호수 건너 리마커블스 조망"
+      },
+      {
         "time": "저녁",
         "emoji": "🍽️",
         "title": "워터프론트에서 디너"
+      },
+      {
+        "time": "디저트",
+        "emoji": "🍦",
+        "title": "[추천] Patagonia 초콜릿 아이스크림",
+        "description": "워터프론트(Rees St) · 디너 후 호숫가에서 한 컵"
       }
     ],
     "tips": [
@@ -138,6 +151,12 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
         "description": "피오르드 절벽, 폭포, 물개"
       },
       {
+        "time": "오후 (선택)",
+        "emoji": "🛩️",
+        "title": "[추천] 경비행기로 퀸즈타운 복귀 (Coach–Cruise–Fly)",
+        "description": "버스 4시간 대신 피오르드·남알프스 위를 약 40분 비행 · RealNZ·Southern Discoveries 에 '편도 비행 복귀' 옵션 · 리셀러가 NZ$479~750 으로 제각각이라 공식가 확인 · 날씨로 취소되면 버스로 복귀(차액 환불)"
+      },
+      {
         "time": "저녁",
         "emoji": "🏠",
         "title": "퀸즈타운 복귀"
@@ -152,6 +171,9 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
       },
       {
         "text": "멀미약 챙기기 (버스 구간 구불구불)"
+      },
+      {
+        "text": "[추천] 비행 복귀를 고르면 이 여행 최고의 한 방이 될 수 있음 · 예산·날씨 둘 다 허락할 때만"
       }
     ],
     "accommodation": {
@@ -171,6 +193,10 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
       {
         "url": "https://milford-sound.co.nz",
         "label": "밀포드사운드"
+      },
+      {
+        "url": "https://www.southerndiscoveries.co.nz",
+        "label": "[추천] Southern Discoveries (Fly 옵션)"
       }
     ]
   },
@@ -227,6 +253,18 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
         "emoji": "🌙",
         "title": "숙소 복귀 후 시내에서 자유롭게",
         "description": "키위파크 → 알렉시스 모텔 차로 5분 · 해 지는 시간 20:25 쯤이라 저녁 드라이브도 여유"
+      },
+      {
+        "time": "저녁 (선택)",
+        "emoji": "🏞️",
+        "title": "[추천] 밥스 코브 (Bob's Cove) 저녁 드라이브",
+        "description": "글레노키 방향 20분, 30분 루프 트랙 · 에메랄드빛 호수와 산 반영 · 일몰 20:25 라 17시 이후도 여유 · 첫 운전 날이라 45분 걸리는 글레노키 대신 여기 추천"
+      },
+      {
+        "time": "저녁 (선택)",
+        "emoji": "📸",
+        "title": "[추천] 레이크 헤이즈 (Lake Hayes) 반영 사진",
+        "description": "숙소에서 15분 · 바람 없는 저녁에 산이 호수에 비침 · 밥스 코브와 반대 방향이라 둘 중 하나"
       }
     ],
     "tips": [
@@ -311,6 +349,18 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
         "title": "오네센 온천 (호수뷰) - 예약 확정"
       },
       {
+        "time": "11:30",
+        "emoji": "🚤",
+        "title": "[추천] 쇼토버 제트 (Shotover Jet)",
+        "description": "오네센 온천과 같은 Arthurs Point, 차로 2분 · 협곡 사이 25분 제트보트, 360도 스핀 · 성인 NZ$199 안팎 · 사전 예약 필수 · 온천 → 제트 → 애로우타운 순이면 이동 최소"
+      },
+      {
+        "time": "점심 (선택)",
+        "emoji": "🍽️",
+        "title": "[추천] Amisfield 비스트로 점심",
+        "description": "레이크 헤이즈 옆, 뉴질랜드 최상급 레스토랑 · 코스 NZ$200~ · 예약 필수 · 저녁 Botswana 와 겹치니 점심으로"
+      },
+      {
         "time": "오후",
         "emoji": "🏘️",
         "title": "애로우타운 (선택)",
@@ -328,6 +378,18 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
         "title": "와이너리 투어 (선택)"
       },
       {
+        "time": "오후",
+        "emoji": "🌉",
+        "title": "[추천] 카와라우 번지 다리 (선택)",
+        "description": "AJ Hackett 원조 번지(43m) · 안 뛰어도 무료 전망대에서 구경 · 깁스턴 와이너리 가는 길목"
+      },
+      {
+        "time": "오후",
+        "emoji": "🍷",
+        "title": "[추천] 깁스턴 와이너리: Kinross · Gibbston Valley",
+        "description": "Kinross 는 여러 와이너리를 한 셀러도어에서 시음 · Gibbston Valley 는 와인 동굴 투어+치즈 · 애로우타운에서 15분 · 운전자는 시음 자제"
+      },
+      {
         "time": "저녁",
         "emoji": "🥩",
         "title": "Botswana Butchery (예약)"
@@ -336,6 +398,9 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
     "tips": [
       {
         "text": "오네센 온천 오전 10시 예약 확정 · 여유 있게 조금 일찍 도착"
+      },
+      {
+        "text": "[추천] 애로우타운은 Day 5 아침 크라운 레인지 가는 길목이라 그때 들러도 자연스러움 → 오늘은 온천·쇼토버 제트·카와라우 번지·깁스턴 와이너리에 집중 가능"
       }
     ],
     "accommodation": {
@@ -359,6 +424,18 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
       {
         "url": "https://glenorchy.nz",
         "label": "글레노키"
+      },
+      {
+        "url": "https://www.shotoverjet.com",
+        "label": "[추천] 쇼토버 제트 예약"
+      },
+      {
+        "url": "https://www.amisfield.co.nz",
+        "label": "[추천] Amisfield 비스트로"
+      },
+      {
+        "url": "https://www.bungy.co.nz",
+        "label": "[추천] AJ Hackett 카와라우 번지"
       }
     ]
   },
@@ -379,10 +456,34 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
         "title": "여유롭게 체크아웃"
       },
       {
+        "time": "오전",
+        "emoji": "🏘️",
+        "title": "[추천] 애로우타운 (Day 4 에 안 갔으면)",
+        "description": "퀸즈타운에서 20분, 크라운 레인지 입구 바로 옆이라 동선 그대로 · Buckingham St 산책·카페 1시간"
+      },
+      {
         "time": "",
         "emoji": "🏔️",
         "title": "크라운 레인지 로드 드라이브",
         "description": "절경 산길, 포토스팟 많음"
+      },
+      {
+        "time": "",
+        "emoji": "🔭",
+        "title": "[추천] 크라운 레인지 정상 전망대",
+        "description": "고갯길 꼭대기 주차장 · 와카티푸 분지가 내려다보이는 지그재그 길 뷰"
+      },
+      {
+        "time": "점심",
+        "emoji": "🍺",
+        "title": "[추천] 카드로나 호텔 (Cardrona Hotel)",
+        "description": "크라운 레인지 길 위 1863년 펍 · 앞에 세워둔 옛날 차가 뉴질랜드 대표 사진 스팟 · 가든바 점심 · 와나카까지 25분 남음"
+      },
+      {
+        "time": "",
+        "emoji": "🥃",
+        "title": "[추천] 카드로나 증류소 (선택)",
+        "description": "호텔 바로 옆 · 진·위스키·보드카 시음, 75분 가이드 투어(예약) · 운전자는 시음 자제 · 길가 '브라 펜스' 도 이 근처"
       },
       {
         "time": "낮",
@@ -407,9 +508,21 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
         "title": "호수 산책"
       },
       {
+        "time": "늦은 오후",
+        "emoji": "🥾",
+        "title": "[추천] 마운트 아이언 (Mt Iron) 트랙",
+        "description": "시내에서 3분, 1.5시간 루프 · 완만한 오르막 끝에 와나카 호수·시내 전경 · 로이스피크 폐쇄 기간 대체로 가장 쉬운 전망 코스"
+      },
+      {
         "time": "저녁",
         "emoji": "🍽️",
         "title": "와나카 시내 레스토랑"
+      },
+      {
+        "time": "저녁",
+        "emoji": "🎬",
+        "title": "[추천] 시네마 파라디소 (Cinema Paradiso)",
+        "description": "소파·옛날 차 좌석에 앉아 보는 동네 영화관 · 중간 휴식에 갓 구운 쿠키 · 상영표 확인 후 예매"
       }
     ],
     "tips": [],
@@ -430,6 +543,18 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
       {
         "url": "https://www.puzzlingworld.co.nz",
         "label": "퍼즐링 월드"
+      },
+      {
+        "url": "https://www.cardronahotel.co.nz",
+        "label": "[추천] 카드로나 호텔"
+      },
+      {
+        "url": "https://cardronadistillery.com",
+        "label": "[추천] 카드로나 증류소"
+      },
+      {
+        "url": "https://www.paradiso.net.nz",
+        "label": "[추천] 시네마 파라디소 상영표"
       }
     ]
   },
@@ -455,9 +580,21 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
         "title": "호숫가 카페"
       },
       {
+        "time": "오전 (선택)",
+        "emoji": "🥾",
+        "title": "[추천] 다이아몬드 레이크 · 로키 마운틴 트랙",
+        "description": "시내에서 20분(Glendhu Bay 방향) · 2~3시간 · 호수·마운트 어스파이어링 조망 · 로이스피크는 11/10 까지 양 출산기로 폐쇄라 이 코스가 대안"
+      },
+      {
         "time": "오후",
         "emoji": "🚴",
         "title": "호수 산책 / 카약 / 자전거 (선택)"
+      },
+      {
+        "time": "오후 (선택)",
+        "emoji": "🚗",
+        "title": "[추천] 하웨아 호수 전망대 → The Neck 드라이브",
+        "description": "하스트 방향 15분, 레이크 하웨아 전망대 → The Neck → 와나카 동쪽 호숫가로 돌아오는 40분 루프 · 블루풀까지 가면 편도 1시간(다리 복구 완료, 샌드플라이 기피제 필수)"
       },
       {
         "time": "오후",
@@ -488,6 +625,9 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
       },
       {
         "text": "Rippon 시음은 홈페이지에서 예약하고 가는 게 안전. 운전자는 시음 자제 — 음주운전 단속 기준 엄격!"
+      },
+      {
+        "text": "[추천] 식당 후보: Big Fig(슬로우푸드), Francesca's Italian Kitchen, Kika(파인다이닝, 예약)"
       }
     ],
     "accommodation": {
@@ -533,6 +673,12 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
         "title": "트와이젤 or 오마라마 카페"
       },
       {
+        "time": "이동 중 (선택)",
+        "emoji": "🛁",
+        "title": "[추천] 오마라마 핫텁 (Hot Tubs Omarama)",
+        "description": "둘만 쓰는 나무 욕조에서 산 보며 1시간 · 예약제 · Day 4 온천과 겹치면 생략해도 됨"
+      },
+      {
         "time": "이동 중",
         "emoji": "🏜️",
         "title": "클레이 클리프 (선택)",
@@ -543,6 +689,18 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
         "emoji": "📸",
         "title": "레이크 푸카키 뷰포인트",
         "description": "밀키블루 호수 너머 마운트쿡 조망, 경로상이라 잠깐 세우면 됨"
+      },
+      {
+        "time": "이동 중",
+        "emoji": "🍣",
+        "title": "[추천] 연어 사시미 (High Country Salmon / Mt Cook Alpine Salmon)",
+        "description": "트와이젤 남쪽 수상 양식장(High Country Salmon) 또는 푸카키 뷰포인트 옆 Mt Cook Alpine Salmon 매장 · 사시미 사서 마운트쿡 보며 먹기 — 이 구간 명장면"
+      },
+      {
+        "time": "도착 후 (14시 전이면)",
+        "emoji": "☕",
+        "title": "[추천] 마운트 존 Astro Café",
+        "description": "맥켄지 분지·테카포 호수 360도 전망 · 정상 도로 차량 NZ$14(09~16시, 카드만) · 카페 14시 마감(마지막 주문 13:30) → 못 맞추면 Day 9 아침 체크아웃 전(09시 오픈)이나 Tekapo Springs 주차장에서 걸어서 왕복 1.5시간"
       },
       {
         "time": "오후",
@@ -561,12 +719,22 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
         "title": "고다이로 일식 or 숙소 요리"
       },
       {
+        "time": "일몰·밤",
+        "emoji": "⛪",
+        "title": "[추천] 선한목자교회 일몰·밤 재방문",
+        "description": "낮보다 일몰(20:45 쯤)과 별 뜬 밤이 훨씬 예쁨 · 숙소에서 가까우니 두 번 가기 · 밤엔 손전등 빨간불로"
+      },
+      {
         "time": "밤",
         "emoji": "⭐",
         "title": "별 관측 (날씨 좋으면)"
       }
     ],
-    "tips": [],
+    "tips": [
+      {
+        "text": "[추천] 11/9 가 신월 → 오늘·내일 밤은 달빛 없는 최적 조건. 별 투어는 이틀에 나눠 예약하면 날씨 보험"
+      }
+    ],
     "accommodation": {
       "url": "https://www.booking.com/hotel/nz/shepherd-39-s-view.ko.html?checkin=2026-11-07&checkout=2026-11-09&group_adults=2&no_rooms=1&group_children=0",
       "name": "테카포 (1/2박)",
@@ -580,6 +748,10 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
       {
         "url": "https://laketekapotourism.co.nz",
         "label": "테카포 관광"
+      },
+      {
+        "url": "https://www.darkskyproject.co.nz/dine/astro-cafe/",
+        "label": "[추천] Astro Café · Mt John 도로 안내"
       }
     ]
   },
@@ -600,10 +772,28 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
         "title": "늦잠, 여유로운 아침"
       },
       {
+        "time": "가는 길",
+        "emoji": "📸",
+        "title": "[추천] 피터스 룩아웃 (Peter's Lookout)",
+        "description": "마운트쿡 도로(SH80) 초입 · 푸카키 호수 너머 마운트쿡 정면, 5분 정차"
+      },
+      {
         "time": "오전~오후",
         "emoji": "🏔️",
         "title": "마운트쿡 후커밸리 트랙 (선택)",
         "description": "차로 편도 1시간, 왕복 3시간 평탄한 트레킹. 뉴질랜드 대표 절경!"
+      },
+      {
+        "time": "오후 (선택)",
+        "emoji": "🧊",
+        "title": "[추천] 태즈먼 빙하 전망 트랙 (Tasman Glacier View)",
+        "description": "후커밸리에서 차로 10분 · 왕복 40분, 계단 오르면 빙산 떠 있는 태즈먼 호수 · 후커밸리는 7/28 새 189m 현수교 개통으로 전 구간 통행 가능"
+      },
+      {
+        "time": "오후 (선택)",
+        "emoji": "🚤",
+        "title": "[추천] Glacier Explorers 빙산 보트",
+        "description": "태즈먼 호수에서 빙산 사이 보트 2.5시간 · 성인 NZ$209 안팎 · 11월 운영, 예약 필수(48시간 내 취소 50%) · 후커밸리와 묶으면 마운트쿡 하루 꽉 참"
       },
       {
         "time": "",
@@ -630,6 +820,12 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
         "emoji": "🌌",
         "title": "Dark Sky Project 별 관측 (선택)",
         "description": "세계 최고의 밤하늘! 11월엔 투어가 밤 10~11시 시작"
+      },
+      {
+        "time": "밤",
+        "emoji": "♨️",
+        "title": "[추천] Tekapo Springs 온천 별 관측 투어",
+        "description": "온천에 몸 담그고 가이드와 별 보기 90분 · 성인 NZ$95~139, 수건 포함 · 환불 불가 · Dark Sky Project 와 하루씩 나누면 날씨 보험 (11/9 신월이라 최적)"
       }
     ],
     "tips": [
@@ -654,6 +850,14 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
       {
         "url": "https://www.doc.govt.nz/parks-and-recreation/places-to-go/canterbury/places/aoraki-mount-cook-national-park/things-to-do/tracks/hooker-valley-track/",
         "label": "후커밸리 트랙"
+      },
+      {
+        "url": "https://tekaposprings.co.nz",
+        "label": "[추천] Tekapo Springs 별 투어"
+      },
+      {
+        "url": "https://www.glacierexplorers.com",
+        "label": "[추천] Glacier Explorers"
       }
     ]
   },
@@ -680,6 +884,12 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
         "description": "꼭 들러야 할 맛집!"
       },
       {
+        "time": "이동 중",
+        "emoji": "🍯",
+        "title": "[추천] 제럴딘 Barker's 매장",
+        "description": "페얼리에서 30분, 길목 · 잼·처트니·시럽 시식, 선물용으로 좋음 · 옆 Talbot Forest 치즈도"
+      },
+      {
         "time": "오후",
         "emoji": "🏪",
         "title": "리버사이드 마켓 (푸드홀) 구경"
@@ -698,6 +908,18 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
         "time": "",
         "emoji": "⛪",
         "title": "골판지 성당 (Cardboard Cathedral)"
+      },
+      {
+        "time": "",
+        "emoji": "🎨",
+        "title": "[추천] 뉴 리젠트 스트리트 · 헤리티지 트램",
+        "description": "파스텔 스페인풍 거리(New Regent St), 트램이 지나가는 사진 스팟 · 트램은 시내 한 바퀴 루프"
+      },
+      {
+        "time": "",
+        "emoji": "🏚️",
+        "title": "[추천] Quake City (선택)",
+        "description": "2011 지진 기념관, 작지만 울림 있음 · 1시간 · 리버사이드 마켓에서 도보 5분"
       },
       {
         "time": "저녁",
@@ -763,6 +985,12 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
       },
       {
         "time": "오후",
+        "emoji": "🌹",
+        "title": "[추천] 파넬 장미정원 (Parnell Rose Gardens)",
+        "description": "숙소(Beach Rd)에서 도보 15분 · 11월이 장미 만개 시즌 · 축제(보통 11월 둘째 일요일)는 도착 전에 끝났을 가능성 큼, 꽃은 그대로"
+      },
+      {
+        "time": "오후",
         "emoji": "🗼",
         "title": "스카이타워 전망대"
       },
@@ -772,9 +1000,21 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
         "title": "비아덕트 하버 산책"
       },
       {
+        "time": "일몰",
+        "emoji": "🌋",
+        "title": "[추천] 마운트 이든 (Mt Eden) 일몰",
+        "description": "시내에서 차·버스 10분, 분화구 정상 · 스카이타워·하버 전경 · 정상까지 걸어서 15분"
+      },
+      {
         "time": "저녁",
         "emoji": "🍷",
         "title": "워터프론트 레스토랑"
+      },
+      {
+        "time": "디저트",
+        "emoji": "🍦",
+        "title": "[추천] Giapo 아이스크림",
+        "description": "숙소 근처 Gore St · 오클랜드 대표 수제 아이스크림, 줄 서는 곳"
       }
     ],
     "tips": [
@@ -786,6 +1026,9 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
       },
       {
         "text": "수하물 1인당 휴대 7kg + 위탁 25kg · 좌석은 아직 미지정(좌석 선택 가능)"
+      },
+      {
+        "text": "[추천] 렌트카 반납 09:00 → 09:55 출발은 빠듯 · 제트스타 국내선 수하물 마감 출발 30분 전 → 08:15 반납 권장"
       }
     ],
     "accommodation": {
@@ -855,6 +1098,12 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
         "description": "보트 타고 동굴 속 반딧불"
       },
       {
+        "time": "오후",
+        "emoji": "🕳️",
+        "title": "[추천] 루아쿠리 동굴 (Ruakuri) 콤보",
+        "description": "Glowworm 단독보다 Glowworm+Ruakuri 콤보(셀프 NZ$98 / 가이드 NZ$197) · Ruakuri 는 나선 입구·2시간, 사진 촬영 가능"
+      },
+      {
         "time": "저녁",
         "emoji": "🌙",
         "title": "오클랜드 복귀, 시내 디너"
@@ -866,6 +1115,9 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
       },
       {
         "text": "호빗마을·와이토모 투어 예약 필수 (매진 잦음)"
+      },
+      {
+        "text": "[추천] 호빗마을 → 와이토모는 1시간이 아니라 1시간 30분으로 잡기 · 와이토모 투어 시간은 호빗 투어 종료 +2시간 뒤로"
       }
     ],
     "accommodation": {
@@ -900,10 +1152,22 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
     "is_rest_day": true,
     "activities": [
       {
+        "time": "이른 아침 (선택)",
+        "emoji": "🐦",
+        "title": "[추천] 무리와이 가넷 군락 (반납 전)",
+        "description": "시내에서 서쪽 45분, 무료 · 11월이 번식기 피크(수천 마리) · 검은 모래 해변 · 보고 나서 공항으로 반납하면 동선 자연스러움"
+      },
+      {
         "time": "오전",
         "emoji": "🚗",
         "title": "렌트카 반납 (공항 근처)",
         "description": "셔틀로 시내 이동"
+      },
+      {
+        "time": "낮",
+        "emoji": "⛴️",
+        "title": "[추천] 와이헤케 섬 + Mudbrick 점심",
+        "description": "다운타운 페리 40분(Fullers360) · Matiatia 선착장에서 Mudbrick 까지 택시 5분 · 바다 보며 와인·점심 · 퀸스트리트 쇼핑 대신 이걸 권함 · 16~17시 페리로 복귀"
       },
       {
         "time": "낮",
@@ -929,6 +1193,12 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
     "tips": [
       {
         "text": "여유롭게 마무리하는 날"
+      },
+      {
+        "text": "[추천] 무리와이+와이헤케 둘 다 하면 쇼핑 시간은 없음 → 기념품은 Day 10 저녁이나 공항에서"
+      },
+      {
+        "text": "[추천] 마지막 디너 후보: Mudbrick(와이헤케), 시내 Amano·Depot·Cassia, 폰손비 Kol"
       }
     ],
     "accommodation": {
@@ -944,6 +1214,14 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
       {
         "url": "https://queenstreetonline.co.nz",
         "label": "퀸스트리트"
+      },
+      {
+        "url": "https://www.fullers.co.nz",
+        "label": "[추천] Fullers360 와이헤케 페리"
+      },
+      {
+        "url": "https://www.mudbrick.co.nz",
+        "label": "[추천] Mudbrick 와이너리"
       }
     ]
   },
