@@ -204,8 +204,8 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
     },
     "links": [
       {
-        "url": "https://www.getyourguide.com/ko-kr/bookings/",
-        "label": "GetYourGuide 내 예약 (픽업 변경)"
+        "url": "https://www.getyourguide.com/ko-kr/booking/HUQRTCBRIUTYL8S73HZUAW262VI2EOH2",
+        "label": "GetYourGuide 예약 상세 (픽업 변경)"
       },
       {
         "url": "https://milford-sound.co.nz",
