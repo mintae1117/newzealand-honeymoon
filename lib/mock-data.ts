@@ -15,6 +15,7 @@ import { DaySchedule, Memo } from "@/types/schedule";
 // 2026-10-28: day 7 을 Lindis Pass → Clay Cliffs(필수) → Twizel → Lake Pukaki Viewpoint(필수) → Mt Cook Alpine Salmon 점심 → Tekapo 로 재구성, Hot Tubs Omarama 제거, 핀 좌표 수정(Clay Cliffs 주차장·Pukaki 방문자센터)·Omarama·Twizel 핀 추가. DB 미반영.
 // 2026-10-28: day 12 를 Waiheke 하루(패키지 없음)로 확정 — Fullers 09:30 → Matiatia → Oneroa 도보 → Mudbrick 점심 12:30(예약) → 버스로 Onetangi → 18:00 페리 → Britomart 디너. 시간표는 AT PDF(11/6 적용) 기준, Muriwai·쇼핑 항목 제거. DB 미반영.
 // 2026-10-28: day 12 저녁에 선물 쇼핑 2단계(Commercial Bay·Aotea Gifts 22시, Woolworths Quay St 22시) 추가, 복귀 페리 17:30 으로 앞당김. DB 미반영.
+// 2026-10-28: day 8 을 Mt Cook 트레킹 확정으로 재구성 — Peter's Lookout → Hooker Valley(새 현수교로 전 구간 개방) → Mt Cook Village 점심 → Tasman Glacier View → Tekapo 복귀 → 별 관측. DB 미반영.
 // 네트워크 오류/지연 시 폴백으로만 사용. 이 데이터를 보는 동안에는 수정 불가.
 export const MOCK_SCHEDULES: DaySchedule[] = [
   {
@@ -903,50 +904,77 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
     "day": 8,
     "date": "11월 8일",
     "day_of_week": "일",
-    "title": "Tekapo 자유일 & 별 관측",
-    "subtitle": null,
+    "title": "Mt Cook 트레킹 & 별 관측",
+    "subtitle": "Hooker Valley + Tasman Glacier View",
     "region": "south",
-    "drive_info": null,
-    "is_rest_day": true,
+    "drive_info": "Tekapo → Mt Cook Village 105km 1시간 20분 (편도) · 트랙 사이 차로 15분",
+    "is_rest_day": false,
     "activities": [
       {
-        "time": "오전",
-        "emoji": "😴",
-        "title": "늦잠, 여유로운 아침"
+        "time": "06:45",
+        "emoji": "🥐",
+        "title": "간단 아침 · 도시락 간식 챙기기",
+        "description": "전날 사 둔 빵·과일 · 물 1L/인, 간식, 선크림, 바람막이·모자 · Mt Cook 마을엔 마트가 없음"
       },
       {
-        "time": "가는 길",
+        "time": "07:00",
+        "emoji": "🚗",
+        "title": "Tekapo 출발 → Mt Cook Village (SH8 → SH80)",
+        "description": "주유는 Tekapo 에서 · White Horse Hill 주차장이 10시 전후로 꽉 차서 일찍 출발"
+      },
+      {
+        "time": "07:50",
         "emoji": "📸",
-        "title": "[추천] Peter's Lookout",
-        "description": "Mt Cook 도로(SH80) 초입 · Pukaki 호수 너머 Mt Cook 정면, 5분 정차"
+        "title": "Peter's Lookout (5분 정차)",
+        "description": "SH80 초입 · Lake Pukaki 너머 Mt Cook 정면 · 아침 빛이 가장 좋음"
       },
       {
-        "time": "오전~오후",
-        "emoji": "🏔️",
-        "title": "Mt Cook Hooker Valley Track (선택)",
-        "description": "차로 편도 1시간, 왕복 3시간 평탄한 트레킹. 뉴질랜드 대표 절경!"
+        "time": "08:40",
+        "emoji": "🅿️",
+        "title": "White Horse Hill 주차장 도착",
+        "description": "Mt Cook Village 지나 Hooker Valley Rd 끝, 무료 · 출발지에 화장실 · 만차면 마을 Hermitage 근처 주차 후 Kea Point 길로 연결"
       },
       {
-        "time": "오후 (선택)",
+        "time": "08:45",
+        "emoji": "🥾",
+        "title": "Hooker Valley Track (필수, 왕복 약 3시간 10km)",
+        "description": "편도 5km·90분, 거의 평지 · 현수교 3개 — 두 번째 다리는 2026-07-28 개통한 189m 새 현수교(뉴질랜드 최장) · 2025년 4월부터 막혀 있던 구간이 열려 Hooker Lake 까지 전 구간 통행 · 중간 화장실(두 번째 다리 지나 15분) · Hooker Lake 에서 빙산과 Aoraki/Mt Cook 정면 · 10시 전후 도착"
+      },
+      {
+        "time": "11:45",
+        "emoji": "🍽️",
+        "title": "점심: The Old Mountaineer's Cafe (Mt Cook Village)",
+        "description": "산 전망 통창 · 버거·파이·스튜 · 월·화 휴무 정보가 엇갈림(11/8 은 일요일이라 영업 가능성 높음) · 대안: Hermitage 의 Sir Edmund Hillary Cafe(매일 11:00~15:30, 박물관 옆)"
+      },
+      {
+        "time": "13:00",
+        "emoji": "🚗",
+        "title": "Tasman Valley Rd → Blue Lakes 주차장 (차로 15분)",
+        "description": "SH80 마을 직전 갈림길에서 Tasman Valley Rd 로 약 8km · 끝 구간 자갈길, 천천히 · 주차장에 화장실·쉼터"
+      },
+      {
+        "time": "13:20",
         "emoji": "🧊",
-        "title": "[추천] Tasman Glacier View Track",
-        "description": "Hooker Valley에서 차로 10분 · 왕복 40분, 계단 오르면 빙산 떠 있는 Tasman Lake · Hooker Valley는 7/28 새 189m 현수교 개통으로 전 구간 통행 가능"
+        "title": "Tasman Glacier View Track (필수, 왕복 40분~1시간)",
+        "description": "1.5km, 계단으로 86m 오르면 빙퇴석 위 전망대 · 빙산 떠 있는 Tasman Lake 와 뉴질랜드 최장 Tasman Glacier · 바람 셈 · 내려오는 길에 Blue Lakes 잠깐(10분)"
       },
       {
-        "time": "오후 (선택)",
+        "time": "14:30",
+        "emoji": "🚗",
+        "title": "Mt Cook → Tekapo 복귀 (1시간 20분)",
+        "description": "피곤하면 Twizel 갈림길 지나 Lake Pukaki 방문자센터에서 쉬어 가기"
+      },
+      {
+        "time": "선택",
         "emoji": "🚤",
         "title": "[추천] Glacier Explorers 빙산 보트",
-        "description": "Tasman Lake에서 빙산 사이 보트 2.5시간 · 성인 NZ$209 안팎 · 11월 운영, 예약 필수(48시간 내 취소 50%) · Hooker Valley와 묶으면 Mt Cook 하루 꽉 참"
+        "description": "두 트랙을 다 하고 나면 시간이 빠듯해 오늘은 선택 · 하려면 14:30 이후 편 예약(2.5시간, 성인 NZ$209 안팎, 11월 운영, 48시간 내 취소 50%) → Tekapo 귀가 19시 전후"
       },
       {
-        "time": "",
-        "emoji": "📸",
-        "title": "호수 산책, 포토타임"
-      },
-      {
-        "time": "오후",
+        "time": "16:00",
         "emoji": "🛒",
-        "title": "마트에서 장보기 (저녁 요리용)"
+        "title": "Tekapo 마트에서 장보기 (저녁 요리용)",
+        "description": "Four Square Lake Tekapo"
       },
       {
         "time": "",
@@ -973,7 +1001,16 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
     ],
     "tips": [
       {
-        "text": "Dark Sky Project는 사전 예약 필수"
+        "text": "Hooker Valley 는 2025년 4월 강둑 침식으로 두 번째 다리 이후가 막혀 있었으나, 2026-07-28 새 189m 현수교 개통으로 Hooker Lake 까지 전 구간 다시 열림 → 두 트랙을 하루에 묶을 수 있음"
+      },
+      {
+        "text": "출발 전 DOC Aoraki/Mt Cook 경보와 SH80 도로 상황 확인 · 강풍·폭우 예보면 현수교 통행 제한 가능"
+      },
+      {
+        "text": "운동화로 충분하지만 바람이 매우 셈 → 바람막이·모자·선글라스 필수 · 마을에 마트 없음"
+      },
+      {
+        "text": "Dark Sky Project는 사전 예약 필수 · 트레킹한 날이라 밤 투어는 Tekapo Springs 온천 별 투어가 덜 피곤함"
       }
     ],
     "accommodation": {
@@ -987,12 +1024,20 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
     },
     "links": [
       {
-        "url": "https://darkskyproject.co.nz",
-        "label": "Dark Sky Project"
+        "url": "https://www.doc.govt.nz/hooker-valley-track",
+        "label": "DOC Hooker Valley Track"
       },
       {
-        "url": "https://www.doc.govt.nz/parks-and-recreation/places-to-go/canterbury/places/aoraki-mount-cook-national-park/things-to-do/tracks/hooker-valley-track/",
-        "label": "Hooker Valley Track"
+        "url": "https://doc.govt.nz/parks-and-recreation/places-to-go/canterbury/places/aoraki-mount-cook-national-park/things-to-do/tracks/tasman-glacier-view-track",
+        "label": "DOC Tasman Glacier View Track"
+      },
+      {
+        "url": "https://www.journeys.nzta.govt.nz/",
+        "label": "NZTA 도로 상황 (SH80)"
+      },
+      {
+        "url": "https://darkskyproject.co.nz",
+        "label": "Dark Sky Project"
       },
       {
         "url": "https://tekaposprings.co.nz",

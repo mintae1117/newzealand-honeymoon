@@ -88,7 +88,12 @@ export const dayCoordinates: Record<number, LocationPin[]> = {
   ],
   // 테카포 자유일: 후커밸리(선택) / 별 관측
   8: [
-    { label: "Hooker Valley Track 입구", lat: -43.7182, lng: 170.0929 },
+    { label: "Peter's Lookout", lat: -44.0891, lng: 170.1357 },
+    { label: "White Horse Hill 주차장 (Hooker Valley 출발)", lat: -43.7197, lng: 170.0929 },
+    { label: "Hooker Lake", lat: -43.676, lng: 170.1104 },
+    { label: "The Old Mountaineer's Cafe", lat: -43.7327, lng: 170.0958 },
+    { label: "Blue Lakes 주차장 (Tasman 출발)", lat: -43.6978, lng: 170.1629 },
+    { label: "Tasman Glacier View", lat: -43.6682, lng: 170.1744 },
     { label: "Lake Tekapo", lat: -44.0045, lng: 170.4777 },
     { label: "Dark Sky Project", lat: -44.0034, lng: 170.4775 },
     STAYS.tekapo,
