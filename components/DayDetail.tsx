@@ -7,7 +7,6 @@ import { useScheduleStore } from '@/store/schedule-store';
 import { useAuth } from '@/hooks/useAuth';
 import { regionTheme } from '@/lib/region-theme';
 import DateLeaf from '@/components/DateLeaf';
-import MemoSection from '@/components/MemoSection';
 import PasswordModal from '@/components/PasswordModal';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
@@ -603,9 +602,6 @@ const DayDetail = ({ day, prevDay, nextDay }: DayDetailProps) => {
 
         {/* 지도 */}
         <MapSection dayNumber={day.day} />
-
-        {/* 메모 */}
-        <MemoSection dayId={day.id} isAuthenticated={isAuthenticated} login={login} />
       </div>
 
       {/* 비밀번호 모달 */}
