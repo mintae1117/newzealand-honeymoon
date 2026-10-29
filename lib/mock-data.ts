@@ -16,6 +16,7 @@ import { DaySchedule, Memo } from "@/types/schedule";
 // 2026-10-28: day 12 를 Waiheke 하루(패키지 없음)로 확정 — Fullers 09:30 → Matiatia → Oneroa 도보 → Mudbrick 점심 12:30(예약) → 버스로 Onetangi → 18:00 페리 → Britomart 디너. 시간표는 AT PDF(11/6 적용) 기준, Muriwai·쇼핑 항목 제거. DB 미반영.
 // 2026-10-28: day 12 저녁에 선물 쇼핑 2단계(Commercial Bay·Aotea Gifts 22시, Woolworths Quay St 22시) 추가, 복귀 페리 17:30 으로 앞당김. DB 미반영.
 // 2026-10-28: day 8 을 Mt Cook 트레킹 확정으로 재구성 — Peter's Lookout → Hooker Valley(새 현수교로 전 구간 개방) → Mt Cook Village 점심 → Tasman Glacier View → Tekapo 복귀 → 별 관측. DB 미반영.
+// 2026-10-29: 점검 수정 — day 3 공항 이동을 Uber/택시로(버스는 대안), day 7 교회 설명, day 9 Astro Café 아침 추가, day 10 반납 08:15·Mt Eden 교통. DB 미반영.
 // 네트워크 오류/지연 시 폴백으로만 사용. 이 데이터를 보는 동안에는 수정 불가.
 export const MOCK_SCHEDULES: DaySchedule[] = [
   {
@@ -94,7 +95,7 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
         "time": "",
         "emoji": "🌳",
         "title": "[추천] Queenstown Gardens 산책",
-        "description": "워터프론트 끝에서 이어지는 반도 공원, 한 바퀴 30분 · 시차 풀기에 딱 · 호수 건너 리마커블스 조망"
+        "description": "워터프론트 끝에서 이어지는 반도 공원, 한 바퀴 30분 · 시차 풀기에 딱 · 호수 건너 The Remarkables 조망"
       },
       {
         "time": "저녁",
@@ -305,16 +306,16 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
         "description": "곤돌라 베이스에서 도보 5분 · 매일 07:00~02:30 · 점심 줄 20~40분 각오 → 늦어도 13:10엔 출발"
       },
       {
-        "time": "13:14",
-        "emoji": "🚌",
-        "title": "1번 버스로 공항 이동 (Stanley St 버스허브 B → 공항 약 20분)",
-        "description": "Fergburger에서 허브까지 도보 3분 · 15분 간격(12:59 · 13:14 · 13:29) · 성인 Bee Card $2.50 / 현금 $10 (카드 결제 불가) · 급하면 택시·우버 약 15분(NZ$35~45) 으로 Apex(32 Lucas Place) 직행"
+        "time": "13:15",
+        "emoji": "🚕",
+        "title": "Uber·택시로 Apex 렌트카 지점 이동 (약 15분, NZ$35~45)",
+        "description": "Fergburger 앞에서 Uber 호출, 목적지는 공항 터미널이 아니라 'Apex Car Rentals, 32 Lucas Place' 로 바로 · 대안: Stanley St 허브 B 에서 1번 버스(12:59·13:14·13:29, 현금 $10 또는 Bee Card, 카드 불가) 공항 하차 후 도보 5분 · 곤돌라·루지를 더 즐기다 늦어지면 Apex(03 451 0583)에 한 번 알리기"
       },
       {
         "time": "14:00",
         "emoji": "🚗",
         "title": "렌트카 픽업 · Apex Queenstown 공항점 (32 Lucas Place)",
-        "description": "현대 투싼 2WD급 중형 SUV · 예약번호 4202766 · 터미널에서 차로 2분, 걸어서 5분 · 여기부터 남섬 드라이브 시작!",
+        "description": "현대 투싼 2WD급 중형 SUV · 예약번호 4202766 · 터미널에서 차로 2분, 걸어서 5분 · 여기부터 남섬 드라이브 시작! · 예약 시간보다 늦을 땐 Apex Reservations 에 연락(약관) — 요금은 7일 계산이라 그대로",
         "image": "/images/apex-queenstown-pickup.png"
       },
       {
@@ -830,7 +831,7 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
         "time": "오후",
         "emoji": "⛪",
         "title": "Church of the Good Shepherd",
-        "description": "Church of the Good Shepherd"
+        "description": "Lake Tekapo 호숫가의 작은 돌 교회(1935) · 낮엔 관광버스로 붐빔 → 사진은 일몰·밤 재방문 때 · 내부 촬영 금지"
       },
       {
         "time": "",
@@ -1057,13 +1058,19 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
     "title": "Christchurch로 이동",
     "subtitle": null,
     "region": "south",
-    "drive_info": "약 3시간",
+    "drive_info": "Tekapo → Fairlie → Geraldine → Christchurch 약 3시간 (정차 제외)",
     "is_rest_day": false,
     "activities": [
       {
-        "time": "오전",
+        "time": "08:30",
         "emoji": "👋",
         "title": "체크아웃"
+      },
+      {
+        "time": "09:00",
+        "emoji": "☕",
+        "title": "[추천] Mt John Astro Café (체크아웃 전)",
+        "description": "정상 도로 09시 오픈, 차량 NZ$14(카드만) · Mackenzie Basin·Lake Tekapo 360도 전망에서 커피 · 1시간 · Day 7 에 못 갔으면 여기서"
       },
       {
         "time": "점심",
@@ -1148,10 +1155,10 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
     "is_rest_day": false,
     "activities": [
       {
-        "time": "09:00 반납",
+        "time": "08:15 반납",
         "emoji": "🚗",
         "title": "렌트카 반납 · Apex Christchurch 공항점 (28 Ron Guthrey Rd)",
-        "description": "Russley Rd 에서 진입 · 반납 후 Apex 무료 셔틀로 터미널 이동 · 주유는 Russley Rd 남쪽 2~3km 주유소",
+        "description": "예약상 09:00 이지만 일찍 반납은 자유 · Russley Rd 에서 진입 · 반납 후 Apex 무료 셔틀로 터미널 이동 · 주유는 Russley Rd 남쪽 2~3km 주유소 · 제트스타 국내선 수하물 마감은 출발 30분 전",
         "image": "/images/apex-christchurch-dropoff.png"
       },
       {
@@ -1191,7 +1198,7 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
         "time": "일몰",
         "emoji": "🌋",
         "title": "[추천] Mt Eden 일몰",
-        "description": "시내에서 차·버스 10분, 분화구 정상 · Sky Tower·하버 전경 · 정상까지 걸어서 15분"
+        "description": "시내에서 Uber·버스 10분(렌트카 없음), 분화구 정상 · Sky Tower·하버 전경 · 정상까지 걸어서 15분"
       },
       {
         "time": "저녁",
@@ -1207,16 +1214,13 @@ export const MOCK_SCHEDULES: DaySchedule[] = [
     ],
     "tips": [
       {
-        "text": "렌트카 반납 09:00 → JQ232 출발 09:55 (여유 55분) · 반납·셔틀 시간 감안해 더 일찍 도착 권장 · 예약번호 4202766"
+        "text": "렌트카 08:15 반납 → 셔틀 → JQ232 09:55 출발 · 예약번호 4202766 · 숙소 07:30 출발"
       },
       {
         "text": "제트스타 JQ232 (2026.08.01 예약) · 탑승객 MS Naeun Kim, MR Mintae Kim"
       },
       {
         "text": "수하물 1인당 휴대 7kg + 위탁 25kg · 좌석은 아직 미지정(좌석 선택 가능)"
-      },
-      {
-        "text": "[추천] 렌트카 반납 09:00 → 09:55 출발은 빠듯 · 제트스타 국내선 수하물 마감 출발 30분 전 → 08:15 반납 권장"
       }
     ],
     "accommodation": {
